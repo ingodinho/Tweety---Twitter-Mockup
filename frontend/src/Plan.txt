@@ -1,0 +1,22 @@
+Pages:
+
+- Startseite, Login-Registrierung
+- Login Seite -> email, password
+- Create Account Seite -> Wizard -> Gucken wie man das baut
+- Alternativ: Home/Feed Page
+- Such Page
+- Benachrichtung -> LATER
+- Messages -> LATER
+- Tweet Detailansicht
+- Profilpage
+- Settings -> LATER
+
+Shared Components:
+
+-Navbar
+-Sidebar, Menu
+-Tweet, immer wieder verwenden
+
+Notizen:
+
+-New Tweet eher eine Component als eine Page
