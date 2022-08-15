@@ -1,9 +1,16 @@
 import { createGlobalStyle } from "styled-components";
-
+import SFPro from "./fonts/SF-Pro-Text-Regular.ttf";
 const GlobalStyles = createGlobalStyle`
+
+@font-face {
+  font-family: 'SFPro';
+  src: url(${SFPro}) format("truetype");
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
+
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +18,7 @@ const GlobalStyles = createGlobalStyle`
 
 html {
   font-size: 62.5%;
+  font-family: 'SFPro', serif;
 }
 
 html, body {
@@ -41,21 +49,12 @@ p, h1, h2, h3, h4, h5, h6 {
   isolation: isolate;
 }
 
-/* ===================================
-  Fonts, Variables
- ===================================*/
+/* 
+===================================
+  Variables
+===================================*/
 
 
-//FIX ME --- FUCKING FONT GEHT NICHT
-
-@font-face {
-  font-family: 'SF-Pro';
-  src: url('./fonts/SF-Pro-Text-Regular.otf') format("opentype");
-}
-
-body {
-  font-family: 'SF-Pro', serif;
-}
 
 :root {
   --clr-blue: #1D9BF0;

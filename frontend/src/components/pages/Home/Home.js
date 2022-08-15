@@ -9,7 +9,6 @@ const Home = () => {
             <Tweet/>
             <Tweet/>
             <Tweet/>
-            <Tweet/>
         </>
     )
 }

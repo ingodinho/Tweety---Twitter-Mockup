@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FormWrapper, Disclaimer } from "./RegisterStyling";
 import { InputField } from "../../../styles/InputField";
 import { ButtonBig } from "../../../styles/Buttons";
+import { Headline } from "../../../styles/Headline";
 // import { apiUrl } from "INSERT_APIURL_FILE_HERE";
 
 const RegisterForm = () => {
@@ -58,6 +59,7 @@ const RegisterForm = () => {
 
   return (
     <FormWrapper>
+      <Headline>Create your account</Headline>
       <InputField
         required
         placeholder="Firstname"
