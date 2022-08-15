@@ -1,0 +1,7 @@
+import styled from 'styled-components';
+
+export const Wrapper = styled.article`
+  padding: 2rem var(--spacing-wrapper);
+
+`
+

@@ -8,7 +8,7 @@ const HomeHeader = () => {
     return (
         <HeaderWrapper>
             <IconBar>
-                <ProfilePic/>
+                <ProfilePic size={'small'}/>
                 <Link to={'/home'}><BirdLogo src={BirdLogoUrl} alt="Bird Logo"/></Link>
                 <img src={FeatureIcon} alt="Feature Icon"/>
             </IconBar>
@@ -17,7 +17,11 @@ const HomeHeader = () => {
 }
 
 const HeaderWrapper = styled.header`
-  padding: 2rem var(--spacing-wrapper);
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  padding: 2rem var(--spacing-wrapper) 0.5rem var(--spacing-wrapper);
+  border-bottom: 1px solid var(--clr-line-grey);
 `
 
 const IconBar = styled.div`

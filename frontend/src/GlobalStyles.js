@@ -33,7 +33,7 @@ body {
 }
 
 img, picture, video, canvas, svg {
-  display: block;
+  /* display: block; */
   max-width: 100%;
 }
 
@@ -64,9 +64,8 @@ p, h1, h2, h3, h4, h5, h6 {
   --clr-text-link: #4C9EEB;
   --clr-bg-grey: #E7ECF0;
   --clr-line-grey: #BDC5CD;
-  --spacing-wrapper: 3.2rem;
+  --spacing-wrapper: 1.6rem;
 }
-
 `;
 
 export default GlobalStyles;

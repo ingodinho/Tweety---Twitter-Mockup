@@ -1,29 +1,66 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export const TweetWrapper = styled.div`
-  padding: 3rem;
-  border-bottom: 1px solid var(--clr-line-grey);
-`
+export const Wrapper = styled.article`
+	display: flex;
+	align-items: flex-start;
+	gap: 1.6rem;
+	padding: 2rem var(--spacing-wrapper);
+	border-bottom: 1px solid var(--clr-line-grey);
+`;
 
-export const TweetHeader = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 1.6rem;
-`
+export const Header = styled.div``;
 
 export const UserPic = styled.img`
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
+	width: 55px;
+	height: 55px;
+	border-radius: 50%;
+`;
+
+export const UserInfo = styled.div`
+	display: flex;
+  align-items: center;
+	gap: 5px;
+	font-size: 1.4rem;
+	font-weight: 600;
+	margin-bottom: 1rem;
+
+	span {
+    font-size: 1.2rem;
+		color: var(--clr-text-grey);
+		font-weight: 400;
+	}
+`;
+
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const Text = styled.p`
+	font-size: 1.4rem;
+	line-height: 1.5;
+`;
+
+export const Img = styled.img`
+  margin-top: 1rem;
+  height: 17.4rem;
+  border-radius: 12px;
+  object-fit: cover;
+  object-position: center;
 `
 
-export const TweetStats = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1.5rem;
-`
+export const StatsWrapper = styled.div`
+	display: flex;
+	justify-content: space-between;
+	margin-top: 1rem;
+`;
 
 export const Stats = styled.div`
-  display: flex;
-  gap: 5px;
-`
+	display: flex;
+	gap: 5px;
+	color: var(--clr-text-grey);
+	font-size: 1.2rem;
+	img {
+		width: 15px;
+	}
+`;
