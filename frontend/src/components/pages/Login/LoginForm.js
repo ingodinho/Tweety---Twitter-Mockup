@@ -2,6 +2,7 @@ import { useState } from "react";
 import { InputField } from "../../../styles/InputField";
 import { ButtonBig } from "../../../styles/Buttons";
 import { Headline } from "../../../styles/Headline";
+import { FormWrapper } from "../Register/RegisterStyling";
 // import { apiUrl } from "INSERT_APIURL_FILE_HERE";
 
 const LoginForm = () => {
