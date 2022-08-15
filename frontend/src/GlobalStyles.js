@@ -1,4 +1,4 @@
-import {createGlobalStyle} from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
 *, *::before, *::after {
@@ -46,16 +46,17 @@ p, h1, h2, h3, h4, h5, h6 {
   Fonts, Variables
  ===================================*/
 
+
 //FIX ME --- FUCKING FONT GEHT NICHT
 
-//@font-face {
-//  font-family: 'SF_Pro';
-//  src: url('./fonts/SF-Pro-Text-Regular.ttf') format("truetype");
-//}
-//
-//body {
-//  font-family: 'SF_Pro', serif;
-//}
+@font-face {
+  font-family: 'SF-Pro';
+  src: url('./fonts/SF-Pro-Text-Regular.otf') format("opentype");
+}
+
+body {
+  font-family: 'SF-Pro', serif;
+}
 
 :root {
   --clr-blue: #1D9BF0;
@@ -64,11 +65,10 @@ p, h1, h2, h3, h4, h5, h6 {
   --clr-text-grey: #687684;
   --clr-text-link: #4C9EEB;
   --clr-bg-grey: #E7ECF0;
-  --clr-shadow: #BDC5CD;
-  
+  --clr-line-grey: #BDC5CD;
   --spacing-wrapper: 3.2rem;
 }
 
-`
+`;
 
 export default GlobalStyles;

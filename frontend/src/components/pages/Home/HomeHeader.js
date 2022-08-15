@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import ProfilePic from "../../components/shared/ProfilePic";
-import BirdLogoUrl from '../../img/icons/Bird Logo.svg';
-import FeatureIcon from '../../img/icons/Feature stroke icon.svg';
+import ProfilePic from "../../shared/ProfilePic";
+import BirdLogoUrl from '../../../img/icons/Bird Logo.svg';
+import FeatureIcon from '../../../img/icons/Feature stroke icon.svg';
 import {Link} from "react-router-dom";
 
 const HomeHeader = () => {

@@ -24,7 +24,7 @@ const NavWrapper = styled.nav`
   bottom: 0;
   width: 100%;
   padding: 2rem var(--spacing-wrapper) 4rem var(--spacing-wrapper);
-  border-top: 1px solid var(--clr-shadow);
+  border-top: 1px solid var(--clr-line-grey);
 `
 
 const NavBar = styled.ul`
