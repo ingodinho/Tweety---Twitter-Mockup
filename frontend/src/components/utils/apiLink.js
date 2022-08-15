@@ -1,0 +1,1 @@
+export const apiLink = process.env.REACT_APP_API_BASE_LINK || 'http://localhost:9000'
