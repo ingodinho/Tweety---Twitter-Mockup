@@ -26,7 +26,7 @@ html, body {
 }
 
 body {
-  max-width: 500px;
+  max-width: 450px;
   margin: 0 auto;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -64,7 +64,7 @@ p, h1, h2, h3, h4, h5, h6 {
   --clr-text-link: #4C9EEB;
   --clr-bg-grey: #E7ECF0;
   --clr-line-grey: #BDC5CD;
-  --spacing-wrapper: 1.6rem;
+  --spacing-wrapper: 2.4rem;
 }
 `;
 

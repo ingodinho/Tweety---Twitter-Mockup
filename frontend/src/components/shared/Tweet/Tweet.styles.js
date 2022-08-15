@@ -8,8 +8,6 @@ export const Wrapper = styled.article`
 	border-bottom: 1px solid var(--clr-line-grey);
 `;
 
-export const Header = styled.div``;
-
 export const UserPic = styled.img`
 	width: 55px;
 	height: 55px;
@@ -34,6 +32,7 @@ export const UserInfo = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 `;
 
 export const Text = styled.p`
@@ -61,6 +60,6 @@ export const Stats = styled.div`
 	color: var(--clr-text-grey);
 	font-size: 1.2rem;
 	img {
-		width: 15px;
+		width: ${p => p.big ? 18 : 15}px;
 	}
 `;
