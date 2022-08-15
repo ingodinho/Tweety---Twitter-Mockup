@@ -11,15 +11,20 @@ import {
     Wrapper, Header, HomeLink
 } from './TweetDetails.styling';
 import Moment from "react-moment";
-import {Link} from 'react-router-dom';
+import {useNavigate} from "react-router-dom";
 
 import Tweet from "../../shared/Tweet/Tweet";
 import {placeHolderUser, placeHolderTweet} from "../../placeholder";
 import Userplaceholder from '../../../img/profileplaceholder.jpeg';
 import TweetStats from "../../shared/Tweet/TweetStats";
 
-
 const TweetDetails = () => {
+
+    const navigator = useNavigate()
+    const toProfile = (id) => {
+        navigator(`/profile/${id}`)
+    }
+
     return (
         <>
             <Header>
@@ -27,7 +32,7 @@ const TweetDetails = () => {
                 <Headline>Tweet</Headline>
             </Header>
             <Wrapper>
-                <TweetHeader>
+                <TweetHeader onClick={()=> toProfile(placeHolderUser.userName)}>
                     <UserPic src={Userplaceholder} alt="Profile Pic"/>
                     <UserInfo>
                         <p>{placeHolderUser.firstName} {placeHolderUser.lastName}</p>

@@ -30,10 +30,11 @@ body {
   margin: 0 auto;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  color: var(--clr-text-prm);
 }
 
 img, picture, video, canvas, svg {
-  /* display: block; */
+  display: block;
   max-width: 100%;
 }
 
@@ -53,8 +54,6 @@ p, h1, h2, h3, h4, h5, h6 {
 ===================================
   Variables
 ===================================*/
-
-
 
 :root {
   --clr-blue: #1D9BF0;

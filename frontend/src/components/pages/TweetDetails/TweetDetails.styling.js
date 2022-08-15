@@ -10,10 +10,10 @@ export const Header = styled.div`
 
 export const HomeLink = styled(Link)`
   position: fixed;
-  color: var(--clr-blue);
   font-size: 1.6rem;
-  text-decoration: none;
   left: var(--spacing-wrapper);
+  color: var(--clr-blue);
+  text-decoration: none;
 
   &hover {
     text-decoration: underline;

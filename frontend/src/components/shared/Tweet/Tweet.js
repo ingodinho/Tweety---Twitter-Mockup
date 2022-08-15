@@ -27,11 +27,15 @@ const Tweet = () => {
         navigator(`/tweet/${id}`);
     };
 
+    const toProfile = (id) => {
+        navigator(`/profile/${id}`)
+    }
+
     return (
         <Wrapper>
-            <UserPic src={PlaceHolderImg} alt='Profile Pic'/>
+            <UserPic src={PlaceHolderImg} alt='Profile Pic' onClick={()=> toProfile(placeHolderUser.userName)}/>
             <div>
-                <UserInfo>
+                <UserInfo onClick={()=> toProfile(placeHolderUser.userName)}>
                     <p>
                         {placeHolderUser.firstName} {placeHolderUser.lastName}
                     </p>
