@@ -20,7 +20,6 @@ html, body {
 body {
   max-width: 500px;
   margin: 0 auto;
-  border: 1px solid black;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }

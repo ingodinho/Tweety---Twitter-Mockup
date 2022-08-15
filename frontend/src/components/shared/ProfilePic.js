@@ -1,9 +1,10 @@
 import styled from "styled-components";
+import placeHolderUrl from '../../img/profileplaceholder.jpeg';
 import {useRecoilValue} from "recoil";
 
 const ProfilePic = () => {
     return <Picture
-        src={'https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png'}
+        src={placeHolderUrl}
         alt={"Profile Picture"}/>
 }
 
