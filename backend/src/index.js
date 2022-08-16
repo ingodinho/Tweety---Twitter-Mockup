@@ -7,7 +7,6 @@ import { usersRouter } from './routes/routerUsers.js';
 
 const app = express();
 const PORT = process.env.PORT || 9000;
-//wegen deployment
 
 // logging middleware
 app.use(morgan('dev'));
