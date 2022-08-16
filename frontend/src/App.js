@@ -12,18 +12,21 @@ import StartPage from "./components/pages/Start/StartPage";
 import {useRecoilState} from "recoil";
 import {loggedInUser} from "./components/utils/SharedStates";
 import {useEffect} from "react";
+import ReplyTweet from "./components/pages/ReplyTweet/ReplyTweet";
 
 function App() {
     const navigator = useNavigate();
     const location = useLocation();
     const [userData, setUserData] = useRecoilState(loggedInUser);
 
+    // localStorage.clear();
     useEffect(() => {
         if (userData) return;
-        const localUserData = localStorage.getItem('userdata');
+        const localUserData = JSON.parse(localStorage.getItem('userdata'));
         if (localUserData) {
-            setUserData(JSON.parse(localUserData));
+            setUserData(localUserData);
         }
+
         else {
             navigator('/')
         }
@@ -38,6 +41,7 @@ function App() {
                 <Route path={'/tweet/:id'} element={<TweetDetails/>}/>
                 <Route path={'/profile/:id'} element={<Profile/>}/>
                 <Route path={'/newtweet'} element={<NewTweet/>}/>
+                <Route path={'/reply/:id'} element={<ReplyTweet/>}/>
                 <Route path={"/login"} element={<LoginPage/>}/>
                 <Route path={"/register"} element={<RegisterPage/>}/>
             </Routes>

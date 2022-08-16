@@ -66,5 +66,6 @@ export const Stats = styled.div`
 
   img {
     width: ${p => p.big ? 18 : 15}px;
+    background-color: ${p => p.liked && 'red'};
   }
 `;
