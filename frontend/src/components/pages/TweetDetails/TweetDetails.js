@@ -17,12 +17,17 @@ import Tweet from "../../shared/Tweet/Tweet";
 import {placeHolderUser, placeHolderTweet} from "../../placeholder";
 import Userplaceholder from '../../../img/profileplaceholder.jpeg';
 import TweetStats from "../../shared/Tweet/TweetStats";
+import {useEffect, useState} from "react";
 
-const TweetDetails = () => {
+const TweetDetails = (props) => {
 
     const navigator = useNavigate()
     const toProfile = (id) => {
         navigator(`/profile/${id}`)
+    }
+
+    if (props.content) {
+        placeHolderUser = {...props};
     }
 
     return (
@@ -60,9 +65,6 @@ const TweetDetails = () => {
                 </StatsWrapper>
                 <TweetStats big/>
             </Wrapper>
-            <Tweet/>
-            <Tweet/>
-            <Tweet/>
         </>
     );
 };
