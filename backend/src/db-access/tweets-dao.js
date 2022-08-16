@@ -9,10 +9,19 @@ const findAllTweets = async () => {
     return posts;
 }
 
-const findTweetsById = async (userId) => {
+const findAllTweetsByUserId = async (userId) => {
     const db = await getDB();
     const foundPosts = await db.collection(collectionName).find({ postedBy: userId }).toArray();
     return foundPosts;
+}
+
+const findAllRepliesByOriginId = async (tweetId) => {
+    const db = await getDB();
+    const foundReplies = await db.collection(collectionName).find({_id: ObjectId(tweetId)}).toArray();
+    const replyIds = foundReplies[0].replies
+    const repliesPackage = await db.collection(collectionName).find({_id: {$in: replyIds}}).toArray()
+    console.log(repliesPackage);
+    return repliesPackage;
 }
 
 const insertOneTweet = async (tweet) => {
@@ -20,9 +29,54 @@ const insertOneTweet = async (tweet) => {
     return db.collection(collectionName).insertOne(tweet)
 }
 
+const insertOneReply = async (reply) => {
+    const db = await getDB();
+    return db.collection(collectionName).insertOne(reply)
+}
+
+const deleteTweetById = async (tweetId) => {
+    const db = await getDB();
+    return db.collection(collectionName).deleteOne({_id: ObjectId(tweetId)})
+}
+
+const editTweet = async (tweetId, tweet) => {
+    const db = await getDB();
+    return db.collection(collectionName).findOneAndUpdate({_id: ObjectId(tweetId)}, 
+    {$set: {
+        lastEditedAt: tweet.lastEditedAt,
+        content: tweet.content
+    }}
+    )
+}
+
+const insertReplyIdToOrigin = async (replyToId, replyId) => {
+    const db = await getDB();
+    return db.collection(collectionName).findOneAndUpdate({_id: ObjectId(replyToId)}, 
+    {$push: {replies: replyId}}
+    )
+}
+
+const likeUnlikeTweet = async (tweetId, userId) => {
+    const db = await getDB();
+    const foundTweet = await db.collection(collectionName).find({_id: ObjectId(tweetId)}).toArray();
+    const likesArr = foundTweet[0].likes
+    likesArr.includes(userId)
+    ? likesArr.splice(likesArr.indexOf(userId), 1)
+    : likesArr.push(userId)
+    const newLikesArr = [...likesArr]
+    return db.collection(collectionName).findOneAndUpdate({_id: ObjectId(tweetId)}, {$set: {likes: newLikesArr}}, {returnDocument: "after"}, 
+    )
+}
+
 
 export default {
     findAllTweets,
-    findTweetsById,
-    insertOneTweet
+    findAllTweetsByUserId,
+    insertOneTweet,
+    insertOneReply,
+    deleteTweetById,
+    editTweet,
+    likeUnlikeTweet,
+    insertReplyIdToOrigin,
+    findAllRepliesByOriginId
 }
