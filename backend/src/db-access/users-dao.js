@@ -15,30 +15,58 @@ const findUserById = async (userId) => {
     return foundUser;
 }
 
+const findUserByUsername = async (username) => {
+    const db = await getDB();
+    const foundUser = await db.collection(usersCollectionName).findOne({ username: username });
+    return foundUser;
+}
+
+const findUserByEmail = async (email) => {
+    const db = await getDB();
+    const foundUser = await db.collection(usersCollectionName).findOne({ email: email });
+    return foundUser;
+}
+
 const insertOneUser = async (userInfo) => {
     const db = await getDB();
-    return db.collection(usersCollectionName).insertOne(userInfo);
+    const newUser = await db.collection(usersCollectionName).insertOne(userInfo);
+    return newUser;
 }
 
 const updateOneUser = async (updateUserInfo) => {
     const db = await getDB();
     const foundUser = await db.collection(usersCollectionName).findOneAndUpdate(
-        { _id: ObjectId(userInfo) },
+        { _id: ObjectId(updateUserInfo._id) },
         {
             $set: {
-                name: updateUserInfo.name,
-                dob: updateUserInfo.dob,
                 username: updateUserInfo.username,
-                profilePictureLink: updateUserInfo.profilePictureLink,
+                firstName: updateUserInfo.firstName,
+                lastName: updateUserInfo.lastName,
+                dob: updateUserInfo.dob,
                 bio: updateUserInfo.bio,
+                passwordHash: updateUserInfo.passwordHash,
+                passwordSalt: updateUserInfo.passwordSalt
             }
-        }
+        },
+        { returnDocument: "after" }
+    )
+    return foundUser;
+}
+
+const findOneAndUpdateAvatar = async ({ userId, avatarImage }) => {
+    const db = await getDB();
+    const foundUser = await db.collection(usersCollectionName).findOneAndUpdate(
+        { _id: ObjectId(userId) },
+        { $set: { profilePictureLink: avatarImage } },
+        { returnDocument: "after" }
     )
 }
 
 export default {
     findAllUsers,
     findUserById,
+    findUserByUsername,
+    findUserByEmail,
     insertOneUser,
     updateOneUser
 };

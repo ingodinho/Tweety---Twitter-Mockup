@@ -3,7 +3,7 @@ import { postTweet } from '../use-cases/tweets/post-tweet.js';
 
 export const tweetsRouter = express.Router();
 
-tweetsRouter.get('/allTweets', async (_, res) => {
+tweetsRouter.get('/alltweets', async (_, res) => {
     try {
         const allTweets = await findAllTweets()
         res.status(200).json(allTweets);
@@ -12,7 +12,7 @@ tweetsRouter.get('/allTweets', async (_, res) => {
     }
 })
 
-tweetsRouter.post('/newTweet', async (req, res) => {
+tweetsRouter.post('/newtweet', async (req, res) => {
     try {
         const newTweets = await postTweet(req.body)
         res.status(201).json(newTweets);
