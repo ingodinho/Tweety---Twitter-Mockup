@@ -1,10 +1,7 @@
-import { TweetsDAO } from "../../db-access";
+import TweetsDAO from "../../db-access/tweets-dao.js";
 
-async function showFeed() {
-    const allTweeds = await TweetsDAO.findAll();
+export const findAll = async () => {
+    const allTweeds = await TweetsDAO.findAllTweets();
+    console.log(allTweeds);
     return allTweeds;
-}
-
-module.exports = {
-    showFeed,
 }

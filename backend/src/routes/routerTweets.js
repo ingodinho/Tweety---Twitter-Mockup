@@ -1,21 +1,85 @@
 import express from 'express';
 import { postTweet } from '../use-cases/tweets/post-tweet.js';
+import { postReply } from '../use-cases/tweets/post-reply.js';
+import { findAll } from '../use-cases/tweets/show-feed.js';
+import { findAllByUserId } from '../use-cases/tweets/show-tweets-by-user-id.js';
+import { findRepliesByOriginId } from '../use-cases/tweets/show-replies-by-origin-id.js';
+import { delTweet } from '../use-cases/tweets/delete-tweet.js';
+import { updateTweet } from '../use-cases/tweets/edit-tweet.js';
+import { likeTweet } from '../use-cases/tweets/like-tweet.js';
 
 export const tweetsRouter = express.Router();
 
-tweetsRouter.get('/allTweets', async (_, res) => {
+tweetsRouter.get('/showalltweets', async (_, res) => {
     try {
-        const allTweets = await findAllTweets()
+        const allTweets = await findAll()
         res.status(200).json(allTweets);
     } catch (err) {
         res.status(404).json({ message: err.message || "404 not found" });
     }
 })
 
-tweetsRouter.post('/newTweet', async (req, res) => {
+tweetsRouter.get('/showtweetsbyid', async (req, res) => {
+    try {
+        const tweetsById = await findAllByUserId(req.body)
+        res.status(200).json(tweetsById);
+    } catch (err) {
+        res.status(404).json({ message: err.message || "404 not found" });
+    }
+})
+
+tweetsRouter.get('/showreplies', async (req, res) => {
+    try {
+        const repliesById = await findRepliesByOriginId(req.body)
+        res.status(200).json(repliesById);
+    } catch (err) {
+        res.status(404).json({ message: err.message || "404 not found" });
+    }
+})
+
+tweetsRouter.post('/newtweet', async (req, res) => {
     try {
         const newTweets = await postTweet(req.body)
         res.status(201).json(newTweets);
+    } catch (err) {
+        res.status(500).json({ message: err.message || "500 internal server error" });
+    }
+})
+
+tweetsRouter.post('/newreply', async (req, res) => {
+    try {
+        const newReply = await postReply(req.body)
+        res.status(201).json(newReply);
+    } catch (err) {
+        res.status(500).json({ message: err.message || "500 internal server error" });
+    }
+})
+
+tweetsRouter.delete('/deletetweet', async (req, res) => {
+    try {
+        const deleteTweet = await delTweet(req.body)
+        console.log(req.body);
+        res.status(201).json(deleteTweet);
+    } catch (err) {
+        res.status(500).json({ message: err.message || "500 internal server error" });
+    }
+})
+
+tweetsRouter.post('/edittweet', async (req, res) => {
+    try {
+        const editedTweet = await updateTweet(req.body)
+        console.log(req.body);
+        res.status(201).json(editedTweet);
+    } catch (err) {
+        res.status(500).json({ message: err.message || "500 internal server error" });
+    }
+})
+
+tweetsRouter.post('/liketweet', async (req, res) => {
+    try {
+        const likedTweet = await likeTweet(req.body)
+        console.log(req.body);
+        res.status(201).json(likedTweet);
     } catch (err) {
         res.status(500).json({ message: err.message || "500 internal server error" });
     }
