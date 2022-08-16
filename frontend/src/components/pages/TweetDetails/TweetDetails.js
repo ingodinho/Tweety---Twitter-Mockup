@@ -35,7 +35,7 @@ const TweetDetails = () => {
             setReplies(response.data.repliesById);
         }
         getTweetDetails();
-    },[])
+    },[id])
 
     const toProfile = (id) => {
         navigator(`/profile/${id}`)
@@ -74,7 +74,7 @@ const TweetDetails = () => {
                         <span>Likes</span>
                     </Stats>
                 </StatsWrapper>
-                <TweetStats big/>
+                <TweetStats id={id} big/>
             </Wrapper>
             {replies.map((reply)=>
                 <Tweet
