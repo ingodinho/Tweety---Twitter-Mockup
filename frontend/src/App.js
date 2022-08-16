@@ -1,5 +1,5 @@
 import GlobalStyles from "./GlobalStyles";
-import {Routes, Route, useLocation, useNavigate} from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
 import Home from "./components/pages/Home/Home";
 import BottomNav from "./components/shared/BottomNav";
@@ -9,15 +9,16 @@ import TweetDetails from "./components/pages/TweetDetails/TweetDetails";
 import Profile from "./components/pages/ProfilePage/Profile";
 import NewTweet from "./components/pages/NewTweet/NewTweet";
 import StartPage from "./components/pages/Start/StartPage";
+import Search from "./components/pages/Search/SearchPage";
 import {useRecoilState} from "recoil";
 import {loggedInUser} from "./components/utils/SharedStates";
 import {useEffect} from "react";
 import ReplyTweet from "./components/pages/ReplyTweet/ReplyTweet";
 
 function App() {
-    const navigator = useNavigate();
-    const location = useLocation();
-    const [userData, setUserData] = useRecoilState(loggedInUser);
+  const navigator = useNavigate();
+  const location = useLocation();
+  const [userData, setUserData] = useRecoilState(loggedInUser);
 
     // localStorage.clear();
     useEffect(() => {
@@ -44,6 +45,7 @@ function App() {
                 <Route path={'/reply/:id'} element={<ReplyTweet/>}/>
                 <Route path={"/login"} element={<LoginPage/>}/>
                 <Route path={"/register"} element={<RegisterPage/>}/>
+                <Route path={"/search"} element={<Search />} />
             </Routes>
             {location.pathname === '/register' || location.pathname === '/login' || location.pathname === '/start' || location.pathname === '/' ||
                 <BottomNav/>}
