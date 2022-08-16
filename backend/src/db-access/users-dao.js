@@ -53,6 +53,8 @@ const updateOneUser = async (updateUserInfo) => {
     return foundUser;
 }
 
+
+
 const findOneAndUpdateAvatar = async ({ userId, avatarImage }) => {
     const db = await getDB();
     const foundUser = await db.collection(usersCollectionName).findOneAndUpdate(

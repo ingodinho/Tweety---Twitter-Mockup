@@ -1,6 +1,6 @@
 import UserDAO from "../../db-access/users-dao.js";
 import { makeUser } from "../../domain/User.js";
-import { createToken } from "../../utils/createToken.js";
+import { createToken } from "../../utils/token/createToken.js";
 
 export const refreshUserToken = async ({ userId }) => {
     const foundUser = await UserDAO.findUserById(userId);

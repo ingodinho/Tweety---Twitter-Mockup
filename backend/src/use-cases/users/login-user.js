@@ -1,6 +1,6 @@
 import UserDAO from "../../db-access/users-dao.js";
-import { createHash } from "../../utils/hash.js";
-import { createToken } from "../../utils/createToken.js";
+import { createHash } from "../../utils/token/hash.js";
+import { createToken } from "../../utils/token/createToken.js";
 
 export const loginUser = async ({ email, username, password }) => {
     let user;

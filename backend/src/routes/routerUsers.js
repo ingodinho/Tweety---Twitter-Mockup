@@ -1,5 +1,7 @@
 import express from 'express';
 import multer from 'multer';
+import fs from 'fs';
+import util from 'util';
 import { registerUser } from '../use-cases/users/register-user.js';
 import { showAllUsers } from '../use-cases/users/show-all-users.js';
 import { showUserProfile } from '../use-cases/users/show-user-profile.js';
@@ -7,11 +9,24 @@ import { loginUser } from '../use-cases/users/login-user.js';
 import { makeDoAuthMiddleware } from '../auth/doAuthMiddleware.js';
 import { refreshUserToken } from '../use-cases/users/refresh-user-token.js';
 import { editUser } from '../use-cases/users/edit-user.js';
+import { uploadFile, getFileStream } from '../utils/s3/s3-avatar.js';
+import { resizeAvatar } from '../utils/s3/sharp.js';
 
 const doAuthMiddlewareAccess = makeDoAuthMiddleware();
 const doAuthMiddlewareRefresh = makeDoAuthMiddleware('refresh');
 
-const uploadAvatarImage = multer({ dest: 'uploads/avatarPictures' });
+const avatarPicStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads/avatarPictures");
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + "_" + file.originalname); //Appending extension
+    },
+});
+
+const uploadAvatarImage = multer({ storage: avatarPicStorage }).single('avatarimage');
+
+const unlinkFile = util.promisify(fs.unlink);
 
 export const usersRouter = express.Router();
 
@@ -72,22 +87,25 @@ usersRouter.post('/edit', doAuthMiddlewareAccess, async (req, res) => {
     }
 })
 
+usersRouter.get('/avatarimage/:key', doAuthMiddlewareAccess, async (req, res) => {
+    const key = req.params.key;
+    const readStream = getFileStream(key);
+    readStream.pipe(res);
+})
+
 usersRouter.put('/avatarimage',
     doAuthMiddlewareAccess,
-    uploadAvatarImage.single('avatarimage'),
-    (req, res) => {
-        const file = req.file;
-        console.log(file);
-        res.send('ok');
-        // try {
-        //     const avatarImage = req.file.filename;
-        //     const userId = req.userClaims.sub;
-        //     const response = await changeProfileAvatar({ userId, avatarImage });
-        //     res.json(response);
-        // } catch (err) {
-        //     console.log(err);
-        //     res.status(500).json({
-        //         message: err.toString() || "Error uploading your gif as reply.",
-        //     });
-        // }
+    uploadAvatarImage,
+    async (req, res) => {
+        try {
+            const file = req.file;
+            const originalFilePath = file.path;
+            const newFilePath = await resizeAvatar(file);
+            const result = await uploadFile(newFilePath, file);
+            await unlinkFile(originalFilePath);
+            await unlinkFile(newFilePath);
+            res.status(201).send({ imagePath: `/avatarimage/${result.key}` });
+        } catch (err) {
+            res.status(500).json({ message: err.message || "500 internal server error" })
+        }
     })
