@@ -14,7 +14,7 @@ import Moment from "react-moment";
 import {useNavigate,useParams} from "react-router-dom";
 
 import Tweet from "../../shared/Tweet/Tweet";
-import {placeHolderUser, placeHolderTweet} from "../../placeholder";
+import {placeHolderUser} from "../../placeholder";
 import Userplaceholder from '../../../img/profileplaceholder.jpeg';
 import TweetStats from "../../shared/Tweet/TweetStats";
 import {useEffect, useState} from "react";
@@ -23,16 +23,20 @@ import {apiLink} from "../../utils/apiLink";
 
 const TweetDetails = () => {
 
-    const [tweetDetails, setTweetDetails] = useState([]);
+    const [tweetDetails, setTweetDetails] = useState({});
+    const [replies, setReplies] = useState([]);
     const {id} = useParams();
+    const navigator = useNavigate()
 
     useEffect(()=> {
         const getTweetDetails = async () => {
-            const response = await axios.get(apiLink + `/tweets/showtweet`)
+            const response = await axios.get(apiLink + `/tweets/details/${id}`);
+            setTweetDetails(response.data.tweetDetails[0]);
+            setReplies(response.data.repliesById);
         }
-    })
+        getTweetDetails();
+    },[])
 
-    const navigator = useNavigate()
     const toProfile = (id) => {
         navigator(`/profile/${id}`)
     }
@@ -52,26 +56,32 @@ const TweetDetails = () => {
                     </UserInfo>
                 </TweetHeader>
                 <Content>
-                    <p>{placeHolderTweet.content}</p>
-                    {placeHolderTweet.imgLink && <img src={placeHolderTweet.imgLink} alt={'embedded in Tweet'}/>}
+                    <p>{tweetDetails.content}</p>
+                    {tweetDetails.imgLink && <img src={tweetDetails.imgLink} alt={'embedded in Tweet'}/>}
                 </Content>
                 <Info>
-                    <Time><Moment format={`HH:MM - MM/DD/YY`}>{placeHolderTweet.createdAt}</Moment></Time>
+                    <Time><Moment format={`HH:MM - MM/DD/YY`}>{tweetDetails.createdAt}</Moment></Time>
                     <span>&#183;</span>
                     <p>Tweety Web App</p>
                 </Info>
                 <StatsWrapper>
                     <Stats>
-                        <p>{placeHolderTweet.retweets.length}</p>
+                        <p>{tweetDetails.retweets?.length}</p>
                         <span>Retweets</span>
                     </Stats>
                     <Stats>
-                        <p>{placeHolderTweet.likes.length}</p>
+                        <p>{tweetDetails.likes?.length}</p>
                         <span>Likes</span>
                     </Stats>
                 </StatsWrapper>
                 <TweetStats big/>
             </Wrapper>
+            {replies.map((reply)=>
+                <Tweet
+                    key={reply._id}
+                    {...reply}
+                />
+            )}
         </>
     );
 };

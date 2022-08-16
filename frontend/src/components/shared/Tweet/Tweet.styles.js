@@ -1,32 +1,36 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.article`
-	display: flex;
-	align-items: flex-start;
-	gap: 1.6rem;
-	padding: 2rem var(--spacing-wrapper);
-	border-bottom: 1px solid var(--clr-line-grey);
+  display: flex;
+  align-items: flex-start;
+  gap: 1.6rem;
+  padding: 2rem var(--spacing-wrapper);
+  border-bottom: 1px solid var(--clr-line-grey);
 `;
 
 export const UserPic = styled.img`
-	width: 55px;
-	height: 55px;
-	border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
 `;
 
-export const UserInfo = styled.div`
-	display: flex;
-  align-items: center;
-	gap: 5px;
-	font-size: 1.4rem;
-	font-weight: 600;
-	margin-bottom: 1rem;
+export const TweetWrapper = styled.div`
+  flex: 1;
+`
 
-	span {
+export const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+
+  span {
     font-size: 1.2rem;
-		color: var(--clr-text-grey);
-		font-weight: 400;
-	}
+    color: var(--clr-text-grey);
+    font-weight: 400;
+  }
 `;
 
 export const Content = styled.div`
@@ -36,8 +40,8 @@ export const Content = styled.div`
 `;
 
 export const Text = styled.p`
-	font-size: 1.4rem;
-	line-height: 1.5;
+  font-size: 1.4rem;
+  line-height: 1.5;
 `;
 
 export const Img = styled.img`
@@ -49,17 +53,18 @@ export const Img = styled.img`
 `
 
 export const StatsWrapper = styled.div`
-	display: flex;
-	justify-content: space-between;
-	margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
 `;
 
 export const Stats = styled.div`
-	display: flex;
-	gap: 5px;
-	color: var(--clr-text-grey);
-	font-size: 1.2rem;
-	img {
-		width: ${p => p.big ? 18 : 15}px;
-	}
+  display: flex;
+  gap: 5px;
+  color: var(--clr-text-grey);
+  font-size: 1.2rem;
+
+  img {
+    width: ${p => p.big ? 18 : 15}px;
+  }
 `;

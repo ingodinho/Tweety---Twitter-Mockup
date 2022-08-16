@@ -10,9 +10,15 @@ import {ButtonSmall} from "../../../styles/Buttons";
 import {useNavigate} from "react-router-dom";
 import ProfilePic from "../../shared/ProfilePic";
 import {useState} from "react";
+import {loggedInUser} from "../../utils/SharedStates";
+import {useRecoilValue} from "recoil";
+import {apiLink} from "../../utils/apiLink";
+import axios from "axios";
 
 const NewTweet = () => {
 
+    const userData = useRecoilValue(loggedInUser);
+    const [tweetContent, setTweetContent] = useState('');
     const [fileUpload, setFileUpload] = useState(null);
     const navigator = useNavigate();
 
@@ -31,25 +37,39 @@ const NewTweet = () => {
         navigator(-1);
     }
 
+    const tweetHandler = async () => {
+        const data = {
+            content: tweetContent,
+            userId: userData._id
+        }
+        const response = await axios.post(apiLink + `/tweets/newtweet`, data);
+        if(response.data.insertedId) {
+            onePageBack();
+        }
+    }
+
     return (
         <>
             <Header>
                 <Cancel onClick={() => onePageBack()}>Cancel</Cancel>
-                <ButtonSmall>Tweet</ButtonSmall>
+                <ButtonSmall onClick={()=> tweetHandler()}>Tweet</ButtonSmall>
             </Header>
             <TweetWrapper>
                 <ProfilePic size={'medium'}/>
-                <TextField placeholder={`What's happening?`}/>
+                <TextField placeholder={`What's happening?`} value={tweetContent}
+                           onChange={e => setTweetContent(e.target.value)}/>
             </TweetWrapper>
             <SpacingContainer>
                 <InputButton type="file" onChange={handleUpload}/>
             </SpacingContainer>
             <SpacingContainer>
-                <PreviewHeader>
-                    <PreviewHeadline>Preview</PreviewHeadline>
-                    {fileUpload && <DeleteButton onClick={handleDelete}>Cancel</DeleteButton>}
-                </PreviewHeader>
-                <ImgPreview src={imgSrc} alt=""/>
+                {fileUpload && <>
+                    <PreviewHeader>
+                        <PreviewHeadline>Preview</PreviewHeadline>
+                        <DeleteButton onClick={handleDelete}>Cancel</DeleteButton>
+                    </PreviewHeader>
+                    <ImgPreview src={imgSrc} alt=""/>
+                </>}
             </SpacingContainer>
         </>
     )

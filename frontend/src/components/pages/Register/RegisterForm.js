@@ -5,6 +5,7 @@ import {ButtonBig} from "../../../styles/Buttons";
 import {Headline} from "../../../styles/Headline";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
+import {useNavigate} from "react-router-dom";
 // import { apiUrl } from "INSERT_APIURL_FILE_HERE";
 
 const RegisterForm = () => {
@@ -18,6 +19,8 @@ const RegisterForm = () => {
 
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+
+    const navigator = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -41,35 +44,19 @@ const RegisterForm = () => {
             password
         }
 
-        const result = await axios.post(apiLink + '/users/register', userData);
-        console.log(result);
+        const response = await axios.post(apiLink + '/users/register', userData);
+        if (response.data.message) {
+            return setErrorMessage(response.data.message);
+        }
 
-        // fetch(apiUrl + "/register", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     username,
-        //     email,
-        //     password,
-        //   }),
-        // })
-        //   .then((res) => res.json())
-        //   .then((result) => {
-        //     console.log(result);
+        setErrorMessage("");
+        setSuccessMessage("Your account was created, please login.");
+        setEmail("");
+        setUsername("");
+        setPassword("");
+        setConfirmPassword("");
 
-        //     if (result.message) {
-        //       return setErrorMessage(result.message);
-        //     }
-
-        //     setErrorMessage("");
-        //     setSuccessMessage("Your account was created, please login.");
-        //     setEmail("");
-        //     setUsername("");
-        //     setPassword("");
-        //     setConfirmPassword("");
-        //   });
+        navigator('/login');
     };
 
     return (

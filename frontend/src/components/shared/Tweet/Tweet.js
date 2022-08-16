@@ -4,7 +4,7 @@ import {
     UserPic,
     Content,
     Text,
-    Img,
+    Img, TweetWrapper,
 } from './Tweet.styles';
 
 import {placeHolderUser} from "../../placeholder";
@@ -31,9 +31,9 @@ const Tweet = (props) => {
     return (
         <>
             <Wrapper>
-                <UserPic src={PlaceHolderImg} alt='Profile Pic' onClick={() => toProfile(placeHolderUser.userName)}/>
-                <div>
-                    <UserInfo onClick={() => toProfile(placeHolderUser.userName)}>
+                <UserPic src={PlaceHolderImg} alt='Profile Pic' onClick={() => toProfile(props.postedBy)}/>
+                <TweetWrapper>
+                    <UserInfo onClick={() => toProfile(props.postedBy)}>
                         <p>
                             {placeHolderUser.firstName} {placeHolderUser.lastName}
                         </p>
@@ -53,7 +53,7 @@ const Tweet = (props) => {
                         retweets={props.retweets.length}
                         setShowReplies={setShowReplies}
                     />
-                </div>
+                </TweetWrapper>
             </Wrapper>
             <div>
             </div>

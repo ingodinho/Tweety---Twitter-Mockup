@@ -1,9 +1,19 @@
 import styled from "styled-components";
 import { ButtonLogin, ButtonBig } from "../../../styles/Buttons";
 import BirdLogoUrl from "../../../img/icons/Bird Logo.svg";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useRecoilValue} from "recoil";
+import {loggedInUser} from "../../utils/SharedStates";
 
 const StartPage = () => {
+
+  const navigator = useNavigate();
+  const userData = useRecoilValue(loggedInUser);
+
+  if(userData) {
+    navigator('/home');
+  }
+
   return (
     <>
       <HeaderWrapper>

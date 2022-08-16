@@ -1,83 +1,71 @@
-import { useState } from "react";
-import { InputField } from "../../../styles/InputField";
-import { ButtonBig } from "../../../styles/Buttons";
-import { Headline } from "../../../styles/Headline";
-import { FormWrapper } from "../Register/RegisterStyling";
+import {useState} from "react";
+import {InputField} from "../../../styles/InputField";
+import {ButtonBig} from "../../../styles/Buttons";
+import {Headline} from "../../../styles/Headline";
+import {FormWrapper} from "../Register/RegisterStyling";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
-// import { apiUrl } from "INSERT_APIURL_FILE_HERE";
+import {useRecoilState} from "recoil";
+import {loggedInUser} from "../../utils/SharedStates";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-  const [errorMessage, setErrorMessage] = useState("");
+    const [userData, setUserData] = useRecoilState(loggedInUser);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+    const [errorMessage, setErrorMessage] = useState("");
 
-    if (!email || !password) {
-      setErrorMessage("Please fill in all fields.");
-      return;
-    }
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
-    const loginData = {
-        email,
-        password
-    }
+        if (!email || !password) {
+            setErrorMessage("Please fill in all fields.");
+            return;
+        }
 
-    const response = await axios.post(apiLink + '/users/login', loginData);
-    console.log(response);
+        const loginData = {
+            email,
+            password
+        }
 
-    // fetch(apiUrl + "/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     email,
-    //     password,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((result) => {
-    //     console.log(result);
+        const response = await axios.post(apiLink + '/users/login', loginData);
 
-    //     if (result.message) {
-    //       return setErrorMessage(result.message);
-    //     }
+        if (response.data.message) {
+            return setErrorMessage(response.data.message);
+        }
+        setUserData(response.data);
+        localStorage.setItem('userdata', JSON.stringify(response.data));
+        setErrorMessage("");
+        setEmail("");
+        setPassword("");
+    };
 
-    //     setErrorMessage("");
-    //     setEmail("");
-    //     setPassword("");
-    //   });
-  };
+    return (
+        <FormWrapper>
+            <Headline>Log in to your account</Headline>
+            <InputField
+                required
+                placeholder="Your Email here"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <InputField
+                required
+                placeholder="Password"
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <ButtonBig type="submit" onClick={handleSubmit}>
+                Log In
+            </ButtonBig>
 
-  return (
-    <FormWrapper>
-      <Headline>Log in to your account</Headline>
-      <InputField
-        required
-        placeholder="Your Email here"
-        id="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <InputField
-        required
-        placeholder="Password"
-        type="password"
-        id="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <ButtonBig type="submit" onClick={handleSubmit}>
-        Log In
-      </ButtonBig>
-
-      {/* <FeedbackMessage type="error" message={errorMessage} /> */}
-    </FormWrapper>
-  );
+            {/* <FeedbackMessage type="error" message={errorMessage} /> */}
+        </FormWrapper>
+    );
 };
 
 export default LoginForm;
