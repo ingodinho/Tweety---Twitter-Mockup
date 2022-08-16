@@ -1,5 +1,5 @@
 import GlobalStyles from "./GlobalStyles";
-import {Routes, Route, useLocation, useNavigate} from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
 import Home from "./components/pages/Home/Home";
 import BottomNav from "./components/shared/BottomNav";
@@ -9,42 +9,45 @@ import TweetDetails from "./components/pages/TweetDetails/TweetDetails";
 import Profile from "./components/pages/ProfilePage/Profile";
 import NewTweet from "./components/pages/NewTweet/NewTweet";
 import StartPage from "./components/pages/Start/StartPage";
-import {useRecoilState} from "recoil";
-import {loggedInUser} from "./components/utils/SharedStates";
-import {useEffect} from "react";
+import Search from "./components/pages/Search/SearchPage";
+import { useRecoilState } from "recoil";
+import { loggedInUser } from "./components/utils/SharedStates";
+import { useEffect } from "react";
 
 function App() {
-    const navigator = useNavigate();
-    const location = useLocation();
-    const [userData, setUserData] = useRecoilState(loggedInUser);
+  const navigator = useNavigate();
+  const location = useLocation();
+  const [userData, setUserData] = useRecoilState(loggedInUser);
 
-    useEffect(() => {
-        if (userData) return;
-        const localUserData = localStorage.getItem('userdata');
-        if (localUserData) {
-            setUserData(JSON.parse(localUserData));
-        }
-        else {
-            navigator('/')
-        }
-    }, [])
+  useEffect(() => {
+    if (userData) return;
+    const localUserData = localStorage.getItem("userdata");
+    if (localUserData) {
+      setUserData(JSON.parse(localUserData));
+    } else {
+      navigator("/");
+    }
+  }, []);
 
-    return (
-        <div className="App">
-            <GlobalStyles/>
-            <Routes>
-                <Route path={'/'} element={<StartPage/>}/>
-                <Route path={"/home"} element={<Home/>}/>
-                <Route path={'/tweet/:id'} element={<TweetDetails/>}/>
-                <Route path={'/profile/:id'} element={<Profile/>}/>
-                <Route path={'/newtweet'} element={<NewTweet/>}/>
-                <Route path={"/login"} element={<LoginPage/>}/>
-                <Route path={"/register"} element={<RegisterPage/>}/>
-            </Routes>
-            {location.pathname === '/register' || location.pathname === '/login' || location.pathname === '/start' || location.pathname === '/' ||
-                <BottomNav/>}
-        </div>
-    );
+  return (
+    <div className="App">
+      <GlobalStyles />
+      <Routes>
+        <Route path={"/"} element={<StartPage />} />
+        <Route path={"/home"} element={<Home />} />
+        <Route path={"/tweet/:id"} element={<TweetDetails />} />
+        <Route path={"/profile/:id"} element={<Profile />} />
+        <Route path={"/newtweet"} element={<NewTweet />} />
+        <Route path={"/login"} element={<LoginPage />} />
+        <Route path={"/register"} element={<RegisterPage />} />
+        <Route path={"/search"} element={<Search />} />
+      </Routes>
+      {location.pathname === "/register" ||
+        location.pathname === "/login" ||
+        location.pathname === "/start" ||
+        location.pathname === "/" || <BottomNav />}
+    </div>
+  );
 }
 
 export default App;
