@@ -1,6 +1,6 @@
 import UserDAO from "../../db-access/users-dao.js";
 import { makeUser } from "../../domain/User.js";
-import { hash, createRandomHash } from "../../utils/hash.js";
+import { createHash, createRandomHash } from "../../utils/hash.js";
 
 export const registerUser = async ({
     username,
@@ -12,7 +12,7 @@ export const registerUser = async ({
     bio
 }) => {
     const passwordSalt = createRandomHash()
-    const passwordHash = hash(password + '' + passwordSalt)
+    const passwordHash = createHash(password + '' + passwordSalt)
 
     const newUser = makeUser({
         username,
@@ -24,7 +24,10 @@ export const registerUser = async ({
         emailVerified: false,
         passwordHash,
         passwordSalt,
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        likedTweets: [],
+        following: [],
+        followedBy: []
     })
 
     const insertResult = await UserDAO.insertOneUser(newUser)

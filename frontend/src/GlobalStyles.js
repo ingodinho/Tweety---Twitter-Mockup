@@ -26,10 +26,11 @@ html, body {
 }
 
 body {
-  max-width: 500px;
+  max-width: 450px;
   margin: 0 auto;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  color: var(--clr-text-prm);
 }
 
 img, picture, video, canvas, svg {
@@ -54,8 +55,6 @@ p, h1, h2, h3, h4, h5, h6 {
   Variables
 ===================================*/
 
-
-
 :root {
   --clr-blue: #1D9BF0;
   --clr-text-prm: #141619;
@@ -64,9 +63,9 @@ p, h1, h2, h3, h4, h5, h6 {
   --clr-text-link: #4C9EEB;
   --clr-bg-grey: #E7ECF0;
   --clr-line-grey: #BDC5CD;
-  --spacing-wrapper: 3.2rem;
+  --clr-red: #ff0e0e;
+  --spacing-wrapper: 2.4rem;
 }
-
 `;
 
 export default GlobalStyles;
