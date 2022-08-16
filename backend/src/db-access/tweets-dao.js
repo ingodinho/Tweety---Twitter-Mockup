@@ -9,6 +9,12 @@ const findAllTweets = async () => {
     return posts;
 }
 
+const findTweetById = async (tweetId) => {
+    const db = await getDB();
+    const tweetResult = await db.collection(collectionName).find({_id: ObjectId(tweetId)}).toArray()
+    return tweetResult;
+}
+
 const findAllTweetsByUserId = async (userId) => {
     const db = await getDB();
     const foundPosts = await db.collection(collectionName).find({ postedBy: userId }).toArray();
@@ -78,5 +84,6 @@ export default {
     editTweet,
     likeUnlikeTweet,
     insertReplyIdToOrigin,
-    findAllRepliesByOriginId
+    findAllRepliesByOriginId,
+    findTweetById
 }
