@@ -14,6 +14,7 @@ import {placeHolderUser} from "../../placeholder";
 import Moment from "react-moment";
 import UserPic from '../../../img/profileplaceholder.jpeg';
 import ProfileTweets from "./ProfileTweets";
+import NewTweetButton from "../../shared/NewTweetButton";
 
 const Profile = () => {
     return (
@@ -47,6 +48,7 @@ const Profile = () => {
                 </FollowerWrapper>
             </UserWrapper>
             <ProfileTweets userId={placeHolderUser.userName}/>
+            <NewTweetButton/>
         </>
     )
 }

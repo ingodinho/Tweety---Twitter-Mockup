@@ -8,6 +8,7 @@ import MailIcon from '../../img/icons/Mail Stroke Icon.svg';
 const BottomNav = () => {
     return (
         <>
+            <Spacer/>
             <NavWrapper>
                 <NavBar>
                     <li>
@@ -36,8 +37,12 @@ const BottomNav = () => {
     );
 };
 
+const Spacer = styled.div`
+  height: 6rem;
+`
+
 const NavWrapper = styled.nav`
-  position: sticky;
+  position: fixed;
   overflow: hidden;
   bottom: 0;
   width: 100%;

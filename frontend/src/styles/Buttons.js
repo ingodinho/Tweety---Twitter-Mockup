@@ -11,3 +11,12 @@ export const ButtonBig = styled.button`
   border-radius: 30px;
   border: 0;
 `;
+
+export const ButtonSmall = styled.button`
+  background-color: var(--clr-blue);
+  padding: 0.5rem 1rem;
+  font-size: 1.6rem;
+  color: var(--clr-text-white);
+  border-radius: 17px;
+  border: 0;
+`;
