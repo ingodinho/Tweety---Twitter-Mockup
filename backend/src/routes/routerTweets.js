@@ -12,7 +12,7 @@ import { likeTweet } from '../use-cases/tweets/like-tweet.js';
 export const tweetsRouter = express.Router();
 
 
-tweetsRouter.get('/showalltweets', async (_, res) => {
+tweetsRouter.get('/all', async (_, res) => {
     try {
         const allTweets = await findAll()
         res.status(200).json(allTweets);
@@ -21,7 +21,7 @@ tweetsRouter.get('/showalltweets', async (_, res) => {
     }
 })
 
-tweetsRouter.get('/tweetdetails/:tweetid', async (req, res) => {
+tweetsRouter.get('/details/:tweetid', async (req, res) => {
     try {
         const tweetDetails = await findTweet(req.params.tweetid)
         const repliesById = await findRepliesByOriginId({tweetId: req.params.tweetid})
@@ -32,16 +32,7 @@ tweetsRouter.get('/tweetdetails/:tweetid', async (req, res) => {
     }
 })
 
-tweetsRouter.get('/showalltweets', async (_, res) => {
-    try {
-        const allTweets = await findAll()
-        res.status(200).json(allTweets);
-    } catch (err) {
-        res.status(404).json({ message: err.message || "404 not found" });
-    }
-})
-
-tweetsRouter.get('/showtweetsbyid', async (req, res) => {
+tweetsRouter.get('/user', async (req, res) => {
     try {
         const tweetsById = await findAllByUserId(req.body)
         res.status(200).json(tweetsById);
@@ -77,7 +68,7 @@ tweetsRouter.post('/newreply', async (req, res) => {
     }
 })
 
-tweetsRouter.delete('/deletetweet', async (req, res) => {
+tweetsRouter.delete('/delete', async (req, res) => {
     try {
         const deleteTweet = await delTweet(req.body)
         console.log(req.body);
@@ -87,7 +78,7 @@ tweetsRouter.delete('/deletetweet', async (req, res) => {
     }
 })
 
-tweetsRouter.post('/edittweet', async (req, res) => {
+tweetsRouter.post('/edit', async (req, res) => {
     try {
         const editedTweet = await updateTweet(req.body)
         console.log(req.body);
@@ -97,7 +88,7 @@ tweetsRouter.post('/edittweet', async (req, res) => {
     }
 })
 
-tweetsRouter.post('/liketweet', async (req, res) => {
+tweetsRouter.post('/like', async (req, res) => {
     try {
         const likedTweet = await likeTweet(req.body)
         console.log(req.body);
