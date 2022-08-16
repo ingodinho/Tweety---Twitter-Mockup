@@ -28,7 +28,7 @@ const TweetDetails = () => {
 
     useEffect(()=> {
         const getTweetDetails = async () => {
-            const response = await axios.get(apiLink + '/tweets/showtweetsbyid')
+            const response = await axios.get(apiLink + `/tweets/showtweet`)
         }
     })
 
