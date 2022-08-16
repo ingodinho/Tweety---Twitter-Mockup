@@ -32,9 +32,10 @@ tweetsRouter.get('/details/:tweetid', async (req, res) => {
     }
 })
 
-tweetsRouter.get('/user', async (req, res) => {
+tweetsRouter.get('/user/:userid', async (req, res) => {
     try {
-        const tweetsById = await findAllByUserId(req.body)
+        console.log(req.params.userid);
+        const tweetsById = await findAllByUserId({userId: req.params.userid})
         res.status(200).json(tweetsById);
     } catch (err) {
         res.status(404).json({ message: err.message || "404 not found" });
