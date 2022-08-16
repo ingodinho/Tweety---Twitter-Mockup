@@ -12,7 +12,7 @@ const Home = () => {
 
     useEffect(() => {
         const getTweets = async () => {
-            const response = await axios.get(apiLink + '/tweets/showalltweets');
+            const response = await axios.get(apiLink + '/tweets/user/62fbb45e6b1c463bb8a5a2da');
             console.log(response.data)
             SetTweets(response.data);
         }

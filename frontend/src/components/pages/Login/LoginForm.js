@@ -3,6 +3,8 @@ import { InputField } from "../../../styles/InputField";
 import { ButtonBig } from "../../../styles/Buttons";
 import { Headline } from "../../../styles/Headline";
 import { FormWrapper } from "../Register/RegisterStyling";
+import axios from "axios";
+import {apiLink} from "../../utils/apiLink";
 // import { apiUrl } from "INSERT_APIURL_FILE_HERE";
 
 const LoginForm = () => {
@@ -11,13 +13,21 @@ const LoginForm = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!email || !password) {
       setErrorMessage("Please fill in all fields.");
       return;
     }
+
+    const loginData = {
+        email,
+        password
+    }
+
+    const response = await axios.post(apiLink + '/users/login', loginData);
+    console.log(response);
 
     // fetch(apiUrl + "/login", {
     //   method: "POST",
@@ -50,7 +60,6 @@ const LoginForm = () => {
         required
         placeholder="Your Email here"
         id="email"
-        autoComplete="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -59,7 +68,6 @@ const LoginForm = () => {
         placeholder="Password"
         type="password"
         id="password"
-        autoComplete="current-password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />

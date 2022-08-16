@@ -38,6 +38,7 @@ const RegisterForm = () => {
             lastName: lastname,
             email,
             dob: birthday,
+            password
         }
 
         const result = await axios.post(apiLink + '/users/register', userData);
