@@ -3,6 +3,8 @@ import {FormWrapper, Disclaimer} from "./RegisterStyling";
 import {InputField} from "../../../styles/InputField";
 import {ButtonBig} from "../../../styles/Buttons";
 import {Headline} from "../../../styles/Headline";
+import axios from "axios";
+import {apiLink} from "../../utils/apiLink";
 // import { apiUrl } from "INSERT_APIURL_FILE_HERE";
 
 const RegisterForm = () => {
@@ -38,7 +40,8 @@ const RegisterForm = () => {
             dob: birthday,
         }
 
-        const result = axios.post()
+        const result = await axios.post(apiLink + '/users/register', userData);
+        console.log(result);
 
         // fetch(apiUrl + "/register", {
         //   method: "POST",
