@@ -2,19 +2,20 @@ import HomeHeader from "./HomeHeader";
 import Tweet from "../../shared/Tweet/Tweet";
 import NewTweetButton from "../../shared/NewTweetButton";
 import {useEffect, useState} from "react";
-import {placeHolderTweet} from "../../placeholder";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
+import {useRecoilValue} from "recoil";
+import {loggedInUser} from "../../utils/SharedStates";
 
 const Home = () => {
 
-    const [tweets, SetTweets] = useState([]);
+    // const userData = useRecoilValue(loggedInUser);
+    const [tweets, setTweets] = useState([]);
 
     useEffect(() => {
         const getTweets = async () => {
-            const response = await axios.get(apiLink + '/tweets/user/62fbb45e6b1c463bb8a5a2da');
-            console.log(response.data)
-            SetTweets(response.data);
+            const response = await axios.get(apiLink + `/tweets/all`);
+            setTweets(response.data);
         }
         getTweets();
     }, [])
@@ -23,7 +24,7 @@ const Home = () => {
         <>
             <HomeHeader/>
             <NewTweetButton/>
-            {tweets.map((tweet =>
+            {tweets.sort((a,b) => b.postedAt - a.postedAt).map((tweet =>
                     <Tweet
                         key={tweet._id}
                         {...tweet}

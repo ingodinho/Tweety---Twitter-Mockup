@@ -7,11 +7,6 @@ const ProfileTweets = () => {
             <span>Tweets</span>
             <span>Likes</span>
         </Menu>
-        <Tweet />
-        <Tweet />
-        <Tweet />
-        <Tweet />
-        <Tweet />
     </>
 }
 
