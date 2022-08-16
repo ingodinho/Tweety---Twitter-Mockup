@@ -3,6 +3,8 @@ import Tweet from "../../shared/Tweet/Tweet";
 import NewTweetButton from "../../shared/NewTweetButton";
 import {useEffect, useState} from "react";
 import {placeHolderTweet} from "../../placeholder";
+import axios from "axios";
+import {apiLink} from "../../utils/apiLink";
 
 const Home = () => {
 
@@ -10,7 +12,9 @@ const Home = () => {
 
     useEffect(() => {
         const getTweets = async () => {
-            SetTweets(placeHolderTweet)
+            const response = await axios.get(apiLink + '/tweets/showalltweets');
+            console.log(response.data)
+            SetTweets(response.data);
         }
         getTweets();
     }, [])

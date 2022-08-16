@@ -7,7 +7,7 @@ import {
     Img,
 } from './Tweet.styles';
 
-import {placeHolderUser, placeHolderTweet} from "../../placeholder";
+import {placeHolderUser} from "../../placeholder";
 import PlaceHolderImg from '../../../img/profileplaceholder.jpeg';
 
 import {useNavigate} from 'react-router-dom';
@@ -18,8 +18,6 @@ import {useState} from "react";
 const Tweet = (props) => {
 
     const [showReplies, setShowReplies] = useState(false);
-
-    console.log(props);
     const navigator = useNavigate();
 
     const toDetail = (id) => {
@@ -41,7 +39,7 @@ const Tweet = (props) => {
                         </p>
                         <span>@{placeHolderUser.userName}</span>
                         <span>
-						&#183; <Moment fromNow>{props.createdAt}</Moment>
+						&#183; <Moment fromNow>{props.postedAt}</Moment>
 					</span>
                     </UserInfo>
                     <Content onClick={() => toDetail(props._id)}>
@@ -58,12 +56,6 @@ const Tweet = (props) => {
                 </div>
             </Wrapper>
             <div>
-                {showReplies && props.replies.map((reply)=>
-                    <Tweet
-                        key={reply._id}
-                        {...reply}
-                    />
-                )}
             </div>
         </>
     );

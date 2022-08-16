@@ -11,23 +11,30 @@ import {
     Wrapper, Header, HomeLink
 } from './TweetDetails.styling';
 import Moment from "react-moment";
-import {useNavigate} from "react-router-dom";
+import {useNavigate,useParams} from "react-router-dom";
 
 import Tweet from "../../shared/Tweet/Tweet";
 import {placeHolderUser, placeHolderTweet} from "../../placeholder";
 import Userplaceholder from '../../../img/profileplaceholder.jpeg';
 import TweetStats from "../../shared/Tweet/TweetStats";
 import {useEffect, useState} from "react";
+import axios from "axios";
+import {apiLink} from "../../utils/apiLink";
 
-const TweetDetails = (props) => {
+const TweetDetails = () => {
+
+    const [tweetDetails, setTweetDetails] = useState([]);
+    const {id} = useParams();
+
+    useEffect(()=> {
+        const getTweetDetails = async () => {
+            const response = await axios.get(apiLink + '/tweets/showtweetsbyid')
+        }
+    })
 
     const navigator = useNavigate()
     const toProfile = (id) => {
         navigator(`/profile/${id}`)
-    }
-
-    if (props.content) {
-        placeHolderUser = {...props};
     }
 
     return (
