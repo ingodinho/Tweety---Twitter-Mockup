@@ -26,6 +26,7 @@ const Profile = () => {
 
     const userData = useRecoilValue(loggedInUser);
     const [tweets, setTweets] = useState([]);
+    const [userInfo, setUserInfo] = useState([]);
 
     useEffect(()=> {
             const getTweets = async () => {
@@ -33,9 +34,17 @@ const Profile = () => {
                 const response = await axios.get(apiLink + `/tweets/user/${userData._id}`);
                 setTweets(response.data);
             }
+            const getUserInfo = async () => {
+                const response = await axios.get(apiLink + `/users/profile`, {headers: {
+                    token: "JWT " + userData.accessToken
+                    }})
+                setUserInfo(response.data);
+            }
             getTweets();
+            getUserInfo();
     },[])
 
+    console.log(userInfo);
     return (
         <>
             <header>

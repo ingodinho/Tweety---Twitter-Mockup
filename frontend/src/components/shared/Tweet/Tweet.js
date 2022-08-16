@@ -14,12 +14,12 @@ import {useNavigate} from 'react-router-dom';
 import Moment from 'react-moment';
 import TweetStats from "./TweetStats";
 import {useState} from "react";
+import {useRecoilValue} from "recoil";
+import {loggedInUser} from "../../utils/SharedStates";
 
 const Tweet = (props) => {
-
-    const [showReplies, setShowReplies] = useState(false);
     const navigator = useNavigate();
-
+    const userData = useRecoilValue(loggedInUser);
     const toDetail = (id) => {
         navigator(`/tweet/${id}`);
     };
@@ -48,15 +48,14 @@ const Tweet = (props) => {
                     </Content>
                     <TweetStats
                         stats
-                        replies={props.replies.length}
-                        likes={props.likes.length}
-                        retweets={props.retweets.length}
-                        setShowReplies={setShowReplies}
+                        liked={props.likes.includes(userData._id)}
+                        replies={props.replies?.length}
+                        likes={props.likes?.length}
+                        retweets={props.retweets?.length}
+                        id={props._id}
                     />
                 </TweetWrapper>
             </Wrapper>
-            <div>
-            </div>
         </>
     );
 };
