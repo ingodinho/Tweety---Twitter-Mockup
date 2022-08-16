@@ -8,9 +8,9 @@ import RegisterPage from "./components/pages/Register/RegisterPage";
 import TweetDetails from "./components/pages/TweetDetails/TweetDetails";
 import Profile from "./components/pages/ProfilePage/Profile";
 import NewTweet from "./components/pages/NewTweet/NewTweet";
+import StartPage from "./components/pages/Start/StartPage";
 
 function App() {
-
     const location = useLocation();
 
     return (
@@ -24,8 +24,10 @@ function App() {
                 <Route path={'/newtweet'} element={<NewTweet/>}/>
                 <Route path={"/login"} element={<LoginPage/>}/>
                 <Route path={"/register"} element={<RegisterPage/>}/>
+                <Route path={"/start"} element={<StartPage/>}/>
             </Routes>
-            {location.pathname === '/register' || location.pathname === '/login' || <BottomNav/>}
+            {location.pathname === '/register' || location.pathname === '/login' || location.pathname === '/start' ||
+                <BottomNav/>}
         </div>
     );
 }

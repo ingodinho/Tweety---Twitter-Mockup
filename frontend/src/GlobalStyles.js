@@ -63,6 +63,7 @@ p, h1, h2, h3, h4, h5, h6 {
   --clr-text-link: #4C9EEB;
   --clr-bg-grey: #E7ECF0;
   --clr-line-grey: #BDC5CD;
+  --clr-red: #ff0e0e;
   --spacing-wrapper: 2.4rem;
 }
 `;

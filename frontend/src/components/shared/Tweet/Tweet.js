@@ -1,7 +1,5 @@
 import {
-    Stats,
     UserInfo,
-    StatsWrapper,
     Wrapper,
     UserPic,
     Content,
@@ -11,10 +9,6 @@ import {
 
 import {placeHolderUser, placeHolderTweet} from "../../placeholder";
 import PlaceHolderImg from '../../../img/profileplaceholder.jpeg';
-import CommentIcon from '../../../img/tweet-icons/Comment stroke icon.svg';
-import RetweetIcon from '../../../img/tweet-icons/Retweet stroke icon.svg';
-import HeartIcon from '../../../img/tweet-icons/Heart stroke icon.svg';
-import ShareIcon from '../../../img/tweet-icons/Share stroke icon.svg';
 
 import {useNavigate} from 'react-router-dom';
 import Moment from 'react-moment';
