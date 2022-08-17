@@ -36,7 +36,7 @@ const TweetDetails = () => {
     useEffect(()=> {
         const getTweetDetails = async () => {
             const response = await axios.get(apiLink + `/tweets/details/${id}`);
-            setTweetData({...response.data.tweetDetails[0], liked: response.data.tweetDetails[0].includes(userData._id)});
+            setTweetData({...response.data.tweetDetails[0], liked: response.data.tweetDetails[0].likes.includes(userData._id)});
             setReplies(response.data.repliesById);
         }
         getTweetDetails();
@@ -45,6 +45,7 @@ const TweetDetails = () => {
     const toProfile = (id) => {
         navigator(`/profile/${id}`)
     }
+    console.log(replies);
 
     return (
         <>

@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7c054a16-b96b-4368-8c57-b9556be86251" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/pages/ReplyTweet/ReplyTweet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/pages/ReplyTweet/ReplyTweet.styles.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/Login/LoginForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/Login/LoginForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/ProfilePage/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/ProfilePage/Profile.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/TweetDetails/TweetDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/TweetDetails/TweetDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/shared/Tweet/Tweet.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/shared/Tweet/Tweet.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/shared/Tweet/Tweet.styles.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/shared/Tweet/Tweet.styles.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/shared/Tweet/TweetStats.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/shared/Tweet/TweetStats.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/utils/SharedStates.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/utils/SharedStates.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +45,9 @@
       <workItem from="1660585674535" duration="15724000" />
       <workItem from="1660631467629" duration="21546000" />
       <workItem from="1660658141295" duration="3102000" />
-      <workItem from="1660667787248" duration="16788000" />
+      <workItem from="1660667787248" duration="17742000" />
+      <workItem from="1660711694143" duration="734000" />
+      <workItem from="1660715546813" duration="3710000" />
     </task>
     <servers />
   </component>
