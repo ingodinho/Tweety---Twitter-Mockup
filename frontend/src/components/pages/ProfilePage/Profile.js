@@ -30,7 +30,6 @@ const Profile = () => {
 
     useEffect(()=> {
             const getTweets = async () => {
-                // testid: 62fbb45e6b1c463bb8a5a2da
                 const response = await axios.get(apiLink + `/tweets/user/${userData._id}`);
                 setTweets(response.data);
             }

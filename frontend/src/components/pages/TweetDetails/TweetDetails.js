@@ -14,7 +14,6 @@ import Moment from "react-moment";
 import {useNavigate,useParams} from "react-router-dom";
 
 import Tweet from "../../shared/Tweet/Tweet";
-import {placeHolderUser} from "../../placeholder";
 import Userplaceholder from '../../../img/profileplaceholder.jpeg';
 import TweetStats from "../../shared/Tweet/TweetStats";
 import {useEffect, useState} from "react";
@@ -28,16 +27,14 @@ const TweetDetails = () => {
     const userData = useRecoilValue(loggedInUser);
 
     const [tweetData, setTweetData] = useRecoilState(tweetStateFamily(id));
-
     const [replies, setReplies] = useState([]);
-
     const navigator = useNavigate()
 
     useEffect(()=> {
         const getTweetDetails = async () => {
             const response = await axios.get(apiLink + `/tweets/details/${id}`);
             setTweetData({...response.data.tweetDetails[0], liked: response.data.tweetDetails[0].likes.includes(userData._id)});
-            setReplies(response.data.repliesById);
+            setReplies(response.data.repliesById.result);
         }
         getTweetDetails();
     },[id])
@@ -45,7 +42,6 @@ const TweetDetails = () => {
     const toProfile = (id) => {
         navigator(`/profile/${id}`)
     }
-    console.log(replies);
 
     return (
         <>
@@ -54,11 +50,11 @@ const TweetDetails = () => {
                 <Headline>Tweet</Headline>
             </Header>
             <Wrapper>
-                <TweetHeader onClick={()=> toProfile(placeHolderUser.userName)}>
+                <TweetHeader onClick={()=> toProfile(tweetData.postedBy._id)}>
                     <UserPic src={Userplaceholder} alt="Profile Pic"/>
                     <UserInfo>
-                        <p>{placeHolderUser.firstName} {placeHolderUser.lastName}</p>
-                        <span>@{placeHolderUser.userName}</span>
+                        <p>{tweetData.postedBy.firstName} {tweetData.postedBy.lastName}</p>
+                        <span>@{tweetData.postedBy.username}</span>
                     </UserInfo>
                 </TweetHeader>
                 <Content>

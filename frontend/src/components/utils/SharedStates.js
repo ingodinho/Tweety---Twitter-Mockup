@@ -6,7 +6,7 @@ export const loggedInUser = atom({
 })
 
 export const tweetStateFamily = atomFamily({
-    key: '',
+    key: 'tweetsFamily',
     default: {
         content: null,
         imgLink: null,
