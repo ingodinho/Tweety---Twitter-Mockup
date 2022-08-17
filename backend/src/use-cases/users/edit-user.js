@@ -1,6 +1,6 @@
 import UserDAO from "../../db-access/users-dao.js";
 import { makeUser } from "../../domain/User.js";
-import { createHash, createRandomHash } from "../../utils/hash.js";
+import { createHash, createRandomHash } from "../../utils/token/hash.js";
 
 export const editUser = async (userId, {
     username,
