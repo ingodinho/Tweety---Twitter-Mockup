@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const defaultDuration = 10 * 60;
+const defaultDuration = 60 * 60 * 120;
 export const createToken = (user, duration = defaultDuration, tokenType = 'access') => {
     const initiatedAt = Math.floor(Date.now() / 1000);
     const expiresAt = initiatedAt + duration;
