@@ -4,25 +4,31 @@ import RetweetIcon from "../../../img/tweet-icons/Retweet stroke icon.svg";
 import HeartIcon from "../../../img/tweet-icons/Heart stroke icon.svg";
 import ShareIcon from "../../../img/tweet-icons/Share stroke icon.svg";
 import {useNavigate} from "react-router-dom";
-import {useRecoilValue} from "recoil";
-import {loggedInUser} from "../../utils/SharedStates";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {loggedInUser, tweetStateFamily} from "../../utils/SharedStates";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
-import {useState} from "react";
 
-const TweetStats = ({stats, big, likes, replies, retweets, id, liked}) => {
+const TweetStats = ({stats, big, replies, retweets, id}) => {
+    const [tweetData, setTweetData] = useRecoilState(tweetStateFamily(id));
     const navigator = useNavigate();
     const userdata = useRecoilValue(loggedInUser);
-    const [likedStatus, setLikedStatus] = useState(liked);
-    const [likesCounter, setLikesCounter] = useState(likes);
+
     const likeHandler = async () => {
         const data = {
             tweetId: id,
             userId: userdata._id
         }
         const response = await axios.post(apiLink + '/tweets/like', data);
-        likedStatus ? setLikesCounter(prev=> prev -1) : setLikesCounter(prev => prev + 1);
-        setLikedStatus(prev => !likedStatus);
+        const currentLikesArray = [...tweetData.likes];
+        let updatedLikesArray;
+        if(tweetData.liked) {
+            updatedLikesArray = currentLikesArray.filter(userId => userId !== userdata._id);
+            setTweetData(prev => ({...prev, likes: updatedLikesArray, liked: !prev.liked}));
+        } else {
+            currentLikesArray.push(userdata._id);
+            setTweetData(prev => ({...prev, likes: currentLikesArray, liked: !prev.liked}));
+        }
     }
 
     return (
@@ -35,9 +41,9 @@ const TweetStats = ({stats, big, likes, replies, retweets, id, liked}) => {
                 <img src={RetweetIcon} alt='comment'/>
                 {stats && <span>{retweets}</span>}
             </Stats>
-            <Stats big={big} liked={likedStatus}>
+            <Stats big={big} liked={tweetData.liked}>
                 <img src={HeartIcon} alt='comment' onClick={() => likeHandler()}/>
-                {stats && <span>{likesCounter}</span>}
+                {stats && <span>{tweetData.likes?.length}</span>}
             </Stats>
             <Stats big={big}>
                 <img src={ShareIcon} alt='comment'/>
