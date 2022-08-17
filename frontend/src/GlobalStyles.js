@@ -14,6 +14,7 @@ const GlobalStyles = createGlobalStyle`
 * {
   margin: 0;
   padding: 0;
+  /* max-width: 450px; */
 }
 
 html {
@@ -23,6 +24,7 @@ html {
 
 html, body {
   height: 100%;
+  
 }
 
 body {
