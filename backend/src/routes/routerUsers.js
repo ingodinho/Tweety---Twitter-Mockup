@@ -11,6 +11,7 @@ import { refreshUserToken } from '../use-cases/users/refresh-user-token.js';
 import { editUser } from '../use-cases/users/edit-user.js';
 import { uploadFile, getFileStream } from '../utils/s3/s3-avatar.js';
 import { resizeAvatar } from '../utils/s3/sharp.js';
+import { followUser } from '../use-cases/users/follow-unfollow-user.js';
 
 const doAuthMiddlewareAccess = makeDoAuthMiddleware();
 const doAuthMiddlewareRefresh = makeDoAuthMiddleware('refresh');
@@ -39,8 +40,8 @@ usersRouter.get('/allusers', async (_, res) => {
     }
 });
 
-usersRouter.get('/profile', doAuthMiddlewareAccess, async (req, res) => {
-    const userId = req.body.userId;
+usersRouter.get('/profile/:userid', doAuthMiddlewareAccess, async (req, res) => {
+    const userId = req.params.userid;
     try {
         const foundUser = await showUserProfile(userId);
         res.status(200).json(foundUser);
@@ -87,10 +88,20 @@ usersRouter.post('/edit', doAuthMiddlewareAccess, async (req, res) => {
     }
 })
 
+
 usersRouter.get('/avatarimage/:key', doAuthMiddlewareAccess, async (req, res) => {
     const key = req.params.key;
     const readStream = getFileStream(key);
     readStream.pipe(res);
+})
+
+usersRouter.put('/follow', async (req, res) => {
+    try {
+        const newFollower = await followUser(req.body)
+        res.status(201).json(newFollower);
+    } catch (err) {
+        res.status(500).json({ message: err.message || "500 internal server error" });
+    }
 })
 
 usersRouter.put('/avatarimage',

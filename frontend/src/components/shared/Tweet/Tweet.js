@@ -1,65 +1,72 @@
-import {Stats, TweetHeader, TweetStats, TweetWrapper, UserPic} from "./Tweet.styles";
+import {
+    UserInfo,
+    Wrapper,
+    UserPic,
+    Content,
+    Text,
+    Img, TweetWrapper,
+} from './Tweet.styles';
 
+import {placeHolderUser} from "../../placeholder";
 import PlaceHolderImg from '../../../img/profileplaceholder.jpeg';
-import CommentIcon from '../../../img/tweet-icons/Comment stroke icon.svg';
-import RetweetIcon from '../../../img/tweet-icons/Retweet stroke icon.svg';
-import HeartIcon from '../../../img/tweet-icons/Heart stroke icon.svg';
-import ShareIcon from '../../../img/tweet-icons/Share stroke icon.svg';
 
-import Moment from "react-moment";
+import {useNavigate} from 'react-router-dom';
+import Moment from 'react-moment';
+import TweetStats from "./TweetStats";
+import {useEffect, useState} from "react";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {loggedInUser, tweetStateFamily} from "../../utils/SharedStates";
+import {apiLink} from "../../utils/apiLink";
 
-const placeHolderTweet = {
-    postedBy: 2389238923829,
-    createdAt: Date.now(),
-    content: 'Wise busy past both park when an ye no. Nay likely her length sooner thrown sex lively income. The expense windows adapted sir. Wrong widen drawn ample eat off doors money. Offending belonging promotion provision an be oh consulted ourselves it.',
-    likes: ['2389238239', '2343223423423', '234142134214231', '234184237u92431'],
-    retweets: ['2389238239', '2343223423423', '234142134214231', '234184237u92431'],
-    imgLink: null,
-    replies: [{
-        replyId: 23423243,
-        createdAt: Date.now(),
-        postedBy: 1231231213,
-        content: 'Dies ist eine Antwort',
-        likes: ['2389238239', '2343223423423', '234142134214231', '234184237u92431'],
-        imgLink: null,
-    }]
-}
+const Tweet = (props) => {
+    const userData = useRecoilValue(loggedInUser);
+    const [loading, setLoading] = useState(false);
+    const [tweetData, setTweetData] = useRecoilState(tweetStateFamily(props._id));
 
-const placeHolderUser = {
-    firstName: 'Jonas', lastName: 'Nachname', userName: 'Username'
-}
+    useEffect(() => {
+        setTweetData(prev => ({...prev, ...props, liked: props.likes.includes(userData._id)}));
+        setLoading(true);
+    },[]);
 
-const Tweet = () => {
-    return <TweetWrapper>
-        <TweetHeader>
-            <UserPic src={PlaceHolderImg} alt="Profile Pic"/>
-            <div>
-                <p>{placeHolderUser.firstName} {placeHolderUser.lastName}</p>
-                <span>@{placeHolderUser.userName}</span>
-                <span>&#183; <Moment fromNow>{placeHolderTweet.createdAt}</Moment></span>
-                <article>
-                    {placeHolderTweet.content}
-                </article>
-                <TweetStats>
-                    <Stats>
-                        <img src={CommentIcon} alt="comment"/>
-                        <span>{placeHolderTweet.replies.length}</span>
-                    </Stats>
-                    <Stats>
-                        <img src={RetweetIcon} alt="comment"/>
-                        <span>{placeHolderTweet.retweets.length}</span>
-                    </Stats>
-                    <Stats>
-                        <img src={HeartIcon} alt="comment"/>
-                        <span>{placeHolderTweet.likes.length}</span>
-                    </Stats>
-                    <Stats>
-                        <img src={ShareIcon} alt="comment"/>
-                    </Stats>
-                </TweetStats>
-            </div>
-        </TweetHeader>
-    </TweetWrapper>
-}
+    const navigator = useNavigate();
+    const toDetail = (id) => {
+        navigator(`/tweet/${id}`);
+    };
+
+    const toProfile = (id) => {
+        navigator(`/profile/${id}`)
+    }
+
+    return (
+        <>{loading && <Wrapper>
+            <UserPic src={apiLink + tweetData.postedBy.profilePictureLink || PlaceHolderImg} alt='Profile Pic'
+                     onClick={() => toProfile(tweetData.postedBy._id)}/>
+            <TweetWrapper>
+                <UserInfo onClick={() => toProfile(tweetData.postedBy._id)}>
+                    <p>
+                        {tweetData.postedBy.firstName} {tweetData.postedBy.lastName}
+                    </p>
+                    <span>@{tweetData.postedBy.username}</span>
+                    <span>
+						&#183; <Moment fromNow>{tweetData.postedAt}</Moment>
+					</span>
+                </UserInfo>
+                <Content onClick={() => toDetail(tweetData._id)}>
+                    <Text>{tweetData.content}</Text>
+                    {props.imgLink && <Img src={tweetData.imgLink}/>}
+                </Content>
+                <TweetStats
+                    stats
+                    replies={tweetData.replies?.length}
+                    likes={tweetData.likes?.length}
+                    retweets={tweetData.retweets?.length}
+                    id={tweetData._id}
+                />
+            </TweetWrapper>
+        </Wrapper>}
+
+        </>
+    );
+};
 
 export default Tweet;

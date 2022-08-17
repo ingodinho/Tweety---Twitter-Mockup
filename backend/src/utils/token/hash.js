@@ -6,5 +6,5 @@ export const createHash = input => {
 };
 
 export const createRandomHash = () => {
-    return hash(Math.random().toString());
+    return createHash(Math.random().toString());
 };

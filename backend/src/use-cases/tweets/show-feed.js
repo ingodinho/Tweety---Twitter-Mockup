@@ -1,10 +1,8 @@
-import { TweetsDAO } from "../../db-access";
+import TweetsDAO from "../../db-access/tweets-dao.js";
+import { expandTweetWithUserData } from "../../utils/expandTweetWithUserData.js";
 
-async function showFeed() {
-    const allTweeds = await TweetsDAO.findAll();
-    return allTweeds;
-}
-
-module.exports = {
-    showFeed,
+export const findAll = async () => {
+    const allTweets = await TweetsDAO.findAllTweets();
+    const result = await expandTweetWithUserData(allTweets)
+    return {result};
 }
