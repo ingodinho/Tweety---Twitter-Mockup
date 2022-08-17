@@ -7,6 +7,7 @@ import { loginUser } from '../use-cases/users/login-user.js';
 import { makeDoAuthMiddleware } from '../auth/doAuthMiddleware.js';
 import { refreshUserToken } from '../use-cases/users/refresh-user-token.js';
 import { editUser } from '../use-cases/users/edit-user.js';
+import { followUser } from '../use-cases/users/follow-unfollow-user.js';
 
 const doAuthMiddlewareAccess = makeDoAuthMiddleware();
 const doAuthMiddlewareRefresh = makeDoAuthMiddleware('refresh');
@@ -69,6 +70,15 @@ usersRouter.post('/edit', doAuthMiddlewareAccess, async (req, res) => {
         res.status(200).json(updatedUser);
     } catch (err) {
         res.status(401).json({ message: err.message || "401 unauthorized" })
+    }
+})
+
+usersRouter.put('/follow', async (req, res) => {
+    try {
+        const newFollower = await followUser(req.body)
+        res.status(201).json(newFollower);
+    } catch (err) {
+        res.status(500).json({ message: err.message || "500 internal server error" });
     }
 })
 

@@ -74,7 +74,7 @@ const Profile = () => {
         <div>
           <Date>
             Joined{" "}
-            <Moment format={"MMMM YYYY"}>{placeHolderUser.createdAt}</Moment>
+            <Moment format={"MMMM YYYY"}>{userInfo.createdAt}</Moment>
           </Date>
         </div>
         <FollowerWrapper>

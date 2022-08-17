@@ -21,6 +21,16 @@ const findAllTweetsByUserId = async (userId) => {
     return foundPosts;
 }
 
+const findAllTweetsOfFollowedUsers = async (userId) => {
+    const db = await getDB();
+    const foundUser = await db.collection("users").find({_id: ObjectId(userId)}).toArray();
+    const followedUserIds = foundUser[0].following
+    const repliesPackage = await db.collection(collectionName).find({postedBy: {$in: followedUserIds}}).toArray()
+    console.log("4:",repliesPackage);
+
+    return repliesPackage;
+}
+
 const findAllRepliesByOriginId = async (tweetId) => {
     const db = await getDB();
     const foundReplies = await db.collection(collectionName).find({_id: ObjectId(tweetId)}).toArray();
@@ -74,7 +84,6 @@ const likeUnlikeTweet = async (tweetId, userId) => {
     )
 }
 
-
 export default {
     findAllTweets,
     findAllTweetsByUserId,
@@ -85,5 +94,6 @@ export default {
     likeUnlikeTweet,
     insertReplyIdToOrigin,
     findAllRepliesByOriginId,
-    findTweetById
+    findTweetById,
+    findAllTweetsOfFollowedUsers
 }
