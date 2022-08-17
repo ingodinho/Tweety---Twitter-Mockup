@@ -20,18 +20,23 @@ import TweetStats from "../../shared/Tweet/TweetStats";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {loggedInUser, tweetStateFamily} from "../../utils/SharedStates";
 
 const TweetDetails = () => {
-
-    const [tweetDetails, setTweetDetails] = useState({});
-    const [replies, setReplies] = useState([]);
     const {id} = useParams();
+    const userData = useRecoilValue(loggedInUser);
+
+    const [tweetData, setTweetData] = useRecoilState(tweetStateFamily(id));
+
+    const [replies, setReplies] = useState([]);
+
     const navigator = useNavigate()
 
     useEffect(()=> {
         const getTweetDetails = async () => {
             const response = await axios.get(apiLink + `/tweets/details/${id}`);
-            setTweetDetails(response.data.tweetDetails[0]);
+            setTweetData({...response.data.tweetDetails[0], liked: response.data.tweetDetails[0].includes(userData._id)});
             setReplies(response.data.repliesById);
         }
         getTweetDetails();
@@ -56,22 +61,22 @@ const TweetDetails = () => {
                     </UserInfo>
                 </TweetHeader>
                 <Content>
-                    <p>{tweetDetails.content}</p>
-                    {tweetDetails.imgLink && <img src={tweetDetails.imgLink} alt={'embedded in Tweet'}/>}
+                    <p>{tweetData.content}</p>
+                    {tweetData.imgLink && <img src={tweetData.imgLink} alt={'embedded in Tweet'}/>}
                 </Content>
                 <Info>
-                    <Time><Moment format={`HH:MM - MM/DD/YY`}>{tweetDetails.createdAt}</Moment></Time>
+                    <Time><Moment format={`HH:MM - MM/DD/YY`}>{tweetData.createdAt}</Moment></Time>
                     <span>&#183;</span>
                     <p>Tweety Web App</p>
                 </Info>
                 <StatsWrapper>
                     <Stats>
-                        <p>{tweetDetails.retweets?.length}</p>
+                        <p>{tweetData.retweets?.length}</p>
                         <span>Retweets</span>
                     </Stats>
                     <Stats>
-                        <p>{tweetDetails.likes?.length}</p>
-                        <span>Likes</span>
+                        <p>{tweetData.likes?.length}</p>
+                        <span>{tweetData.likes?.length === 1 ? 'like' : 'likes'}</span>
                     </Stats>
                 </StatsWrapper>
                 <TweetStats id={id} big/>
