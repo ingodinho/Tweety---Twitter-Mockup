@@ -22,22 +22,25 @@ import { apiLink } from "../../utils/apiLink";
 import { useRecoilValue } from "recoil";
 import { loggedInUser } from "../../utils/SharedStates";
 import Tweet from "../../shared/Tweet/Tweet";
+import {useParams} from "react-router-dom";
 
 const Profile = () => {
   const userData = useRecoilValue(loggedInUser);
+  console.log(userData);
+  const {id: userId} = useParams();
+  console.log(userId);
   const [tweets, setTweets] = useState([]);
   const [userInfo, setUserInfo] = useState([]);
 
   useEffect(() => {
     const getTweets = async () => {
-      // testid: 62fbb45e6b1c463bb8a5a2da
       const response = await axios.get(
         apiLink + `/tweets/user/${userData._id}`
       );
       setTweets(response.data);
     };
     const getUserInfo = async () => {
-      const response = await axios.get(apiLink + `/users/profile`, {
+      const response = await axios.get(apiLink + `/users/profile/${userId}`, {
         headers: {
           token: "JWT " + userData.accessToken,
         },
@@ -46,7 +49,7 @@ const Profile = () => {
     };
     getTweets();
     getUserInfo();
-  }, []);
+  }, [userData]);
 
   return (
     <>
@@ -63,10 +66,10 @@ const Profile = () => {
         </UserInfo>
         <div>
           <Name>
-            {placeHolderUser.firstName} {placeHolderUser.lastName}
+            {userInfo.firstName} {userInfo.lastName}
           </Name>
-          <UserName>@{placeHolderUser.userName}</UserName>
-          <Bio>Hier darf dann irgendwann mal eine UserBio auftauchen</Bio>
+          <UserName>@{userInfo.username}</UserName>
+          <Bio>{userInfo?.bio}</Bio>
         </div>
         <div>
           <Date>

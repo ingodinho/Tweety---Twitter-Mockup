@@ -19,8 +19,6 @@ const Home = () => {
         getTweets();
     }, [])
 
-    console.log(tweets);
-
     return (
         <>
             <HomeHeader/>

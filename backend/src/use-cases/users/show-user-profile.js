@@ -14,6 +14,8 @@ export const showUserProfile = async (userId) => {
     return {
         _id: user._id,
         username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         profilePictureLink: user.profilePictureLink,
         likedTweets: user.likedTweets,
         following: user.following,
