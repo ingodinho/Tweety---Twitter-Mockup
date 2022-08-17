@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7c054a16-b96b-4368-8c57-b9556be86251" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pages/TweetDetails/TweetDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pages/TweetDetails/TweetDetails.js" afterDir="false" />
-    </list>
+    <list default="true" id="7c054a16-b96b-4368-8c57-b9556be86251" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,7 +44,7 @@
       <workItem from="1660658141295" duration="3102000" />
       <workItem from="1660667787248" duration="17742000" />
       <workItem from="1660711694143" duration="734000" />
-      <workItem from="1660715546813" duration="3710000" />
+      <workItem from="1660715546813" duration="4364000" />
     </task>
     <servers />
   </component>
