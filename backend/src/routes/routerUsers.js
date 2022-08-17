@@ -24,8 +24,8 @@ usersRouter.get('/allusers', async (_, res) => {
     }
 });
 
-usersRouter.get('/profile', doAuthMiddlewareAccess, async (req, res) => {
-    const userId = req.body.userId;
+usersRouter.get('/profile/:userid', doAuthMiddlewareAccess, async (req, res) => {
+    const userId = req.params.userid;
     try {
         const foundUser = await showUserProfile(userId);
         res.status(200).json(foundUser);
