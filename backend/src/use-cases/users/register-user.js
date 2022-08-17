@@ -13,6 +13,7 @@ export const registerUser = async ({
 }) => {
     const passwordSalt = createRandomHash()
     const passwordHash = createHash(password + '' + passwordSalt)
+    const sixDigitCode = Math.random().toString().substring(2, 8);
 
     const newUser = makeUser({
         username,
@@ -22,6 +23,7 @@ export const registerUser = async ({
         dob,
         bio,
         emailVerified: false,
+        sixDigitCode: sixDigitCode,
         passwordHash,
         passwordSalt,
         createdAt: Date.now(),
@@ -32,7 +34,7 @@ export const registerUser = async ({
 
     const insertResult = await UserDAO.insertOneUser(newUser)
     const userView = ({
-        _id: insertResult.insertedId,
+        userId: insertResult.insertedId,
         username,
         email,
     })

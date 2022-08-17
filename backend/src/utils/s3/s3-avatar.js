@@ -15,7 +15,6 @@ const s3 = new S3({
 // upload a file to s3
 export const uploadFile = (filepath, file) => {
     const fileStream = fs.createReadStream(filepath);
-    console.log(fileStream);
 
     const uploadParams = {
         Bucket: bucketName,
@@ -35,3 +34,13 @@ export const getFileStream = (fileKey) => {
 
     return s3.getObject(downloadParams).createReadStream();
 };
+
+// delete a file from s3
+export const deleteFile = (fileKey) => {
+    const deleteParams = {
+        Key: fileKey,
+        Bucket: bucketName
+    }
+
+    return s3.deleteObject(deleteParams).promise();
+}

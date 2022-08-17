@@ -53,15 +53,24 @@ const updateOneUser = async (updateUserInfo) => {
     return foundUser;
 }
 
-
-
-const findOneAndUpdateAvatar = async ({ userId, avatarImage }) => {
+const findOneAndUpdateAvatar = async ({ userId, avatarImagePath }) => {
     const db = await getDB();
     const foundUser = await db.collection(usersCollectionName).findOneAndUpdate(
         { _id: ObjectId(userId) },
-        { $set: { profilePictureLink: avatarImage } },
+        { $set: { profilePictureLink: avatarImagePath } },
         { returnDocument: "after" }
     )
+    return foundUser;
+}
+
+const findOneAndUpdateVerifiedStatus = async ({ userId, emailVerified }) => {
+    const db = await getDB();
+    const foundUser = await db.collection(usersCollectionName).findOneAndUpdate(
+        { _id: ObjectId(userId) },
+        { $set: { emailVerified: emailVerified } },
+        { returnDocument: "after" }
+    )
+    return foundUser;
 }
 
 export default {
@@ -70,5 +79,7 @@ export default {
     findUserByUsername,
     findUserByEmail,
     insertOneUser,
-    updateOneUser
+    updateOneUser,
+    findOneAndUpdateAvatar,
+    findOneAndUpdateVerifiedStatus
 };
