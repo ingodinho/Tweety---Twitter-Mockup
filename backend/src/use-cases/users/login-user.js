@@ -12,6 +12,10 @@ export const loginUser = async ({ email, username, password }) => {
         throw new Error('Username or Email must be typed in');
     }
 
+    if (!user.emailVerified) {
+        throw new Error('Please verify your email first before login.');
+    }
+
     const passwordHash = createHash(password + user.passwordSalt);
 
     const correctPassword = passwordHash === user.passwordHash;
@@ -25,8 +29,6 @@ export const loginUser = async ({ email, username, password }) => {
 
     return {
         _id: user._id,
-        username: user.username,
-        email: user.email,
         accessToken,
         refreshToken,
     };

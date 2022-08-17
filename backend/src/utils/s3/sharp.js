@@ -1,6 +1,4 @@
 import sharp from 'sharp';
-import fs from 'fs';
-import { resolve } from 'path';
 
 export const resizeAvatar = async ({ path, destination, filename }) => {
     return new Promise(resolve => {
@@ -11,12 +9,11 @@ export const resizeAvatar = async ({ path, destination, filename }) => {
 
         sharp(inputFile).resize({ width: 400 }).toFile(outputFile)
             .then(function (newFileInfo) {
-                // newFileInfo holds the output file properties
                 console.log("Success")
                 resolve(`${destination}/avatar${filename}`);
             })
             .catch(function (err) {
-                console.log("Error occured");
+                console.log("Error occured while resizing image.");
             });
 
     })
