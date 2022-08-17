@@ -46,6 +46,7 @@ const NavWrapper = styled.nav`
   overflow: hidden;
   bottom: 0;
   width: 100%;
+  max-width: 450px;
   padding: 2rem var(--spacing-wrapper) 2rem var(--spacing-wrapper);
   border-top: 1px solid var(--clr-line-grey);
   background: #fff;

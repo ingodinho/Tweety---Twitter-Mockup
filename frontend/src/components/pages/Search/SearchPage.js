@@ -2,6 +2,7 @@ import styled from "styled-components";
 import ProfilePic from "../../shared/ProfilePic";
 import SettingsLogoUrl from "../../../img/icons/Settings Stroke Icon.svg";
 import { Link } from "react-router-dom";
+import { apiLink } from "../../utils/apiLink";
 
 const SearchPage = () => {
   return (
@@ -37,10 +38,10 @@ const SettingsLogo = styled.img`
 `;
 
 const SearchInput = styled.input`
-  width: 70vw;
-  height: 5vh;
+  width: 70%;
+  height: 32px;
   text-align: center;
-  border-radius: 15px;
+  border-radius: 20px;
   border: 1px solid var(--clr-line-grey);
   font-size: 1.6rem;
 `;
