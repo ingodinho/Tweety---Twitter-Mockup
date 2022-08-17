@@ -15,6 +15,21 @@ const findUserById = async (userId) => {
     return foundUser;
 }
 
+const findUserData = async (userIds) => {
+    const db = await getDB();
+    const foundUser = await db.collection(usersCollectionName).find({_id: {$in: userIds}}).toArray()
+    const filteredUserData = foundUser.map((user) => {
+        return {
+            _id: user._id,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            profilePictureLink: user.profilePictureLink
+        };
+    })
+    return filteredUserData;
+}
+
 const findUserByUsername = async (username) => {
     const db = await getDB();
     const foundUser = await db.collection(usersCollectionName).findOne({ username: username });
@@ -68,5 +83,6 @@ export default {
     findUserByUsername,
     findUserByEmail,
     insertOneUser,
-    updateOneUser
+    updateOneUser,
+    findUserData
 };
