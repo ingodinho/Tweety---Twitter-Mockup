@@ -79,7 +79,7 @@ tweetsRouter.delete('/delete', async (req, res) => {
     }
 })
 
-tweetsRouter.post('/edit', async (req, res) => {
+tweetsRouter.put('/edit', async (req, res) => {
     try {
         const editedTweet = await updateTweet(req.body)
         console.log(req.body);
@@ -89,7 +89,7 @@ tweetsRouter.post('/edit', async (req, res) => {
     }
 })
 
-tweetsRouter.post('/like', async (req, res) => {
+tweetsRouter.put('/like', async (req, res) => {
     try {
         const likedTweet = await likeTweet(req.body)
         console.log(req.body);
