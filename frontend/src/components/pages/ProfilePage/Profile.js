@@ -90,7 +90,7 @@ const Profile = () => {
             </header>
             <UserWrapper>
                 <UserInfo>
-                    <img src={''} alt="User"/>
+                    <img src={userInfo.profilePictureLink} alt="User"/>
                     {myProfile && <EditProfile to={`/profile/${userData._id}/edit`}>
                         Edit Profile
                     </EditProfile>}

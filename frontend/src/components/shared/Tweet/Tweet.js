@@ -36,10 +36,9 @@ const Tweet = (props) => {
     const toProfile = (id) => {
         navigator(`/profile/${id}`)
     }
-
     return (
         <>{loading && <Wrapper>
-            <UserPic src={apiLink + tweetData.postedBy.profilePictureLink || PlaceHolderImg} alt='Profile Pic'
+            <UserPic src={tweetData.postedBy.profilePictureLink} alt='Profile Pic'
                      onClick={() => toProfile(tweetData.postedBy._id)}/>
             <TweetWrapper>
                 <UserInfo onClick={() => toProfile(tweetData.postedBy._id)}>
