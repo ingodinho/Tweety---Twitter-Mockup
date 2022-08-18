@@ -5,19 +5,37 @@ const collectionName = "tweets"
 
 const findAllTweets = async () => {
     const db = await getDB();
-    const posts = await db.collection(collectionName).find().toArray();
+    const posts = await db.collection(collectionName)
+    .find({replyTo: null})
+    .sort({postedAt: -1})
+    .toArray();
     return posts;
 }
 
 const findTweetById = async (tweetId) => {
     const db = await getDB();
-    const tweetResult = await db.collection(collectionName).find({_id: ObjectId(tweetId)}).toArray()
+    const tweetResult = await db.collection(collectionName)
+    .find({$and: [{_id: ObjectId(tweetId)}, {replyTo: null}]})
+    .sort({postedAt: -1})
+    .toArray()
     return tweetResult;
 }
 
 const findAllTweetsByUserId = async (userId) => {
     const db = await getDB();
-    const foundPosts = await db.collection(collectionName).find({ postedBy: userId }).toArray();
+    const foundPosts = await db.collection(collectionName)
+    .find({$and: [{postedBy: userId}, {replyTo: null}]})
+    .sort({postedAt: -1})
+    .toArray()
+    return foundPosts;
+}
+
+const findTweetsByKeyword = async (keyword) => {
+    const db = await getDB();
+    const foundPosts = await db.collection(collectionName)
+    .find({$and: [{$contains:{content: keyword}}, {replyTo: null}]})
+    .sort({postedAt: -1})
+    .toArray()
     return foundPosts;
 }
 
@@ -25,18 +43,36 @@ const findAllTweetsOfFollowedUsers = async (userId) => {
     const db = await getDB();
     const foundUser = await db.collection("users").find({_id: ObjectId(userId)}).toArray();
     const followedUserIds = foundUser[0].following
-    const repliesPackage = await db.collection(collectionName).find({postedBy: {$in: followedUserIds}}).toArray()
-    console.log("4:",repliesPackage);
-
+    console.log("FollowedUsers", followedUserIds);
+    const repliesPackage = await db.collection(collectionName)
+    .find({$and: [{postedBy: {$in: followedUserIds}}, {replyTo: null}]})
+    .sort({postedAt: -1})
+    .toArray()
     return repliesPackage;
+}
+
+const findAllLikedTweets = async (userId) => {
+    const db = await getDB();
+    const foundUser = await db.collection("users").find({_id: ObjectId(userId)}).toArray();
+    const followedTweetIds = foundUser[0].likedTweets
+    const tweetsPackage = await db.collection(collectionName)
+    .find({_id: {$in: followedTweetIds.map((id) => ObjectId(id))}})
+    .sort({postedAt: -1})
+    .toArray()
+    return tweetsPackage;
 }
 
 const findAllRepliesByOriginId = async (tweetId) => {
     const db = await getDB();
-    const foundReplies = await db.collection(collectionName).find({_id: ObjectId(tweetId)}).toArray();
+    const foundReplies = await db.collection(collectionName)
+    .find({_id: ObjectId(tweetId)})
+    .toArray();
     const replyIds = foundReplies[0].replies
-    const repliesPackage = await db.collection(collectionName).find({_id: {$in: replyIds}}).toArray()
-    console.log(repliesPackage);
+    console.log(replyIds);
+    const repliesPackage = await db.collection(collectionName)
+    .find({_id: {$in: replyIds}})
+    .sort({postedAt: -1})
+    .toArray()
     return repliesPackage;
 }
 
@@ -95,5 +131,7 @@ export default {
     insertReplyIdToOrigin,
     findAllRepliesByOriginId,
     findTweetById,
-    findAllTweetsOfFollowedUsers
+    findAllTweetsOfFollowedUsers,
+    findTweetsByKeyword,
+    findAllLikedTweets
 }
