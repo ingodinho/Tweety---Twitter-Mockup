@@ -1,10 +1,6 @@
 import styled from "styled-components";
 import {Link} from 'react-router-dom';
 
-export const Header = styled.header`
-  
-`
-
 export const HomeLink = styled(Link)`
   color: var(--clr-blue);
   font-size: 1.4rem;
@@ -42,6 +38,17 @@ export const UserInfo = styled.div`
 `
 
 export const EditProfile = styled(Link)`
+  color: var(--clr-blue);
+  padding: 0.4rem 1rem;
+  align-self: center;
+  text-decoration: none;
+  font-size: 1.4rem;
+  background: #fff;
+  border: 1px solid var(--clr-blue);
+  border-radius: 16px;
+`
+
+export const Follow = styled.button`
   color: var(--clr-blue);
   padding: 0.4rem 1rem;
   align-self: center;
