@@ -27,6 +27,7 @@ import {
   EditField,
   EditBio,
   SaveProfilePictureButton,
+  SaveBannerButton,
 } from "./EditProfilePage.styling.js";
 
 const EditProfilePage = () => {
@@ -42,17 +43,20 @@ const EditProfilePage = () => {
   const [editedBio, setEditedBio] = useState("");
   const [editedDob, setEditedDob] = useState("");
 
-  // useEffect(() => {
-  //   const getUserInfo = async () => {
-  //     const response = await axios.put(apiLink + `/users/edit`, {
-  //       headers: {
-  //         token: "JWT " + userData.accessToken,
-  //       },
-  //     });
-  //     setUserInfo(response.data);
-  //   };
-  //   getUserInfo();
-  // }, []);
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const response = await axios.get(
+        apiLink + `/users/profile/${userData._id}`,
+        {
+          headers: {
+            token: "JWT " + userData.accessToken,
+          },
+        }
+      );
+      setUserInfo(response);
+    };
+    getUserInfo();
+  }, []);
 
   const handleProfilePictureUpload = (e) => {
     e.preventDefault();
@@ -104,16 +108,13 @@ const EditProfilePage = () => {
 
   const saveProfilePicture = async () => {
     const formData = new FormData();
+
     formData.append("avatarimage", profilePictureUpload);
-    // const file = {
-    //   profilePictureUpload,
-    // };
 
     const response = await axios.put(apiLink + `/users/avatarimage`, formData, {
       headers: {
         token: "JWT " + userData.accessToken,
       },
-      // body: formData,
     });
     console.log(response);
     if (response.data.insertedId) {
@@ -137,6 +138,9 @@ const EditProfilePage = () => {
               <DeleteBannerButton onClick={handleBannerDelete}>
                 Cancel
               </DeleteBannerButton>
+              <SaveBannerButton /* onClick={() =>  saveProfilePicture()} */>
+                Save
+              </SaveBannerButton>
             </PreviewBanner>
             <BannerPreview src={BannerSrc} alt="" />
           </>
