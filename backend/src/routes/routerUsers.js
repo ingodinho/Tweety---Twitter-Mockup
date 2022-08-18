@@ -40,8 +40,10 @@ usersRouter.get(
 		const userId = req.params.userid;
 		try {
 			const foundUser = await showUserProfile(userId);
-			const key = foundUser.profilePictureLink;
-			foundUser.profilePictureLink = await generateSignedUrl(key);
+			const avatarKey = foundUser.profilePictureLink;
+			const bannerKey = foundUser.bannerPictureLink;
+			foundUser.profilePictureLink = await generateSignedUrl(avatarKey);
+			foundUser.bannerPictureLink = await generateSignedUrl(bannerKey);
 			res.status(200).json(foundUser);
 		} catch (err) {
 			res.status(404).json({ message: err.message || "404 not found" });
@@ -183,21 +185,6 @@ usersRouter.delete(
 	}
 );
 
-usersRouter.get(
-	"/bannerimage/:key",
-	doAuthMiddlewareAccess,
-	async (req, res) => {
-		try {
-			const key = req.params.key;
-			const signedLink = await generateSignedUrl(key);
-			console.log(signedLink);
-			res.status(200).json(signedLink);
-		} catch (err) {
-			res.status(404).json({ message: err.message || "404 not found" });
-		}
-	}
-);
-
 usersRouter.put(
 	"/bannerimage",
 	doAuthMiddlewareAccess,
@@ -210,8 +197,8 @@ usersRouter.put(
 			const originalLocalFilePath = file.path;
 			const newLocalFilePath = await resizeBanner(file);
 			const awsAnswer = await uploadFile(newLocalFilePath, file);
-			const s3Link = `/bannerimage/${awsAnswer.key}`;
-			const result = await changeUserBanner(userId, s3Link);
+			const s3Key = awsAnswer.key;
+			const result = await changeUserBanner(userId, s3Key);
 			await unlinkFile(originalLocalFilePath);
 			await unlinkFile(newLocalFilePath);
 			res.status(201).json(result.value.bannerPictureLink);
