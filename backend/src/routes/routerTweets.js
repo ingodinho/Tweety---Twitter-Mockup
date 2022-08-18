@@ -5,6 +5,7 @@ import { findAll } from '../use-cases/tweets/show-feed.js';
 import { findAllByUserId } from '../use-cases/tweets/show-tweets-by-user-id.js';
 import { findRepliesByOriginId } from '../use-cases/tweets/show-replies-by-origin-id.js';
 import { findAllFollowed } from '../use-cases/tweets/show-feed-of-followed-users.js';
+import { findAllLiked } from '../use-cases/tweets/show-feed-of-tweets-liked.js';
 import { delTweet } from '../use-cases/tweets/delete-tweet.js';
 import { findTweet } from '../use-cases/tweets/find-tweet-by-id.js';
 import { updateTweet } from '../use-cases/tweets/edit-tweet.js';
@@ -46,6 +47,15 @@ tweetsRouter.get('/followed/:userid', async (req, res) => {
     try {
         const tweetsByFollowedIds = await findAllFollowed({userId: req.params.userid})
         res.status(200).json(tweetsByFollowedIds);
+    } catch (err) {
+        res.status(404).json({ message: err.message || "404 not found" });
+    }
+})
+
+tweetsRouter.get('/liked/:userid', async (req, res) => {
+    try {
+        const tweetsLiked = await findAllLiked({userId: req.params.userid})
+        res.status(200).json(tweetsLiked);
     } catch (err) {
         res.status(404).json({ message: err.message || "404 not found" });
     }
