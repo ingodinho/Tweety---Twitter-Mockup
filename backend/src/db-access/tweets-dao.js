@@ -5,19 +5,28 @@ const collectionName = "tweets"
 
 const findAllTweets = async () => {
     const db = await getDB();
-    const posts = await db.collection(collectionName).find().toArray();
+    const posts = await db.collection(collectionName)
+    .find({replyTo: null})
+    .sort({postedAt: -1})
+    .toArray();
     return posts;
 }
 
 const findTweetById = async (tweetId) => {
     const db = await getDB();
-    const tweetResult = await db.collection(collectionName).find({_id: ObjectId(tweetId)}).toArray()
+    const tweetResult = await db.collection(collectionName)
+    .find({$and: [{_id: ObjectId(tweetId)}, {replyTo: null}]})
+    .sort({postedAt: -1})
+    .toArray()
     return tweetResult;
 }
 
 const findAllTweetsByUserId = async (userId) => {
     const db = await getDB();
-    const foundPosts = await db.collection(collectionName).find({ postedBy: userId }).toArray();
+    const foundPosts = await db.collection(collectionName)
+    .find({$and: [{postedBy: userId}, {replyTo: null}]})
+    .sort({postedAt: -1})
+    .toArray()
     return foundPosts;
 }
 
@@ -25,18 +34,23 @@ const findAllTweetsOfFollowedUsers = async (userId) => {
     const db = await getDB();
     const foundUser = await db.collection("users").find({_id: ObjectId(userId)}).toArray();
     const followedUserIds = foundUser[0].following
-    const repliesPackage = await db.collection(collectionName).find({postedBy: {$in: followedUserIds}}).toArray()
-    console.log("4:",repliesPackage);
-
+    const repliesPackage = await db.collection(collectionName)
+    .find({$and: [{postedBy: {$in: followedUserIds}}, {replyTo: null}]})
+    .sort({postedAt: -1})
+    .toArray()
     return repliesPackage;
 }
 
 const findAllRepliesByOriginId = async (tweetId) => {
     const db = await getDB();
-    const foundReplies = await db.collection(collectionName).find({_id: ObjectId(tweetId)}).toArray();
+    const foundReplies = await db.collection(collectionName)
+    .find({_id: ObjectId(tweetId)})
+    .toArray();
     const replyIds = foundReplies[0].replies
-    const repliesPackage = await db.collection(collectionName).find({_id: {$in: replyIds}}).toArray()
-    console.log(repliesPackage);
+    const repliesPackage = await db.collection(collectionName)
+    .find({_id: {$in: replyIds}})
+    .sort({postedAt: -1})
+    .toArray()
     return repliesPackage;
 }
 
