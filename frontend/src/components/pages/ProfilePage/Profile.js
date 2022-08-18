@@ -41,13 +41,11 @@ const Profile = () => {
 
     useEffect(() => {
         if (!userData) return;
-
         const link = currentNav === 'userTweets' ? apiLink + `/tweets/user/${profileId}`
             : currentNav === 'likedTweets' ? apiLink + `/tweets/liked/${profileId}` : null;
         if(!link) return;
         const getTweets = async () => {
-            const response = await axios.get(link
-            );
+            const response = await axios.get(link);
             setTweets(response.data);
         };
         const getUserInfo = async () => {

@@ -7,6 +7,7 @@ export const expandTweetWithUserData = async (tweetArray) => {
         return ObjectId(tweet.postedBy)
     })
     const userData = await UsersDAO.findUserData(userIds)
+
     const result = tweetArray.map((tweet)=>{
         const tweetUser = userData.find((user) => {
             return tweet.postedBy === user._id.toString()
