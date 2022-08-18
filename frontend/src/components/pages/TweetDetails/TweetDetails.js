@@ -51,7 +51,7 @@ const TweetDetails = () => {
             </Header>
             <Wrapper>
                 <TweetHeader onClick={()=> toProfile(tweetData.postedBy._id)}>
-                    <UserPic src={Userplaceholder} alt="Profile Pic"/>
+                    <UserPic src={tweetData.postedBy.profilePictureLink} alt="Profile Pic"/>
                     <UserInfo>
                         <p>{tweetData.postedBy.firstName} {tweetData.postedBy.lastName}</p>
                         <span>@{tweetData.postedBy.username}</span>

@@ -12,16 +12,14 @@ const s3 = new S3({
 });
 
 export const generateSignedUrl = async (fileKey) => {
-    try {
-        const url = await s3.getSignedUrlPromise("getObject", {
-            Bucket: bucketName,
-            Key: fileKey,
-            Expires: 60,
-        });
-        return url;
-    } catch (err) {
-        return err;
-    }
+	try {
+		const url = await s3.getSignedUrlPromise("getObject", {
+			Bucket: bucketName,
+			Key: fileKey,
+			Expires: 60,
+		});
+		return url;
+	} catch (err) {
+		return null;
+	}
 };
-
-//Neustart

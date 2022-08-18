@@ -14,7 +14,7 @@ export const IconBar = styled.div`
   align-items: center;
 `;
 
-export const SettingsLogo = styled.img`
+export const SearchLogo = styled.img`
   width: 27px;
   height: 27px;
 `;
