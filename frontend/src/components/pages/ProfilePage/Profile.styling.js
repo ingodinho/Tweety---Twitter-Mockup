@@ -49,12 +49,13 @@ export const EditProfile = styled(Link)`
 `
 
 export const Follow = styled.button`
-  color: var(--clr-blue);
-  padding: 0.4rem 1rem;
+  color: ${props => props.following ? '#fff' : 'var(--clr-blue)'};
+  padding: 0.4rem 0;
+  width: 7.5rem;
   align-self: center;
   text-decoration: none;
   font-size: 1.4rem;
-  background: #fff;
+  background: ${props => props.following ? 'var(--clr-blue)' : '#fff'};
   border: 1px solid var(--clr-blue);
   border-radius: 16px;
 `
@@ -106,4 +107,8 @@ export const Menu = styled.section`
   gap: 2rem;
   font-size: 1.6rem;
   border-bottom: 1px solid var(--clr-line-grey);
+`
+
+export const NavButtons = styled.span`
+  border-bottom: ${props => props.active ? '2px solid var(--clr-blue)' : 'none'}
 `
