@@ -2,7 +2,7 @@ import express from 'express';
 
 export const searchRouter = express.Router();
 
-searchRouter.get('/search?keyword={keyword}', async (req, res) => {
+searchRouter.get('/search?keyword', async (req, res) => {
     try {
         console.log(keyword);
         const allTweets = await findAll()
