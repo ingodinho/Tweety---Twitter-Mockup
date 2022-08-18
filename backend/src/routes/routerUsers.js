@@ -135,7 +135,7 @@ usersRouter.put('/avatarimage',
             await unlinkFile(newLocalFilePath);
             res.status(201).send(result.value.profilePictureLink);
         } catch (err) {
-            res.status(500).json({ message: err.message || "500 internal server error" })
+            res.status(500).json({ message: err.message || "500 internal server error." })
         }
     }
 )
@@ -148,6 +148,6 @@ usersRouter.delete('/avatarimage/:key', doAuthMiddlewareAccess, async (req, res)
         const result = await deleteFile(key);
         res.status(204).send(result);
     } catch (err) {
-        res.status(500).json({ message: err.message || "500 internal server error" })
+        res.status(500).json({ message: err.message || "500 internal server error." })
     }
 })
