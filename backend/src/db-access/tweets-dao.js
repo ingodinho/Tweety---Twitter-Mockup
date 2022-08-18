@@ -15,7 +15,7 @@ const findAllTweets = async () => {
 const findTweetById = async (tweetId) => {
     const db = await getDB();
     const tweetResult = await db.collection(collectionName)
-    .find({$and: [{_id: ObjectId(tweetId)}, {replyTo: null}]})
+    .find({$and: [{_id: ObjectId(tweetId)}]})
     .sort({postedAt: -1})
     .toArray()
     return tweetResult;
@@ -24,7 +24,7 @@ const findTweetById = async (tweetId) => {
 const findAllTweetsByUserId = async (userId) => {
     const db = await getDB();
     const foundPosts = await db.collection(collectionName)
-    .find({$and: [{postedBy: userId}]})
+    .find({$and: [{postedBy: userId}, {replyTo: null}]})
     .sort({postedAt: -1})
     .toArray()
     return foundPosts;
