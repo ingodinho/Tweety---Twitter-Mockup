@@ -1,4 +1,5 @@
 import ProfilePic from "../../shared/ProfilePic";
+
 import SearchLogoUrl from "../../../img/tweet-icons/Search Stroke Icon blue.svg";
 import { Link } from "react-router-dom";
 import { apiLink } from "../../utils/apiLink";
@@ -11,10 +12,12 @@ import {
   SearchLogo,
 } from "./SearchPages.styles";
 import { useEffect, useState } from "react";
+
 import axios from "axios";
 import Tweet from "../../shared/Tweet/Tweet";
 
 const SearchPage = () => {
+
   const userData = useRecoilValue(loggedInUser);
   const [search, setSearch] = useState("");
   const [searchToggle, setSearchToggle] = useState(true);
