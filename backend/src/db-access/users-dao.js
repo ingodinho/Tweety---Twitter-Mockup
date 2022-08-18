@@ -78,6 +78,16 @@ const findOneAndUpdateAvatar = async ({ userId, avatarImagePath }) => {
     return foundUser;
 }
 
+const findOneAndUpdateBanner = async ({ userId, bannerImagePath }) => {
+    const db = await getDB();
+    const foundUser = await db.collection(usersCollectionName).findOneAndUpdate(
+        { _id: ObjectId(userId) },
+        { $set: { bannerPictureLink: bannerImagePath } },
+        { returnDocument: "after" }
+    )
+    return foundUser;
+}
+
 const findOneAndUpdateVerifiedStatus = async ({ userId, emailVerified }) => {
     const db = await getDB();
     const foundUser = await db.collection(usersCollectionName).findOneAndUpdate(
@@ -148,5 +158,6 @@ export default {
     followedUser,
     tweetsLiked,
     findOneAndUpdateAvatar,
+    findOneAndUpdateBanner,
     findOneAndUpdateVerifiedStatus
 };
