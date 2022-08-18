@@ -1,14 +1,15 @@
-import express from "express";
-import { postTweet } from "../use-cases/tweets/post-tweet.js";
-import { postReply } from "../use-cases/tweets/post-reply.js";
-import { findAll } from "../use-cases/tweets/show-feed.js";
-import { findAllByUserId } from "../use-cases/tweets/show-tweets-by-user-id.js";
-import { findRepliesByOriginId } from "../use-cases/tweets/show-replies-by-origin-id.js";
-import { findAllFollowed } from "../use-cases/tweets/show-feed-of-followed-users.js";
-import { delTweet } from "../use-cases/tweets/delete-tweet.js";
-import { findTweet } from "../use-cases/tweets/find-tweet-by-id.js";
-import { updateTweet } from "../use-cases/tweets/edit-tweet.js";
-import { likeTweet } from "../use-cases/tweets/like-tweet.js";
+import express from 'express';
+import { postTweet } from '../use-cases/tweets/post-tweet.js';
+import { postReply } from '../use-cases/tweets/post-reply.js';
+import { findAll } from '../use-cases/tweets/show-feed.js';
+import { findAllByUserId } from '../use-cases/tweets/show-tweets-by-user-id.js';
+import { findRepliesByOriginId } from '../use-cases/tweets/show-replies-by-origin-id.js';
+import { findAllFollowed } from '../use-cases/tweets/show-feed-of-followed-users.js';
+import { findAllLiked } from '../use-cases/tweets/show-feed-of-tweets-liked.js';
+import { delTweet } from '../use-cases/tweets/delete-tweet.js';
+import { findTweet } from '../use-cases/tweets/find-tweet-by-id.js';
+import { updateTweet } from '../use-cases/tweets/edit-tweet.js';
+import { likeTweet } from '../use-cases/tweets/like-tweet.js';
 
 export const tweetsRouter = express.Router();
 
@@ -64,6 +65,7 @@ tweetsRouter.post("/newtweet", async (req, res) => {
 	}
 });
 
+
 tweetsRouter.post("/newreply", async (req, res) => {
 	try {
 		const newReply = await postReply(req.body);
@@ -74,6 +76,16 @@ tweetsRouter.post("/newreply", async (req, res) => {
 			.json({ message: err.message || "500 internal server error" });
 	}
 });
+
+tweetsRouter.get('/liked/:userid', async (req, res) => {
+    try {
+        const tweetsLiked = await findAllLiked({userId: req.params.userid})
+        res.status(200).json(tweetsLiked);
+    } catch (err) {
+        res.status(404).json({ message: err.message || "404 not found" });
+    }
+})
+
 
 tweetsRouter.delete("/delete", async (req, res) => {
 	try {
