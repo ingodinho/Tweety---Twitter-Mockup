@@ -26,6 +26,7 @@ import {
   EditWrapper,
   EditField,
   EditBio,
+  SaveProfilePictureButton,
 } from "./EditProfilePage.styling.js";
 
 const EditProfilePage = () => {
@@ -35,11 +36,11 @@ const EditProfilePage = () => {
   const [bannerUpload, setBannerUpload] = useState(null);
   const navigator = useNavigate();
 
-  const [editedUserName, setEditedUserName] = useState();
-  const [editedFirstName, setEditedFirstName] = useState();
-  const [editedLastName, setEditedLastName] = useState();
-  const [editedBio, setEditedBio] = useState();
-  const [editedDob, setEditedDob] = useState();
+  const [editedUserName, setEditedUserName] = useState("");
+  const [editedFirstName, setEditedFirstName] = useState("");
+  const [editedLastName, setEditedLastName] = useState("");
+  const [editedBio, setEditedBio] = useState("");
+  const [editedDob, setEditedDob] = useState("");
 
   // useEffect(() => {
   //   const getUserInfo = async () => {
@@ -85,8 +86,8 @@ const EditProfilePage = () => {
     const data = {
       userId: userData._id,
       username: editedUserName,
-      firstname: editedFirstName,
-      lastname: editedLastName,
+      firstName: editedFirstName,
+      lastName: editedLastName,
       bio: editedBio,
       dob: editedDob,
     };
@@ -95,6 +96,26 @@ const EditProfilePage = () => {
         token: "JWT " + userData.accessToken,
       },
     });
+    console.log(response);
+    if (response.data.insertedId) {
+      onePageBack();
+    }
+  };
+
+  const saveProfilePicture = async () => {
+    const formData = new FormData();
+    formData.append("avatarimage", profilePictureUpload);
+    // const file = {
+    //   profilePictureUpload,
+    // };
+
+    const response = await axios.put(apiLink + `/users/avatarimage`, formData, {
+      headers: {
+        token: "JWT " + userData.accessToken,
+      },
+      // body: formData,
+    });
+    console.log(response);
     if (response.data.insertedId) {
       onePageBack();
     }
@@ -131,6 +152,9 @@ const EditProfilePage = () => {
                 <DeleteButton onClick={handleProfilePicDelete}>
                   Cancel
                 </DeleteButton>
+                <SaveProfilePictureButton onClick={() => saveProfilePicture()}>
+                  Save
+                </SaveProfilePictureButton>
               </PreviewHeader>
               <ImgPreview src={ProfilePictureSrc} alt="" />
             </>

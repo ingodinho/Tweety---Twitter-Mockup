@@ -62,6 +62,19 @@ export const UserInfo = styled.div`
   }
 `;
 
+export const SaveProfilePictureButton = styled.button`
+  color: var(--clr-blue);
+  font-size: 1.4rem;
+  text-decoration: none;
+  left: var(--spacing-wrapper);
+  background: white;
+  border-radius: 20px;
+  border: none;
+  padding: 5px 10px;
+  font-size: 2.2rem;
+  font-weight: 800;
+`;
+
 // ####### EDIT PROFILE PICTURE & BANNER ##
 export const SpacingContainer = styled.div`
   padding: 2rem var(--spacing-wrapper);

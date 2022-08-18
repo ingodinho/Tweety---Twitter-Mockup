@@ -19,6 +19,25 @@ export const resizeAvatar = async ({ path, destination, filename }) => {
     })
 
 }
+export const resizeBanner = async ({ path, destination, filename }) => {
+    return new Promise(resolve => {
+
+        const inputFile = path;
+
+        const outputFile = `${destination}/banner${filename}`;
+
+        sharp(inputFile).resize({ width: 600 }).toFile(outputFile)
+            .then(function (newFileInfo) {
+                console.log("Success")
+                resolve(`${destination}/banner${filename}`);
+            })
+            .catch(function (err) {
+                console.log("Error occured while resizing image.");
+            });
+
+    })
+
+}
 
 
 
