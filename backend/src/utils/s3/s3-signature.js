@@ -20,7 +20,7 @@ export const generateSignedUrl = async (fileKey) => {
         });
         return url;
     } catch (err) {
-        return null;
+        return err;
     }
 };
 
