@@ -20,6 +20,7 @@ const TweetStats = ({stats, big, replies, retweets, id}) => {
             userId: userdata._id
         }
         const response = await axios.put(apiLink + '/tweets/like', data);
+        console.log(response)
         const currentLikesArray = [...tweetData.likes];
         let updatedLikesArray;
         if(tweetData.liked) {

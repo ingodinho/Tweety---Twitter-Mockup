@@ -2,7 +2,7 @@ import {atom, atomFamily} from 'recoil';
 
 export const loggedInUser = atom({
     key: 'loggedInUser',
-    default: ''
+    default: null
 })
 
 export const tweetStateFamily = atomFamily({
@@ -13,10 +13,12 @@ export const tweetStateFamily = atomFamily({
         lastEditedAt: null,
         likes: [],
         postedAt: null,
-        postedBy: null,
+        postedBy: {
+
+        },
         replies: [],
         replyTo: null,
         retweets: [],
-        _id: null
+        _id: null,
     }
 })

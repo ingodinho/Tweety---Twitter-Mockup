@@ -6,15 +6,16 @@ import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
 import {useRecoilValue} from "recoil";
 import {loggedInUser} from "../../utils/SharedStates";
+import LoadingPage from "../../shared/LoadingPage/LoadingPage";
 
 const Home = () => {
     const userData = useRecoilValue(loggedInUser);
     const [tweets, setTweets] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const getTweets = async () => {
-            if(!userData._id) return;
+            if (!userData) return;
             const tweetsFollowed = await axios.get(apiLink + `/tweets/followed/${userData._id}`);
             if (tweetsFollowed.data.result.length > 0) {
                 setTweets(tweetsFollowed.data.result);
@@ -22,23 +23,28 @@ const Home = () => {
                 const allTweets = await axios.get(apiLink + '/tweets/all');
                 setTweets(allTweets.data.result);
             }
-            setLoading(true);
+            setIsLoading(false);
         }
         getTweets();
-    }, [userData._id])
+    }, [userData])
 
-    return (
-        <>
-            <HomeHeader/>
-            <NewTweetButton/>
-            {loading && tweets.map((tweet =>
-                    <Tweet
-                        key={tweet._id}
-                        {...tweet}
-                    />
-            ))}
-        </>
-    )
+    if(isLoading) {
+        return <LoadingPage/>
+    }
+    else {
+        return (
+            <>
+                <HomeHeader/>
+                <NewTweetButton/>
+                {tweets.map((tweet =>
+                        <Tweet
+                            key={tweet._id}
+                            {...tweet}
+                        />
+                ))}
+            </>
+        )
+    }
 }
 
 export default Home;
