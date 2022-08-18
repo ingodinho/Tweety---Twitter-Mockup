@@ -26,21 +26,21 @@ import {useParams} from "react-router-dom";
 
 const Profile = () => {
     const userData = useRecoilValue(loggedInUser);
-    const {id: userId} = useParams();
+    const {id: profileId} = useParams();
     const [following, setFollowing] = useState(false);
-    const myProfile = userId === userData._id;
+    const myProfile = profileId === userData._id;
     const [tweets, setTweets] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
 
     useEffect(() => {
         const getTweets = async () => {
             const response = await axios.get(
-                apiLink + `/tweets/user/${userData._id}`
+                apiLink + `/tweets/user/${profileId}`
             );
             setTweets(response.data);
         };
         const getUserInfo = async () => {
-            const response = await axios.get(apiLink + `/users/profile/${userId}`, {
+            const response = await axios.get(apiLink + `/users/profile/${profileId}`, {
                 headers: {
                     token: "JWT " + userData.accessToken,
                 },
@@ -55,7 +55,7 @@ const Profile = () => {
     const handleFollow = async () => {
         const data = {
             userId: userData._id,
-            followUserId: userId
+            followUserId: profileId
         }
         const response = await axios.put(apiLink + '/users/follow', data);
         setFollowing(prev => !prev);
@@ -74,7 +74,7 @@ const Profile = () => {
                         Edit Profile
                     </EditProfile>}
                     {!myProfile &&
-                            <Follow onClick={handleFollow}>{following ? "Following" : 'Follow'}</Follow>
+                        <Follow onClick={handleFollow} following={following}>{following ? "Following" : 'Follow'}</Follow>
                     }
                 </UserInfo>
                 <div>
@@ -103,7 +103,6 @@ const Profile = () => {
             </UserWrapper>
             <ProfileTweets userId={userData._id}/>
             {tweets
-                .sort((a, b) => b.postedAt - a.postedAt)
                 .map((tweet) => (
                     <Tweet key={tweet._id} {...tweet} />
                 ))}
