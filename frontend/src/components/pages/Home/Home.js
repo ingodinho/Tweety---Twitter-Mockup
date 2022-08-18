@@ -31,7 +31,7 @@ const Home = () => {
         <>
             <HomeHeader/>
             <NewTweetButton/>
-            {loading && tweets.sort((a, b) => b.postedAt - a.postedAt).map((tweet =>
+            {loading && tweets.map((tweet =>
                     <Tweet
                         key={tweet._id}
                         {...tweet}

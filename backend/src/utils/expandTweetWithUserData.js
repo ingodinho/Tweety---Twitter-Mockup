@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import { generateSignedUrl } from "./s3/s3-signature.js";
 
 export const expandTweetWithUserData = async (tweetArray) => {
+
 	const userIds = tweetArray.map((tweet) => {
 		return ObjectId(tweet.postedBy);
 	});
