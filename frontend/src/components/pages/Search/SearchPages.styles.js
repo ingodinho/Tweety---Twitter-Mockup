@@ -5,7 +5,6 @@ export const HeaderWrapper = styled.header`
   top: 0;
   background-color: #fff;
   padding: 2rem var(--spacing-wrapper) 0.5rem var(--spacing-wrapper);
-  border-bottom: 1px solid var(--clr-line-grey);
 `;
 
 export const IconBar = styled.div`
@@ -26,4 +25,18 @@ export const SearchInput = styled.input`
   border-radius: 20px;
   border: 1px solid var(--clr-line-grey);
   font-size: 1.6rem;
+`;
+
+export const Menu = styled.section`
+  padding: 1rem var(--spacing-wrapper);
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
+  font-size: 1.6rem;
+  border-bottom: 1px solid var(--clr-line-grey);
+`;
+
+export const NavButtons = styled.span`
+  border-bottom: ${(props) =>
+    props.active ? "2px solid var(--clr-blue)" : "none"};
 `;
