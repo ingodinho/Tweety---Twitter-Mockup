@@ -8,6 +8,8 @@ import {
   IconBar,
   SearchInput,
   SearchLogo,
+  Menu,
+  NavButtons,
 } from "./SearchPages.styles";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -21,6 +23,15 @@ const SearchPage = () => {
   const [allTweets, setAllTweets] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentNav, setCurrentNav] = useState("searchedTweets");
+
+  const searchUsers = () => {
+    setCurrentNav("searchedUsers");
+  };
+
+  const searchTweets = () => {
+    setCurrentNav("searchedTweets");
+  };
 
   useEffect(() => {
     if (!search) {
@@ -60,15 +71,32 @@ const SearchPage = () => {
             <SearchLogo src={SearchLogoUrl} alt="Settings Logo" />
           </p>
         </IconBar>
-        <div>
-          {allTweets.length > 0 &&
-            allTweets.map((tweet) => <Tweet key={tweet._id} {...tweet} />)}
-        </div>
-
-        <div>
-          {allUsers.length > 0 &&
-            allUsers.map((tweet) => <Tweet key={tweet._id} {...tweet} />)}
-        </div>
+        <Menu>
+          <NavButtons
+            active={currentNav === "searchedTweets"}
+            onClick={() => searchTweets()}
+          >
+            Tweets
+          </NavButtons>
+          <NavButtons
+            active={currentNav === "searchedUsers"}
+            onClick={() => searchUsers()}
+          >
+            User
+          </NavButtons>
+        </Menu>
+        {currentNav === "searchedTweets" && (
+          <div>
+            {allTweets.length > 0 &&
+              allTweets.map((tweet) => <Tweet key={tweet._id} {...tweet} />)}
+          </div>
+        )}
+        {currentNav === "searchedUsers" && (
+          <div>
+            {allUsers.length > 0 &&
+              allUsers.map((tweet) => <Tweet key={tweet._id} {...tweet} />)}
+          </div>
+        )}
       </HeaderWrapper>
     );
   }
