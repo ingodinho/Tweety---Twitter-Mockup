@@ -1,6 +1,6 @@
 import GlobalStyles from "./GlobalStyles";
-import {useEffect} from "react";
-import {Routes, Route, useNavigate} from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 import Home from "./components/pages/Home/Home";
 import LoginPage from "./components/pages/Login/LoginPage";
@@ -11,25 +11,15 @@ import NewTweet from "./components/pages/NewTweet/NewTweet";
 import StartPage from "./components/pages/Start/StartPage";
 import Search from "./components/pages/Search/SearchPage";
 import EditProfile from "./components/pages/EditProfile/EditProfilePage";
-import {useRecoilState} from "recoil";
-import {loggedInUser} from "./components/utils/SharedStates";
+import { useRecoilState } from "recoil";
+import { loggedInUser } from "./components/utils/SharedStates";
 import ReplyTweet from "./components/pages/ReplyTweet/ReplyTweet";
 import AuthAndNav from "./components/shared/AuthAndNav/AuthAndNav";
 import Redirect from "./components/shared/Tweet/Redirect";
 
 function App() {
-    const navigator = useNavigate();
-    const [userData, setUserData] = useRecoilState(loggedInUser);
-
-    useEffect(() => {
-        if (userData) return;
-        const localUserData = JSON.parse(localStorage.getItem("userdata"));
-        if (localUserData) {
-            setUserData(localUserData);
-        } else {
-            navigator("/");
-        }
-    }, [userData]);
+	const navigator = useNavigate();
+	const [userData, setUserData] = useRecoilState(loggedInUser);
 
     return (
         <div className="App">

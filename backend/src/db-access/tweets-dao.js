@@ -43,7 +43,6 @@ const findAllTweetsOfFollowedUsers = async (userId) => {
     const db = await getDB();
     const foundUser = await db.collection("users").find({_id: ObjectId(userId)}).toArray();
     const followedUserIds = foundUser[0].following
-    console.log("FollowedUsers", followedUserIds);
     const repliesPackage = await db.collection(collectionName)
     .find({$and: [{postedBy: {$in: followedUserIds}}, {replyTo: null}]})
     .sort({postedAt: -1})
