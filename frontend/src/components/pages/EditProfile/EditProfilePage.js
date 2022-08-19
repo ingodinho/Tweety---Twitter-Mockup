@@ -3,8 +3,7 @@ import { apiLink } from "../../utils/apiLink";
 import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { placeHolderUser } from "../../placeholder";
-import UserPic from "../../../img/profileplaceholder.jpeg";
+import userPlaceHolderImg from "../../../img/profileplaceholder.png";
 import { loggedInUser } from "../../utils/SharedStates";
 import {
   Header,
@@ -32,7 +31,7 @@ import {
 
 const EditProfilePage = () => {
   const userData = useRecoilValue(loggedInUser);
-  const [userInfo, setUserInfo] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
   const [profilePictureUpload, setProfilePictureUpload] = useState(null);
   const [bannerUpload, setBannerUpload] = useState(null);
   const navigator = useNavigate();
@@ -43,20 +42,23 @@ const EditProfilePage = () => {
   const [editedBio, setEditedBio] = useState("");
   const [editedDob, setEditedDob] = useState("");
 
+  const fetchSettings = {
+    headers: {
+      token: "JWT " + userData.accessToken,
+    },
+  };
+
   useEffect(() => {
     const getUserInfo = async () => {
       const response = await axios.get(
         apiLink + `/users/profile/${userData._id}`,
-        {
-          headers: {
-            token: "JWT " + userData.accessToken,
-          },
-        }
+        fetchSettings
       );
-      setUserInfo(response);
+      setUserInfo(response.data);
+      console.log(response.data);
     };
     getUserInfo();
-  }, []);
+  }, [userData]);
 
   const handleProfilePictureUpload = (e) => {
     e.preventDefault();
@@ -95,11 +97,11 @@ const EditProfilePage = () => {
       bio: editedBio,
       dob: editedDob,
     };
-    const response = await axios.post(apiLink + `/users/edit`, data, {
-      headers: {
-        token: "JWT " + userData.accessToken,
-      },
-    });
+    const response = await axios.post(
+      apiLink + `/users/edit`,
+      data,
+      fetchSettings
+    );
     console.log(response);
     if (response.data.insertedId) {
       onePageBack();
@@ -111,16 +113,42 @@ const EditProfilePage = () => {
 
     formData.append("avatarimage", profilePictureUpload);
 
-    const response = await axios.put(apiLink + `/users/avatarimage`, formData, {
-      headers: {
-        token: "JWT " + userData.accessToken,
-      },
-    });
+    const response = await axios.put(
+      apiLink + `/users/avatarimage`,
+      formData,
+      fetchSettings
+    );
     console.log(response);
     if (response.data.insertedId) {
       onePageBack();
     }
   };
+
+  const saveProfileBanner = async () => {
+    const formData = new FormData();
+
+    formData.append("bannerimage", bannerUpload);
+
+    const response = await axios.put(
+      apiLink + `/users/bannerimage`,
+      formData,
+      fetchSettings
+    );
+    console.log(response);
+    if (response.data.insertedId) {
+      onePageBack();
+    }
+  };
+
+  useEffect(() => {
+    if (userInfo) {
+      setEditedUserName(userInfo.username);
+      setEditedFirstName(userInfo.firstName);
+      setEditedLastName(userInfo.lastName);
+      setEditedBio(userInfo.bio);
+      setEditedDob(userInfo.dob);
+    }
+  }, [userInfo]);
 
   return (
     <>
@@ -130,7 +158,7 @@ const EditProfilePage = () => {
         <SaveButton onClick={() => saveHandler()}>Save</SaveButton>
       </Header>
       <UserWrapper>
-        <Banner src={placeHolderUser.bannerLink} alt="Banner" />
+        <Banner src={userInfo.bannerPictureLink} alt="Banner" />
         <BannerInputButton type="file" onChange={handleBannerUpload} />
         {bannerUpload && (
           <>
@@ -138,7 +166,7 @@ const EditProfilePage = () => {
               <DeleteBannerButton onClick={handleBannerDelete}>
                 Cancel
               </DeleteBannerButton>
-              <SaveBannerButton /* onClick={() =>  saveProfilePicture()} */>
+              <SaveBannerButton onClick={() => saveProfileBanner()}>
                 Save
               </SaveBannerButton>
             </PreviewBanner>
@@ -146,7 +174,10 @@ const EditProfilePage = () => {
           </>
         )}
         <UserInfo>
-          <img src={UserPic} alt="User" />
+          <img
+            src={userInfo.profilePictureLink || userPlaceHolderImg}
+            alt="User"
+          />
           <SpacingContainer>
             <InputButton type="file" onChange={handleProfilePictureUpload} />
           </SpacingContainer>
