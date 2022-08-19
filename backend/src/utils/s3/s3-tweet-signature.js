@@ -11,7 +11,7 @@ const s3 = new S3({
 	secretAccessKey,
 });
 
-export const generateSignedUrl = async (fileKey) => {
+export const generateSignedTweetUrl = async (fileKey) => {
 	try {
 		const url = await s3.getSignedUrlPromise("getObject", {
 			Bucket: bucketName,
