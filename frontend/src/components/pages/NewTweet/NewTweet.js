@@ -38,11 +38,13 @@ const NewTweet = () => {
     }
 
     const tweetHandler = async () => {
-        const data = {
-            content: tweetContent,
-            userId: userData._id
-        }
-        const response = await axios.post(apiLink + `/tweets/newtweet`, data);
+        const formData = new FormData();
+        formData.append('tweetimage', fileUpload);
+        formData.append('content', tweetContent);
+
+        const response = await axios.post(apiLink + `/tweets/newtweet`, formData, {headers: {
+            token: `JWT ${userData.accessToken}`
+        }});
         if(response.data.insertedId) {
             onePageBack();
         }

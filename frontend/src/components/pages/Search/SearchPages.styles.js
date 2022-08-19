@@ -5,6 +5,7 @@ export const HeaderWrapper = styled.header`
   top: 0;
   background-color: #fff;
   padding: 2rem var(--spacing-wrapper) 0.5rem var(--spacing-wrapper);
+  margin-bottom: 6rem;
 `;
 
 export const IconBar = styled.div`

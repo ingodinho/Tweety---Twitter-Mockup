@@ -60,13 +60,23 @@ const ReplyTweet = () => {
     }
 
     const replyHandler = async () => {
-        const data = {
-            replyToId: tweetId,
-            content,
-            userId: userData._id
-        }
-        const response = await axios.post(apiLink + '/tweets/newreply', data);
+        const formData = new FormData();
+        formData.append('tweetimage', fileUpload);
+        formData.append('replyToId', tweetId);
+        formData.append('content', content);
+        // const data = {
+        //     replyToId: tweetId,
+        //     content,
+        //     userId: userData._id
+        // }
+        try{
+        const response = await axios.post(apiLink + '/tweets/newreply', formData, {headers: {token: 'JWT ' + userData.accessToken}});
+        console.log(response);
         navigator(`/tweet/${tweetId}`);
+        }
+        catch(err) {
+            console.log(err);
+        }
     }
 
     return (<>

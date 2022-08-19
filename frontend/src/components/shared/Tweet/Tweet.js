@@ -16,7 +16,6 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import {loggedInUser, tweetStateFamily} from "../../utils/SharedStates";
 
 const Tweet = (props) => {
-    console.log(props);
     const userData = useRecoilValue(loggedInUser);
     const [isLoading, setIsLoading] = useState(true);
     const [tweetData, setTweetData] = useRecoilState(tweetStateFamily(props._id));

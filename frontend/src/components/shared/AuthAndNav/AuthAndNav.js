@@ -6,6 +6,7 @@ import {useEffect} from "react";
 import SlideIn from "../SlideIn/SlideIn";
 
 const AuthAndNav = () => {
+
     const navigator = useNavigate();
     const userData = useRecoilValue(loggedInUser);
     useEffect(() => {
