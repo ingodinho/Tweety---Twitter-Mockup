@@ -1,4 +1,8 @@
 import express from 'express';
+import multer from 'multer';
+import fs from 'fs';
+import util from 'util';
+import { makeDoAuthMiddleware } from '../auth/doAuthMiddleware.js'
 import { postTweet } from '../use-cases/tweets/post-tweet.js';
 import { postReply } from '../use-cases/tweets/post-reply.js';
 import { findAll } from '../use-cases/tweets/show-feed.js';
@@ -10,8 +14,11 @@ import { delTweet } from '../use-cases/tweets/delete-tweet.js';
 import { findTweet } from '../use-cases/tweets/find-tweet-by-id.js';
 import { updateTweet } from '../use-cases/tweets/edit-tweet.js';
 import { likeTweet } from '../use-cases/tweets/like-tweet.js';
+import { resizeTweetImage } from '../utils/s3/sharp-resize.js'
 
 export const tweetsRouter = express.Router();
+
+const doAuthMiddlewareAccess = makeDoAuthMiddleware();
 
 tweetsRouter.get("/all", async (_, res) => {
 	try {
@@ -54,16 +61,41 @@ tweetsRouter.get("/followed/:userid", async (req, res) => {
 	}
 });
 
-tweetsRouter.post("/newtweet", async (req, res) => {
-	try {
-		const newTweets = await postTweet(req.body);
-		res.status(201).json(newTweets);
-	} catch (err) {
-		res
-			.status(500)
-			.json({ message: err.message || "500 internal server error" });
-	}
+
+// HIER MULTER als Middleware
+const tweetPicStorage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, "uploads/tweetPictures");
+	},
+	filename: function (req, file, cb) {
+		cb(null, Date.now() + "_tweet" + file.originalname); //Appending extension
+	},
 });
+
+const uploadTweetImage = multer({ storage: tweetPicStorage }).single(
+	"tweetimage"
+);
+
+const unlinkFile = util.promisify(fs.unlink);
+
+tweetsRouter.post(
+	"/newtweet",
+	doAuthMiddlewareAccess,
+	uploadTweetImage,
+	async (req, res) => {
+		try {
+			const userId = req.userClaims.sub;
+			const file = req.file;
+			const newTweets = await postTweet(req.body, userId);
+			const originalLocalFilePath = file.path;
+			res.status(201).json(newTweets);
+		} catch (err) {
+			res
+				.status(500)
+				.json({ message: err.message || "500 internal server error" });
+		}
+	}
+);
 
 
 tweetsRouter.post("/newreply", async (req, res) => {
