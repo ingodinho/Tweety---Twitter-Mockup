@@ -1,13 +1,10 @@
-import {Stats, StatsWrapper} from "./Tweet.styles";
-import CommentIcon from "../../../img/tweet-icons/Comment stroke icon.svg";
-import RetweetIcon from "../../../img/tweet-icons/Retweet stroke icon.svg";
-import HeartIcon from "../../../img/tweet-icons/Heart stroke icon.svg";
-import ShareIcon from "../../../img/tweet-icons/Share stroke icon.svg";
+import {CommentIcon, HeartIcon, RetweetIcon, ShareIcon, Stats, StatsWrapper} from "./Tweet.styles";
 import {useNavigate} from "react-router-dom";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {loggedInUser, tweetStateFamily} from "../../utils/SharedStates";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
+
 
 const TweetStats = ({stats, big, replies, retweets, id}) => {
     const [tweetData, setTweetData] = useRecoilState(tweetStateFamily(id));
@@ -20,7 +17,6 @@ const TweetStats = ({stats, big, replies, retweets, id}) => {
             userId: userdata._id
         }
         const response = await axios.put(apiLink + '/tweets/like', data);
-        console.log(response)
         const currentLikesArray = [...tweetData.likes];
         let updatedLikesArray;
         if(tweetData.liked) {
@@ -34,20 +30,20 @@ const TweetStats = ({stats, big, replies, retweets, id}) => {
 
     return (
         <StatsWrapper>
-            <Stats big={big}>
-                <img src={CommentIcon} alt='comment' onClick={() => navigator(`/reply/${id}`)}/>
+            <Stats>
+                <CommentIcon size={big ? 20 : 18} onClick={() => navigator(`/reply/${id}`)}/>
                 {stats && <span>{replies}</span>}
             </Stats>
             <Stats big={big}>
-                <img src={RetweetIcon} alt='comment'/>
+                <RetweetIcon size={big ? 20 : 18} />
                 {stats && <span>{retweets}</span>}
             </Stats>
-            <Stats big={big} liked={tweetData.liked}>
-                <img src={HeartIcon} alt='comment' onClick={() => likeHandler()}/>
+            <Stats big={big} >
+                <HeartIcon size={big ? 20 : 18} onClick={() => likeHandler()} liked={tweetData.liked}/>
                 {stats && <span>{tweetData.likes?.length}</span>}
             </Stats>
             <Stats big={big}>
-                <img src={ShareIcon} alt='comment'/>
+                <ShareIcon size={big ? 20 : 18}/>
             </Stats>
         </StatsWrapper>
     )

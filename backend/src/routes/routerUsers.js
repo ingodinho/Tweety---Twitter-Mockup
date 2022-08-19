@@ -10,7 +10,7 @@ import { makeDoAuthMiddleware } from "../auth/doAuthMiddleware.js";
 import { refreshUserToken } from "../use-cases/users/refresh-user-token.js";
 import { editUser } from "../use-cases/users/edit-user.js";
 import { uploadFile, deleteFile } from "../utils/s3/s3-profile.js";
-import { generateSignedUrl } from "../utils/s3/s3-signature.js";
+import { generateSignedUrl } from "../utils/s3/s3-avatar-signature.js";
 import { resizeAvatar, resizeBanner } from "../utils/s3/sharp-resize.js";
 import { followUser } from "../use-cases/users/follow-unfollow-user.js";
 import { changeUserAvatar } from "../use-cases/users/change-user-avatar.js";
@@ -18,6 +18,7 @@ import { changeUserBanner } from "../use-cases/users/change-user-banner.js";
 import { deleteUserAvatar } from "../use-cases/users/delete-user-avatar.js";
 import { sendAuthMail } from "../use-cases/users/send-auth-mail.js";
 import { verifyUser } from "../use-cases/users/verify-user.js";
+import { showUserProfileShort } from "../use-cases/users/show-user-profile-short.js";
 
 const doAuthMiddlewareAccess = makeDoAuthMiddleware();
 const doAuthMiddlewareRefresh = makeDoAuthMiddleware("refresh");
@@ -166,6 +167,18 @@ usersRouter.put(
 		}
 	}
 );
+
+usersRouter.get("/profileshort", doAuthMiddlewareAccess, async (req, res) => {
+	try {
+		const userId = req.userClaims.sub;
+		const result = await showUserProfileShort(userId);
+		res.status(200).json(result);
+	} catch (err) {
+		res.status(404).json({
+			message: err.message || "404 not found",
+		});
+	}
+});
 
 usersRouter.delete(
 	"/avatarimage/:key",

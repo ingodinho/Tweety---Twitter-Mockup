@@ -21,6 +21,7 @@ import {apiLink} from "../../utils/apiLink";
 import {useRecoilState, useRecoilValue} from "recoil";
 import {loggedInUser, tweetStateFamily} from "../../utils/SharedStates";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
+import BackButton from "../../shared/BackButton";
 
 const TweetDetails = () => {
     const {id} = useParams();
@@ -52,8 +53,8 @@ const TweetDetails = () => {
     } else {
         return (
             <>
+                <BackButton path={-1}/>
                 <Header>
-                    <HomeLink to={'/home'}>Back</HomeLink>
                     <Headline>Tweet</Headline>
                 </Header>
                 <Wrapper>
