@@ -70,7 +70,6 @@ const Profile = () => {
       setUserInfo(response.data);
       setFollowing(response.data.followedBy.includes(userData._id));
       setIsLoading(false);
-      console.log(response.data);
     };
     getTweets();
     getUserInfo();

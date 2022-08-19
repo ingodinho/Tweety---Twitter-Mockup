@@ -21,6 +21,16 @@ function App() {
 	const navigator = useNavigate();
 	const [userData, setUserData] = useRecoilState(loggedInUser);
 
+    useEffect(() => {
+        if (userData) return;
+        const localUserData = JSON.parse(localStorage.getItem("userdata"));
+        if (localUserData) {
+            setUserData(localUserData);
+        } else {
+            navigator("/");
+        }
+    }, [userData]);
+
     return (
         <div className="App">
             <Routes>
