@@ -20,10 +20,12 @@ import {apiLink} from "../../utils/apiLink";
 import {useRecoilValue} from "recoil";
 import {loggedInUser} from "../../utils/SharedStates";
 import Tweet from "../../shared/Tweet/Tweet";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
+import BackButton from "../../shared/BackButton";
 
 const Profile = () => {
+    const navigator = useNavigate();
     const userData = useRecoilValue(loggedInUser);
     const {id: profileId} = useParams();
     const [following, setFollowing] = useState(false);
@@ -85,7 +87,7 @@ const Profile = () => {
         return (
             <>
                 <header>
-                    <HomeLink to={"/home"}>BACK</HomeLink>
+                    <BackButton path={'/home'}/>
                     <Banner src={userInfo.bannerPictureLink} alt="Banner"/>
                 </header>
                 <UserWrapper>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Link} from "react-router-dom";
-import CameraIcon from "../../../img/tweet-icons/Camera icon.svg";
+import CameraIcon from "../../../img/tweet-icons/Camera icon small.svg";
 
 export const Wrapper = styled.article`
   display: flex;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {Reply, Heart, Retweet, Share} from 'styled-icons/entypo';
 
 export const Wrapper = styled.article`
   display: flex;
@@ -66,6 +67,21 @@ export const Stats = styled.div`
 
   img {
     width: ${p => p.big ? 18 : 15}px;
-    background-color: ${p => p.liked && 'red'};
+    background-color: ${p => p.liked && 'tomato'};
   }
 `;
+
+export const CommentIcon = styled(Reply)`
+    
+`
+export const RetweetIcon = styled(Retweet)`
+    
+`
+
+export const HeartIcon = styled(Heart)`
+  transition: all 300ms linear;
+  color: ${p => p.liked && 'red'};
+`
+
+export const ShareIcon = styled(Share)`
+`

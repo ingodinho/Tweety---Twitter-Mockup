@@ -1,4 +1,4 @@
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
@@ -15,12 +15,12 @@ import {
     UserPic,
     Wrapper
 } from "./ReplyTweet.styles";
-import PlaceHolderImg from "../../../img/profileplaceholder.jpeg";
 import {placeHolderUser} from "../../placeholder";
 import Moment from "react-moment";
 import {ButtonSmall} from "../../../styles/Buttons";
 import {useRecoilValue} from "recoil";
 import {loggedInUser} from "../../utils/SharedStates";
+import ProfilePic from "../../shared/ProfilePic";
 
 const ReplyTweet = () => {
     const userData = useRecoilValue(loggedInUser);
@@ -34,7 +34,6 @@ const ReplyTweet = () => {
     useEffect(() => {
         const getTweet = async () => {
             const response = await axios.get(apiLink + `/tweets/details/${tweetId}`);
-            console.log(response)
             setTweet(response.data.tweetDetails[0]);
             setLoading(true);
         }
@@ -97,7 +96,7 @@ const ReplyTweet = () => {
                     </TweetWrapper>
                 </Wrapper>
                 <Wrapper>
-                    <UserPic src={PlaceHolderImg} alt={'Profile Pic'}/>
+                    <ProfilePic size={'big'}/>
                     <TextField placeholder={'Tweet your reply'} value={content}
                                onChange={e => setContent(e.target.value)}/>
                 </Wrapper>

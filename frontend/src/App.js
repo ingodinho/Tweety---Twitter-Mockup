@@ -14,7 +14,7 @@ import EditProfile from "./components/pages/EditProfile/EditProfilePage";
 import {useRecoilState} from "recoil";
 import {loggedInUser} from "./components/utils/SharedStates";
 import ReplyTweet from "./components/pages/ReplyTweet/ReplyTweet";
-import AuthRequired from "./components/shared/AuthRequired";
+import AuthAndNav from "./components/shared/AuthAndNav/AuthAndNav";
 import Redirect from "./components/shared/Tweet/Redirect";
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
     return (
         <div className="App">
             <Routes>
-                <Route element={<AuthRequired/>}>
+                <Route element={<AuthAndNav/>}>
                     <Route path={"/home"} element={<Home/>}/>
                     <Route path={"/search"} element={<Search/>}/>
                     <Route path={"/tweet/:id"} element={<TweetDetails/>}/>

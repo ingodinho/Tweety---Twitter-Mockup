@@ -1,10 +1,10 @@
 import BottomNav from "./BottomNav";
 import {Outlet, useNavigate} from "react-router-dom";
 import {useRecoilValue} from "recoil";
-import {loggedInUser} from "../utils/SharedStates";
+import {loggedInUser} from "../../utils/SharedStates";
 import {useEffect} from "react";
 
-const AuthRequired = () => {
+const AuthAndNav = () => {
     const navigator = useNavigate();
     const userData = useRecoilValue(loggedInUser);
     useEffect(() => {
@@ -19,4 +19,4 @@ const AuthRequired = () => {
     </>)
 }
 
-export default AuthRequired;
+export default AuthAndNav;
