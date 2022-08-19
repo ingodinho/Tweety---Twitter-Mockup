@@ -39,6 +39,26 @@ export const resizeBanner = async ({ path, destination, filename }) => {
 
 }
 
+export const resizeTweetImage = async ({ path, destination, filename }) => {
+    return new Promise(resolve => {
+
+        const inputFile = path;
+
+        const outputFile = `${destination}/tweetimage${filename}`;
+
+        sharp(inputFile).resize({ width: 680 }).toFile(outputFile)
+            .then(function (newFileInfo) {
+                console.log("Success")
+                resolve(`${destination}/tweetimage${filename}`);
+            })
+            .catch(function (err) {
+                console.log("Error occured while resizing image.");
+            });
+
+    })
+
+}
+
 
 
 

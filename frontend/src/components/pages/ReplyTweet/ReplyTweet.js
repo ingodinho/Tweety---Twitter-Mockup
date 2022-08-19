@@ -29,11 +29,14 @@ const ReplyTweet = () => {
     const [tweet, setTweet] = useState({});
     const [fileUpload, setFileUpload] = useState();
     const [content, setContent] = useState('');
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const getTweet = async () => {
             const response = await axios.get(apiLink + `/tweets/details/${tweetId}`);
+            console.log(response)
             setTweet(response.data.tweetDetails[0]);
+            setLoading(true);
         }
         getTweet()
     }, [])
@@ -68,45 +71,50 @@ const ReplyTweet = () => {
     }
 
     return (<>
-            <Header>
-                <Cancel onClick={() => onePageBack()}>Cancel</Cancel>
-                <ButtonSmall onClick={()=> replyHandler()}>Reply</ButtonSmall>
-            </Header>
-            <Wrapper>
-                <UserPic src={PlaceHolderImg} alt='Profile Pic' onClick={() => toProfile(tweet.postedBy)}/>
-                <TweetWrapper>
-                    <UserInfo onClick={() => toProfile(tweet.postedBy)}>
-                        <p>
-                            {placeHolderUser.firstName} {placeHolderUser.lastName}
-                        </p>
-                        <span>@{placeHolderUser.userName}</span>
-                        <span>
+            {loading && <>
+                <Header>
+                    <Cancel onClick={() => onePageBack()}>Cancel</Cancel>
+                    <ButtonSmall onClick={() => replyHandler()}>Reply</ButtonSmall>
+                </Header>
+                <Wrapper>
+                    <UserPic src={tweet.postedBy.profilePictureLink} alt='Profile Pic'
+                             onClick={() => toProfile(tweet.postedBy)}/>
+                    <TweetWrapper>
+                        <UserInfo onClick={() => toProfile(tweet.postedBy)}>
+                            <p>
+                                {tweet.postedBy.firstName} {tweet.postedBy.lastName}
+                            </p>
+                            <span>@{tweet.postedBy.userName}</span>
+                            <span>
 						&#183; <Moment fromNow>{tweet.postedAt}</Moment>
 					</span>
-                    </UserInfo>
-                    <Content>
-                        <Text>{tweet.content}</Text>
-                        {tweet.imgLink && <Img src={tweet.imgLink}/>}
-                    </Content>
-                    <ReplyTo>Replying to <UserLink to={'/'}>@{[placeHolderUser.userName]}</UserLink> </ReplyTo>
-                </TweetWrapper>
-            </Wrapper>
-            <Wrapper>
-                <UserPic src={PlaceHolderImg} alt={'Profile Pic'}/>
-                <TextField placeholder={'Tweet your reply'} value={content} onChange={e => setContent(e.target.value)}/>
-            </Wrapper>
-            <SpacingContainer>
-                <InputButton type="file" onChange={handleUpload}/>
-            </SpacingContainer>
-            <SpacingContainer>
-                {fileUpload && <>
-                    <PreviewHeader>
-                        <PreviewHeadline>Preview</PreviewHeadline>
-                        <DeleteButton onClick={handleDelete}>Cancel</DeleteButton>
-                    </PreviewHeader>
-                    <ImgPreview src={imgSrc} alt=""/>
-                </>}
-            </SpacingContainer>
+                        </UserInfo>
+                        <Content>
+                            <Text>{tweet.content}</Text>
+                            {tweet.imgLink && <Img src={tweet.imgLink}/>}
+                        </Content>
+                        <ReplyTo>Replying to <UserLink to={'/'}>@{[placeHolderUser.userName]}</UserLink> </ReplyTo>
+                    </TweetWrapper>
+                </Wrapper>
+                <Wrapper>
+                    <UserPic src={PlaceHolderImg} alt={'Profile Pic'}/>
+                    <TextField placeholder={'Tweet your reply'} value={content}
+                               onChange={e => setContent(e.target.value)}/>
+                </Wrapper>
+                <SpacingContainer>
+                    <InputButton type="file" onChange={handleUpload}/>
+                </SpacingContainer>
+                <SpacingContainer>
+                    {fileUpload && <>
+                        <PreviewHeader>
+                            <PreviewHeadline>Preview</PreviewHeadline>
+                            <DeleteButton onClick={handleDelete}>Cancel</DeleteButton>
+                        </PreviewHeader>
+                        <ImgPreview src={imgSrc} alt=""/>
+                    </>}
+                </SpacingContainer>
+            </>
+            }
         </>
     )
 }

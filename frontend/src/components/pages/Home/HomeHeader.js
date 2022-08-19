@@ -2,9 +2,20 @@ import styled from "styled-components";
 import ProfilePic from "../../shared/ProfilePic";
 import BirdLogoUrl from "../../../img/icons/Bird Logo.svg";
 import FeatureIcon from "../../../img/icons/Feature stroke icon.svg";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useSetRecoilState} from "recoil";
+import {loggedInUser} from "../../utils/SharedStates";
 
 const HomeHeader = () => {
+    const navigator = useNavigate();
+    const setUserData = useSetRecoilState(loggedInUser);
+
+    const logoutHandler = () => {
+        setUserData({});
+        localStorage.clear();
+        navigator('/')
+    }
+
   return (
     <HeaderWrapper>
       <IconBar>
@@ -12,7 +23,7 @@ const HomeHeader = () => {
         <Link to={"/home"}>
           <BirdLogo src={BirdLogoUrl} alt="Bird Logo" />
         </Link>
-        <img src={FeatureIcon} alt="Feature Icon" />
+        <img onClick={logoutHandler} src={FeatureIcon} alt="Feature Icon" />
       </IconBar>
     </HeaderWrapper>
   );

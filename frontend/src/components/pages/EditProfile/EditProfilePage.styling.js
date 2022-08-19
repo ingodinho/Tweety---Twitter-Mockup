@@ -62,19 +62,6 @@ export const UserInfo = styled.div`
   }
 `;
 
-export const SaveProfilePictureButton = styled.button`
-  color: var(--clr-blue);
-  font-size: 1.4rem;
-  text-decoration: none;
-  left: var(--spacing-wrapper);
-  background: white;
-  border-radius: 20px;
-  border: none;
-  padding: 5px 10px;
-  font-size: 2.2rem;
-  font-weight: 800;
-`;
-
 // ####### EDIT PROFILE PICTURE & BANNER ##
 export const SpacingContainer = styled.div`
   padding: 2rem var(--spacing-wrapper);
@@ -119,6 +106,18 @@ export const DeleteButton = styled.button`
   color: var(--clr-red);
   border: none;
   background: none;
+`;
+
+export const SaveProfilePictureButton = styled.button`
+  color: var(--clr-blue);
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-decoration: none;
+  z-index: 1;
+  position: absolute;
+  right: 73vw;
+  background: none;
+  border: none;
 `;
 
 export const ImgPreview = styled.img`
@@ -171,14 +170,27 @@ export const BannerPreview = styled.img`
 
 export const DeleteBannerButton = styled.button`
   position: absolute;
-  top: -2vh;
-  right: 47vw;
+  top: -7vh;
+  right: 55vw;
   z-index: 1;
   font-size: 1.6rem;
   font-weight: 800;
   color: var(--clr-red);
   border: none;
   background: none;
+`;
+
+export const SaveBannerButton = styled.button`
+  color: var(--clr-blue);
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-decoration: none;
+  z-index: 1;
+  position: absolute;
+  top: -7vh;
+  right: 40vw;
+  background: none;
+  border: none;
 `;
 
 // ####### EDIT -> INPUT SECTION ##########

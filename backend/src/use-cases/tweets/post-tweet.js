@@ -1,7 +1,7 @@
 import TweetsDAO from "../../db-access/tweets-dao.js";
 import { makeTweet } from "../../domain/Tweet.js";
 
-export const postTweet = async ({ content, userId }) => {
+export const postTweet = async ({ content }, userId) => {
 	const tweet = makeTweet({
 		content,
 		postedBy: userId,
