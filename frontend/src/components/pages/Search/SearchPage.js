@@ -58,28 +58,6 @@ const SearchPage = () => {
         }
     }, [searchToggle, userData]);
 
-    if (isLoading) {
-        return <LoadingPage/>;
-    } else {
-        return (
-            <HeaderWrapper>
-                <IconBar>
-                    <ProfilePic size={"small"}/>
-                    <SearchInput
-                        placeholder="🔍 Search Tweetie"
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <p onClick={() => setSearchToggle((prev) => !prev)}>
-                        <SearchLogo src={SearchLogoUrl} alt="Settings Logo"/>
-                    </p>
-                </IconBar>
-                {search && <div>
-                    <ul>
-                        <li>Tweets</li>
-                        <li>User</li>
-                    </ul>
-                </div>}
-
 
   if (isLoading) {
     return <LoadingPage />;
