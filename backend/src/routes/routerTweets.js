@@ -15,6 +15,7 @@ import { findTweet } from "../use-cases/tweets/find-tweet-by-id.js";
 import { updateTweet } from "../use-cases/tweets/edit-tweet.js";
 import { likeTweet } from "../use-cases/tweets/like-tweet.js";
 import { resizeTweetImage } from "../utils/s3/sharp-resize.js";
+import { uploadFile } from "../utils/s3/s3-tweet.js";
 
 export const tweetsRouter = express.Router();
 
@@ -84,10 +85,20 @@ tweetsRouter.post(
 	async (req, res) => {
 		try {
 			const userId = req.userClaims.sub;
-			const file = req.file;
-			const newTweets = await postTweet(req.body, userId);
-			const originalLocalFilePath = file.path;
-			res.status(201).json(newTweets);
+			if (req.file) {
+				const file = req.file;
+				const originalLocalFilePath = file.path;
+				const newLocalFilePath = await resizeTweetImage(file);
+				const awsAnswer = await uploadFile(newLocalFilePath, file);
+				const s3Key = awsAnswer.key;
+				const newTweet = await postTweet(req.body, userId, s3Key);
+				await unlinkFile(originalLocalFilePath);
+				await unlinkFile(newLocalFilePath);
+				res.status(201).json(newTweet);
+			} else {
+				const newTweet = await postTweet(req.body, userId);
+				res.status(201).json(newTweet);
+			}
 		} catch (err) {
 			res.status(500).json({
 				message: err.message || "500 internal server error",
