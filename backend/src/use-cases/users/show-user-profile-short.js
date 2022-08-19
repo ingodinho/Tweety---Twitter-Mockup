@@ -1,5 +1,5 @@
 import UserDAO from "../../db-access/users-dao.js";
-import { generateSignedUrl } from "../../utils/s3/s3-avatar-signature.js";
+import { generateSignedAvatarUrl } from "../../utils/s3/s3-avatar-signature.js";
 
 export const showUserProfileShort = async (userId) => {
 	console.log(userId);
@@ -9,7 +9,7 @@ export const showUserProfileShort = async (userId) => {
 	}
 	console.log(foundUser);
 	const avatarKey = foundUser.profilePictureLink;
-	const avatarLink = await generateSignedUrl(avatarKey);
+	const avatarLink = await generateSignedAvatarUrl(avatarKey);
 
 	return {
 		username: foundUser.username,

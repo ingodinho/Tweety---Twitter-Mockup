@@ -107,16 +107,34 @@ tweetsRouter.post(
 	}
 );
 
-tweetsRouter.post("/newreply", async (req, res) => {
-	try {
-		const newReply = await postReply(req.body);
-		res.status(201).json(newReply);
-	} catch (err) {
-		res.status(500).json({
-			message: err.message || "500 internal server error",
-		});
+tweetsRouter.post(
+	"/newreply",
+	doAuthMiddlewareAccess,
+	uploadTweetImage,
+	async (req, res) => {
+		try {
+			const userId = req.userClaims.sub;
+			if (req.file) {
+				const file = req.file;
+				const originalLocalFilePath = file.path;
+				const newLocalFilePath = await resizeTweetImage(file);
+				const awsAnswer = await uploadFile(newLocalFilePath, file);
+				const s3Key = awsAnswer.key;
+				const newTweet = await postReply(req.body, userId, s3Key);
+				await unlinkFile(originalLocalFilePath);
+				await unlinkFile(newLocalFilePath);
+				res.status(201).json(newTweet);
+			} else {
+				const newReply = await postReply(req.body, userId);
+				res.status(201).json(newReply);
+			}
+		} catch (err) {
+			res.status(500).json({
+				message: err.message || "500 internal server error",
+			});
+		}
 	}
-});
+);
 
 tweetsRouter.get("/liked/:userid", async (req, res) => {
 	try {
