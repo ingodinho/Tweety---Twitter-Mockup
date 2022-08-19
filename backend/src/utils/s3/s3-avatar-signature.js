@@ -6,12 +6,12 @@ const accessKeyId = process.env.AWS_URL_SIGNER_ACCESS_KEY;
 const secretAccessKey = process.env.AWS_URL_SIGNER_SECRET_KEY;
 
 const s3 = new S3({
-    region,
-    accessKeyId,
-    secretAccessKey,
+	region,
+	accessKeyId,
+	secretAccessKey,
 });
 
-export const generateSignedUrl = async (fileKey) => {
+export const generateSignedAvatarUrl = async (fileKey) => {
 	try {
 		const url = await s3.getSignedUrlPromise("getObject", {
 			Bucket: bucketName,

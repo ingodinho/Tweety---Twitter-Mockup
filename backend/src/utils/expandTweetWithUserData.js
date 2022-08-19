@@ -1,6 +1,7 @@
 import UsersDAO from "../db-access/users-dao.js";
 import { ObjectId } from "mongodb";
-import { generateSignedUrl } from "./s3/s3-tweet-signature.js";
+import { generateSignedAvatarUrl } from "../utils/s3/s3-avatar-signature.js";
+import { generateSignedTweetUrl } from "../utils/s3/s3-tweet-signature.js";
 
 export const expandTweetWithUserData = async (tweetArray) => {
 	const userIds = tweetArray.map((tweet) => {
@@ -12,8 +13,8 @@ export const expandTweetWithUserData = async (tweetArray) => {
 		userData.map(async (user) => {
 			const avatarKey = user.profilePictureLink;
 			const bannerKey = user.bannerPictureLink;
-			const avatarLink = await generateSignedUrl(avatarKey);
-			const bannerLink = await generateSignedUrl(bannerKey);
+			const avatarLink = await generateSignedAvatarUrl(avatarKey);
+			const bannerLink = await generateSignedAvatarUrl(bannerKey);
 			user.profilePictureLink = avatarLink;
 			user.bannerPictureLink = bannerLink;
 			return user;
@@ -23,7 +24,7 @@ export const expandTweetWithUserData = async (tweetArray) => {
 	const updatedTweetArray = await Promise.all(
 		tweetArray.map(async (tweet) => {
 			const tweetImageKey = tweet.imgLink;
-			const tweetImgLink = await generateSignedUrl(tweetImageKey);
+			const tweetImgLink = await generateSignedTweetUrl(tweetImageKey);
 			tweet.imgLink = tweetImgLink;
 			return tweet;
 		})
