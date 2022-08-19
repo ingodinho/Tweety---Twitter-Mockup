@@ -23,18 +23,22 @@ import { apiLink } from "../../utils/apiLink";
 import { useRecoilValue } from "recoil";
 import { loggedInUser } from "../../utils/SharedStates";
 import Tweet from "../../shared/Tweet/Tweet";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
+import BackButton from "../../shared/BackButton";
 
 const Profile = () => {
-  const userData = useRecoilValue(loggedInUser);
-  const { id: profileId } = useParams();
-  const [following, setFollowing] = useState(false);
-  const myProfile = profileId === userData._id;
-  const [tweets, setTweets] = useState([]);
-  const [userInfo, setUserInfo] = useState({});
-  const [currentNav, setCurrentNav] = useState("userTweets");
-  const [isLoading, setIsLoading] = useState(true);
+
+    const navigator = useNavigate();
+    const userData = useRecoilValue(loggedInUser);
+    const {id: profileId} = useParams();
+    const [following, setFollowing] = useState(false);
+    const myProfile = profileId === userData._id;
+    const [tweets, setTweets] = useState([]);
+    const [userInfo, setUserInfo] = useState({});
+    const [currentNav, setCurrentNav] = useState('userTweets');
+    const [isLoading, setIsLoading] = useState(true);
+
 
   const fetchSettings = {
     headers: {
@@ -89,78 +93,65 @@ const Profile = () => {
     setCurrentNav("likedTweets");
   };
 
-  if (isLoading) {
-    return <LoadingPage />;
-  } else {
-    return (
-      <>
-        <header>
-          <HomeLink to={"/home"}>BACK</HomeLink>
-          <Banner src={userInfo.bannerPictureLink} alt="Banner" />
-        </header>
-        <UserWrapper>
-          <UserInfo>
-            <img
-              src={userInfo.profilePictureLink || userPlaceHolderImg}
-              alt="User"
-            />
-            {myProfile && (
-              <EditProfile to={`/profile/${userData._id}/edit`}>
-                Edit Profile
-              </EditProfile>
-            )}
-            {!myProfile && (
-              <Follow onClick={handleFollow} following={following}>
-                {following ? "Following" : "Follow"}
-              </Follow>
-            )}
-          </UserInfo>
-          <div>
-            <Name>
-              {userInfo.firstName} {userInfo.lastName}
-            </Name>
-            <UserName>@{userInfo.username}</UserName>
-            <Bio>{userInfo?.bio}</Bio>
-          </div>
-          <div>
-            <Date>
-              Joined <Moment format={"MMMM YYYY"}>{userInfo.createdAt}</Moment>
-            </Date>
-          </div>
-          <FollowerWrapper>
-            <FollowerStats>
-              <p>{userInfo.following?.length}</p>
-              <span>Following</span>
-            </FollowerStats>
-            <FollowerStats>
-              <p>{userInfo.followedBy?.length}</p>
-              <span>
-                {userInfo.followedBy?.length === 1 ? "Follower" : "Followers"}
-              </span>
-            </FollowerStats>
-          </FollowerWrapper>
-        </UserWrapper>
-        <Menu>
-          <NavButtons
-            active={currentNav === "userTweets"}
-            onClick={() => showUserTweets()}
-          >
-            Tweets
-          </NavButtons>
-          <NavButtons
-            active={currentNav === "likedTweets"}
-            onClick={() => showLikedTweets()}
-          >
-            Likes
-          </NavButtons>
-        </Menu>
-        {tweets.map((tweet) => (
-          <Tweet key={tweet._id} {...tweet} />
-        ))}
-        <NewTweetButton />
-      </>
-    );
-  }
+    if (isLoading) {
+        return <LoadingPage/>
+    } else {
+
+        return (
+            <>
+                <header>
+                    <BackButton path={'/home'}/>
+                    <Banner src={userInfo.bannerPictureLink} alt="Banner"/>
+                </header>
+                <UserWrapper>
+                    <UserInfo>
+                        <img src={userInfo.profilePictureLink || userPlaceHolderImg} alt="User"/>
+                        {myProfile && <EditProfile to={`/profile/${userData._id}/edit`}>
+                            Edit Profile
+                        </EditProfile>}
+                        {!myProfile &&
+                            <Follow onClick={handleFollow}
+                                    following={following}>{following ? "Following" : 'Follow'}</Follow>
+                        }
+                    </UserInfo>
+                    <div>
+                        <Name>
+                            {userInfo.firstName} {userInfo.lastName}
+                        </Name>
+                        <UserName>@{userInfo.username}</UserName>
+                        <Bio>{userInfo?.bio}</Bio>
+                    </div>
+                    <div>
+                        <Date>
+                            Joined{" "}
+                            <Moment format={"MMMM YYYY"}>{userInfo.createdAt}</Moment>
+                        </Date>
+                    </div>
+                    <FollowerWrapper>
+                        <FollowerStats>
+                            <p>{userInfo.following?.length}</p>
+                            <span>Following</span>
+                        </FollowerStats>
+                        <FollowerStats>
+                            <p>{userInfo.followedBy?.length}</p>
+                            <span>{userInfo.followedBy?.length === 1 ? 'Follower' : 'Followers'}</span>
+                        </FollowerStats>
+                    </FollowerWrapper>
+                </UserWrapper>
+                <Menu>
+                    <NavButtons active={currentNav === 'userTweets'}
+                                onClick={() => showUserTweets()}>Tweets</NavButtons>
+                    <NavButtons active={currentNav === 'likedTweets'}
+                                onClick={() => showLikedTweets()}>Likes</NavButtons>
+                </Menu>
+                {tweets
+                    .map((tweet) => (
+                        <Tweet key={tweet._id} {...tweet} />
+                    ))}
+                <NewTweetButton/>
+            </>
+        );
+    }
 };
 
 export default Profile;

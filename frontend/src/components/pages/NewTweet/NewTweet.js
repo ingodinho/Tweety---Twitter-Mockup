@@ -1,6 +1,6 @@
 import {
     Cancel, DeleteButton,
-    Header, ImgPreview, ImgWrapper,
+    Header, ImgPreview,
     InputButton, PreviewHeader, PreviewHeadline,
     SpacingContainer,
     TextField,

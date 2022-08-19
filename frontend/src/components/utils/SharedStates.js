@@ -5,6 +5,11 @@ export const loggedInUser = atom({
     default: null
 })
 
+export const slideInMenu = atom({
+    key: 'slideInMenu',
+    default: false
+})
+
 export const tweetStateFamily = atomFamily({
     key: 'tweetsFamily',
     default: {

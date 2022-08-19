@@ -14,50 +14,35 @@ import EditProfile from "./components/pages/EditProfile/EditProfilePage";
 import { useRecoilState } from "recoil";
 import { loggedInUser } from "./components/utils/SharedStates";
 import ReplyTweet from "./components/pages/ReplyTweet/ReplyTweet";
-import AuthRequired from "./components/shared/AuthRequired";
+import AuthAndNav from "./components/shared/AuthAndNav/AuthAndNav";
 import Redirect from "./components/shared/Tweet/Redirect";
 
 function App() {
 	const navigator = useNavigate();
 	const [userData, setUserData] = useRecoilState(loggedInUser);
 
-	// localStorage.clear();
-
-	useEffect(() => {
-		if (userData) return;
-		const localUserData = JSON.parse(localStorage.getItem("userdata"));
-		if (localUserData) {
-			setUserData(localUserData);
-		} else {
-			navigator("/");
-		}
-	}, [userData]);
-
-	return (
-		<div className="App">
-			<Routes>
-				<Route element={<AuthRequired />}>
-					<Route path={"/home"} element={<Home />} />
-					<Route path={"/search"} element={<Search />} />
-					<Route path={"/tweet/:id"} element={<TweetDetails />} />
-					<Route path={"/profile/:id"} element={<Profile />} />
-					<Route
-						path={"/profile/:id/edit"}
-						element={<EditProfile />}
-					/>
-					<Route path={"/newtweet"} element={<NewTweet />} />
-					<Route path={"/reply/:id"} element={<ReplyTweet />} />
-				</Route>
-				<Route element={<Redirect />}>
-					<Route path={"/"} element={<StartPage />} />
-					<Route path={"/login"} element={<LoginPage />} />
-					<Route path={"/register"} element={<RegisterPage />} />
-				</Route>
-				<Route path={"*"} element={<h1>Page not Found</h1>}></Route>
-			</Routes>
-			<GlobalStyles />
-		</div>
-	);
+    return (
+        <div className="App">
+            <Routes>
+                <Route element={<AuthAndNav/>}>
+                    <Route path={"/home"} element={<Home/>}/>
+                    <Route path={"/search"} element={<Search/>}/>
+                    <Route path={"/tweet/:id"} element={<TweetDetails/>}/>
+                    <Route path={"/profile/:id"} element={<Profile/>}/>
+                    <Route path={"/profile/:id/edit"} element={<EditProfile/>}/>
+                    <Route path={"/newtweet"} element={<NewTweet/>}/>
+                    <Route path={"/reply/:id"} element={<ReplyTweet/>}/>
+                </Route>
+                <Route element={<Redirect/>}>
+                    <Route path={"/"} element={<StartPage/>}/>
+                    <Route path={"/login"} element={<LoginPage/>}/>
+                    <Route path={"/register"} element={<RegisterPage/>}/>
+                </Route>
+                <Route path={'*'} element={<h1>Page not Found</h1>}></Route>
+            </Routes>
+            <GlobalStyles/>
+        </div>
+    );
 }
 
 export default App;
