@@ -34,3 +34,16 @@ export const ButtonLogin = styled.button`
   border-radius: 30px;
   border: 1px solid var(--clr-line-grey);
 `;
+
+export const ButtonFollow = styled.button`
+  display: block;
+  color: ${props => props.following ? '#fff' : 'var(--clr-blue)'};
+  padding: 0.4rem 0;
+  width: ${props => props.size === 'big' ? '8rem' : '7rem'};
+  align-self: center;
+  text-decoration: none;
+  font-size: ${props => props.size === 'big' ? '1.4rem' : '1rem'};
+  background: ${props => props.following ? 'var(--clr-blue)' : '#fff'};
+  border: 1px solid var(--clr-blue);
+  border-radius: 16px;
+`

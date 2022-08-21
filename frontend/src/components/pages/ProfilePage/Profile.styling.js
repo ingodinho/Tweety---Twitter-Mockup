@@ -48,18 +48,6 @@ export const EditProfile = styled(Link)`
   border-radius: 16px;
 `
 
-export const Follow = styled.button`
-  color: ${props => props.following ? '#fff' : 'var(--clr-blue)'};
-  padding: 0.4rem 0;
-  width: 7.5rem;
-  align-self: center;
-  text-decoration: none;
-  font-size: 1.4rem;
-  background: ${props => props.following ? 'var(--clr-blue)' : '#fff'};
-  border: 1px solid var(--clr-blue);
-  border-radius: 16px;
-`
-
 export const Name = styled.h2`
   font-weight: 800;
   font-size: 2.2rem;

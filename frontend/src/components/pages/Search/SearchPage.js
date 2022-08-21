@@ -15,6 +15,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import Tweet from "../../shared/Tweet/Tweet";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
+import UserCard from "../../shared/UserCard/UserCard";
 
 const SearchPage = () => {
 
@@ -24,23 +25,41 @@ const SearchPage = () => {
     const [allTweets, setAllTweets] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingContent, setIsLoadingContent] = useState(true);
     const [currentNav, setCurrentNav] = useState("searchedTweets");
+    const [userProfilePic, setUserProfilePic] = useState(null);
+
+    const axiosOptions = {
+        headers: {
+            token: 'JWT ' + userData?.accessToken
+        }
+    }
 
     const searchUsers = () => {
         setCurrentNav("searchedUsers");
+        setIsLoading(true);
     };
 
     const searchTweets = () => {
         setCurrentNav("searchedTweets");
+        setIsLoading(true);
     };
 
-
     useEffect(() => {
+        if (!userData) return;
         if (!search) {
             const getAllTweets = async () => {
-                const response = await axios.get(apiLink + "/tweets/all");
+                const [response, userProfilePic, allUsersData] = await Promise.all(
+                    [
+                        axios.get(apiLink + "/tweets/all"),
+                        axios.get(apiLink + '/users/profileshort', axiosOptions),
+                        axios.get(apiLink + '/users/allusers')
+                    ]);
                 setAllTweets(response.data.result);
+                setUserProfilePic(userProfilePic.data.profilePictureLink);
+                setAllUsers(allUsersData.data);
                 setIsLoading(false);
+                setIsLoadingContent(false);
             };
             getAllTweets();
         } else {
@@ -52,22 +71,20 @@ const SearchPage = () => {
                 });
                 setAllTweets(searchResult.data.tweetsResult);
                 setAllUsers(searchResult.data.usersResult);
-                console.log(searchResult);
             };
             getSearch();
         }
-    }, [searchToggle, userData]);
 
+    }, [searchToggle, userData, currentNav]);
 
     if (isLoading) {
         return <LoadingPage/>;
     } else {
         return (
             <>
-
                 <HeaderWrapper>
                     <IconBar>
-                        <ProfilePic size={"small"}/>
+                        <ProfilePic size={"small"} src={userProfilePic}/>
                         <SearchInput
                             placeholder="🔍 Search Tweetie"
                             onChange={(e) => setSearch(e.target.value)}
@@ -90,7 +107,6 @@ const SearchPage = () => {
                             User
                         </NavButtons>
                     </Menu>
-
                     {currentNav === "searchedTweets" && (
                         <div>
                             {allTweets.length > 0 &&
@@ -100,14 +116,13 @@ const SearchPage = () => {
                     {currentNav === "searchedUsers" && (
                         <div>
                             {allUsers.length > 0 &&
-                                allUsers.map((tweet) => <Tweet key={tweet._id} {...tweet} />)}
+                                allUsers.map((user) => <UserCard key={user._id} {...user} />)}
                         </div>
                     )}
                 </HeaderWrapper>
             </>
         );
     }
-
 };
 
 export default SearchPage;

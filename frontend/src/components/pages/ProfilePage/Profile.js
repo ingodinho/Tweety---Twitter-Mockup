@@ -26,6 +26,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
 import BackButton from "../../shared/BackButton";
 import bannerPlaceHolder from '../../../img/bannerplaceholder.png';
+import {ButtonFollow} from "../../../styles/Buttons";
 
 const Profile = () => {
 
@@ -108,8 +109,12 @@ const Profile = () => {
                             Edit Profile
                         </EditProfile>}
                         {!myProfile &&
-                            <Follow onClick={handleFollow}
-                                    following={following}>{following ? "Following" : 'Follow'}</Follow>
+                            <ButtonFollow
+                                onClick={handleFollow}
+                                following={following}
+                                size={'big'}>
+                                {following ? "Following" : 'Follow'}
+                            </ButtonFollow>
                         }
                     </UserInfo>
                     <div>
