@@ -6,7 +6,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useSetRecoilState} from "recoil";
 import {loggedInUser} from "../../utils/SharedStates";
 
-const HomeHeader = () => {
+const HomeHeader = ({userProfilePicture}) => {
     const navigator = useNavigate();
     const setUserData = useSetRecoilState(loggedInUser);
 
@@ -19,7 +19,7 @@ const HomeHeader = () => {
   return (
     <HeaderWrapper>
       <IconBar>
-        <ProfilePic size={"small"} />
+        <ProfilePic size={"small"} src={userProfilePicture}/>
         <Link to={"/home"}>
           <BirdLogo src={BirdLogoUrl} alt="Bird Logo" />
         </Link>

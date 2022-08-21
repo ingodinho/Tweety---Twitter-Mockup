@@ -22,6 +22,7 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import {loggedInUser, tweetStateFamily} from "../../utils/SharedStates";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
 import BackButton from "../../shared/BackButton";
+import {TweetWrapper} from "../../../styles/TweetWrapper";
 
 const TweetDetails = () => {
     const {id} = useParams();
@@ -86,12 +87,14 @@ const TweetDetails = () => {
                     </StatsWrapper>
                     <TweetStats id={id} big/>
                 </Wrapper>
-                {replies.map((reply) =>
-                    <Tweet
-                        key={reply._id}
-                        {...reply}
-                    />
-                )}
+                <TweetWrapper>
+                    {replies.map((reply) =>
+                        <Tweet
+                            key={reply._id}
+                            {...reply}
+                        />
+                    )}
+                </TweetWrapper>
             </>
         );
     }

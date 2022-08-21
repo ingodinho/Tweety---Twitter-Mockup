@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import placeHolderUrl from '../../img/profileplaceholder.png';
 import {useRecoilValue, useSetRecoilState} from "recoil";
-import {loggedInUser, slideInMenu} from "../utils/SharedStates";
+import {loggedInUser, slideInMenu, userProfilePic} from "../utils/SharedStates";
 import {useNavigate} from "react-router-dom";
 
-const ProfilePic = ({size}) => {
+const ProfilePic = ({size, src}) => {
 
     const setShowSlideIn = useSetRecoilState(slideInMenu);
     const navigator = useNavigate();
@@ -18,7 +18,7 @@ const ProfilePic = ({size}) => {
     return <Picture
         onClick={()=> setShowSlideIn(prev => !prev)}
         imgSize={imgSize}
-        src={placeHolderUrl}
+        src={src || placeHolderUrl}
         alt={"Profile Picture"}/>
 }
 

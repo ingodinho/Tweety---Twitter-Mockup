@@ -13,13 +13,32 @@ import {
     Wrapper
 } from "./SlideIn.styling";
 import {useNavigate} from "react-router-dom";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState} from "recoil";
 import {loggedInUser, slideInMenu} from "../../utils/SharedStates";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {apiLink} from "../../utils/apiLink";
 
 const SlideIn = () => {
-    const [userData,setUserData] = useRecoilState(loggedInUser);
+    const [userData, setUserData] = useRecoilState(loggedInUser);
     const [showMenu, setShowMenu] = useRecoilState(slideInMenu);
+    const [userInfo, setUserInfo] = useState({});
     const navigator = useNavigate();
+
+    const axiosOptions = {
+        headers: {
+            token: `JWT ` + userData?.accessToken
+        }
+    }
+
+    useEffect(() => {
+        if (!userData) return;
+        const getUserInfos = async () => {
+            const response = await axios.get(apiLink + '/users/profileshort', axiosOptions);
+            setUserInfo(response.data);
+        }
+        getUserInfos();
+    }, [userData])
 
     const toProfile = () => {
         setShowMenu(false);
@@ -28,6 +47,7 @@ const SlideIn = () => {
 
     const logoutHandler = () => {
         setUserData({});
+        setShowMenu(false);
         localStorage.clear();
         navigator('/')
     }
@@ -35,15 +55,15 @@ const SlideIn = () => {
     return <Wrapper showMenu={showMenu}>
         <Header>
             <h3>Account Info</h3>
-            <span onClick={()=> setShowMenu(false)}>X</span>
+            <span onClick={() => setShowMenu(false)}>X</span>
         </Header>
         <UserInfo>
-            <ProfilePic/>
-            <FullName>First Name Last Name</FullName>
-            <UserName>@Username</UserName>
+            <ProfilePic src={userInfo.profilePictureLink}/>
+            <FullName>{userInfo.firstName} {userInfo.lastName}</FullName>
+            <UserName>@{userInfo.username}</UserName>
             <FollowerStats>
-                <StatsFlex><span>0</span><p>Following</p></StatsFlex>
-                <StatsFlex><span>0</span><p>Followers</p></StatsFlex>
+                <StatsFlex><span>{userInfo.following}</span><p>Following</p></StatsFlex>
+                <StatsFlex><span>{userInfo.followedBy}</span><p>{userInfo.followedBy === 1 ? 'Follower' : 'Followers'}</p></StatsFlex>
             </FollowerStats>
         </UserInfo>
         <NavigationContainer>

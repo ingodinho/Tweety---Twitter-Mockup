@@ -29,7 +29,8 @@ export const SearchInput = styled.input`
 `;
 
 export const Menu = styled.section`
-  padding: 1rem var(--spacing-wrapper);
+  margin: 0 calc(var(--spacing-wrapper) * -1);
+  padding: 1rem calc(var(--spacing-wrapper) * 2);
   display: flex;
   justify-content: space-around;
   gap: 2rem;
@@ -39,5 +40,5 @@ export const Menu = styled.section`
 
 export const NavButtons = styled.span`
   border-bottom: ${(props) =>
-    props.active ? "2px solid var(--clr-blue)" : "none"};
+          props.active ? "2px solid var(--clr-blue)" : "none"};
 `;

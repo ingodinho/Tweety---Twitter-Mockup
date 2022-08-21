@@ -5,8 +5,7 @@ export const Wrapper = styled.article`
   display: flex;
   align-items: flex-start;
   gap: 1.6rem;
-  padding: 2rem var(--spacing-wrapper);
-  border-bottom: 1px solid var(--clr-line-grey);
+  padding: 2rem 0;
 `;
 
 export const UserPic = styled.img`
@@ -84,4 +83,9 @@ export const HeartIcon = styled(Heart)`
 `
 
 export const ShareIcon = styled(Share)`
+`
+
+export const TweetBorder = styled.div`
+  border-bottom: 1px solid var(--clr-line-grey);
+  margin: 0 calc(var(--spacing-wrapper) * -1);
 `

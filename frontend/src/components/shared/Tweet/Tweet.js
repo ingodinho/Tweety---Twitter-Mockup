@@ -4,7 +4,7 @@ import {
     UserPic,
     Content,
     Text,
-    Img, TweetWrapper,
+    Img, TweetWrapper, TweetBorder,
 } from './Tweet.styles';
 
 import PlaceHolderImg from '../../../img/profileplaceholder.png';
@@ -31,7 +31,6 @@ const Tweet = (props) => {
     };
 
     const toProfile = (id) => {
-        console.log(id)
         navigator(`/profile/${id}`)
     }
 
@@ -91,7 +90,9 @@ const Tweet = (props) => {
                         />
                     </TweetWrapper>
                 </Wrapper>
-            </>)
+                <TweetBorder/>
+            </>
+        )
     }
 };
 

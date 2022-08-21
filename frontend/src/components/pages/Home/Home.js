@@ -7,44 +7,63 @@ import {apiLink} from "../../utils/apiLink";
 import {useRecoilValue} from "recoil";
 import {loggedInUser} from "../../utils/SharedStates";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
+import styled from "styled-components";
 
 const Home = () => {
     const userData = useRecoilValue(loggedInUser);
     const [tweets, setTweets] = useState([]);
+    const [userProfilePicture, setUserProfilePicture] = useState(null)
     const [isLoading, setIsLoading] = useState(true);
+    const axiosOptions = {
+        headers: {
+            token: 'JWT ' + userData?.accessToken
+        }
+    }
 
     useEffect(() => {
         const getTweets = async () => {
             if (!userData) return;
-            const tweetsFollowed = await axios.get(apiLink + `/tweets/followed/${userData._id}`);
+            const [tweetsFollowed, profileShort] = await Promise.all(
+                [
+                    axios.get(apiLink + `/tweets/followed/${userData._id}`),
+                    axios.get(apiLink + '/users/profileshort', axiosOptions)
+                ]);
+            setUserProfilePicture(profileShort.data.profilePictureLink);
+
             if (tweetsFollowed.data.result.length > 0) {
                 setTweets(tweetsFollowed.data.result);
             } else {
                 const allTweets = await axios.get(apiLink + '/tweets/all');
                 setTweets(allTweets.data.result);
             }
+
             setIsLoading(false);
         }
         getTweets();
     }, [userData])
 
-    if(isLoading) {
+    if (isLoading) {
         return <LoadingPage/>
-    }
-    else {
+    } else {
         return (
             <>
-                <HomeHeader/>
+                <HomeHeader userProfilePicture={userProfilePicture}/>
                 <NewTweetButton/>
-                {tweets.map((tweet =>
-                        <Tweet
-                            key={tweet._id}
-                            {...tweet}
-                        />
-                ))}
+                <TweetWrapper>
+                    {tweets.map((tweet =>
+                            <Tweet
+                                key={tweet._id}
+                                {...tweet}
+                            />
+                    ))}
+                </TweetWrapper>
             </>
         )
     }
 }
 
 export default Home;
+
+const TweetWrapper = styled.section`
+  padding: 0 var(--spacing-wrapper);
+`

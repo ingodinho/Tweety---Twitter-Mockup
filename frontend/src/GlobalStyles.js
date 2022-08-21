@@ -28,7 +28,7 @@ html, body {
 }
 
 body {
-  max-width: 450px;
+  max-width: var(--max-width);
   margin: 0 auto;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -67,6 +67,7 @@ p, h1, h2, h3, h4, h5, h6 {
   --clr-line-grey: #BDC5CD;
   --clr-red: #ff0e0e;
   --spacing-wrapper: 2.4rem;
+  --max-width: 450px;
 }
 `;
 

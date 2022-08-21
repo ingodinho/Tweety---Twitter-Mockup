@@ -4,12 +4,12 @@ import {apiLink} from "../../utils/apiLink";
 import {loggedInUser} from "../../utils/SharedStates";
 import {useRecoilValue} from "recoil";
 import {
-  HeaderWrapper,
-  IconBar,
-  SearchInput,
-  SearchLogo,
-  Menu,
-  NavButtons,
+    HeaderWrapper,
+    IconBar,
+    SearchInput,
+    SearchLogo,
+    Menu,
+    NavButtons,
 } from "./SearchPages.styles";
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -18,21 +18,21 @@ import LoadingPage from "../../shared/LoadingPage/LoadingPage";
 
 const SearchPage = () => {
 
-  const userData = useRecoilValue(loggedInUser);
-  const [search, setSearch] = useState("");
-  const [searchToggle, setSearchToggle] = useState(true);
-  const [allTweets, setAllTweets] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentNav, setCurrentNav] = useState("searchedTweets");
+    const userData = useRecoilValue(loggedInUser);
+    const [search, setSearch] = useState("");
+    const [searchToggle, setSearchToggle] = useState(true);
+    const [allTweets, setAllTweets] = useState([]);
+    const [allUsers, setAllUsers] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentNav, setCurrentNav] = useState("searchedTweets");
 
-  const searchUsers = () => {
-    setCurrentNav("searchedUsers");
-  };
+    const searchUsers = () => {
+        setCurrentNav("searchedUsers");
+    };
 
-  const searchTweets = () => {
-    setCurrentNav("searchedTweets");
-  };
+    const searchTweets = () => {
+        setCurrentNav("searchedTweets");
+    };
 
 
     useEffect(() => {
@@ -59,50 +59,54 @@ const SearchPage = () => {
     }, [searchToggle, userData]);
 
 
-  if (isLoading) {
-    return <LoadingPage />;
-  } else {
-    return (
-      <HeaderWrapper>
-        <IconBar>
-          <ProfilePic size={"small"} />
-          <SearchInput
-            placeholder="🔍 Search Tweetie"
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <p onClick={() => setSearchToggle((prev) => !prev)}>
-            <SearchLogo src={SearchLogoUrl} alt="Settings Logo" />
-          </p>
-        </IconBar>
-        <Menu>
-          <NavButtons
-            active={currentNav === "searchedTweets"}
-            onClick={() => searchTweets()}
-          >
-            Tweets
-          </NavButtons>
-          <NavButtons
-            active={currentNav === "searchedUsers"}
-            onClick={() => searchUsers()}
-          >
-            User
-          </NavButtons>
-        </Menu>
-        {currentNav === "searchedTweets" && (
-          <div>
-            {allTweets.length > 0 &&
-              allTweets.map((tweet) => <Tweet key={tweet._id} {...tweet} />)}
-          </div>
-        )}
-        {currentNav === "searchedUsers" && (
-          <div>
-            {allUsers.length > 0 &&
-              allUsers.map((tweet) => <Tweet key={tweet._id} {...tweet} />)}
-          </div>
-        )}
-      </HeaderWrapper>
-    );
-  }
+    if (isLoading) {
+        return <LoadingPage/>;
+    } else {
+        return (
+            <>
+
+                <HeaderWrapper>
+                    <IconBar>
+                        <ProfilePic size={"small"}/>
+                        <SearchInput
+                            placeholder="🔍 Search Tweetie"
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <p onClick={() => setSearchToggle((prev) => !prev)}>
+                            <SearchLogo src={SearchLogoUrl} alt="Settings Logo"/>
+                        </p>
+                    </IconBar>
+                    <Menu>
+                        <NavButtons
+                            active={currentNav === "searchedTweets"}
+                            onClick={() => searchTweets()}
+                        >
+                            Tweets
+                        </NavButtons>
+                        <NavButtons
+                            active={currentNav === "searchedUsers"}
+                            onClick={() => searchUsers()}
+                        >
+                            User
+                        </NavButtons>
+                    </Menu>
+
+                    {currentNav === "searchedTweets" && (
+                        <div>
+                            {allTweets.length > 0 &&
+                                allTweets.map((tweet) => <Tweet key={tweet._id} {...tweet} />)}
+                        </div>
+                    )}
+                    {currentNav === "searchedUsers" && (
+                        <div>
+                            {allUsers.length > 0 &&
+                                allUsers.map((tweet) => <Tweet key={tweet._id} {...tweet} />)}
+                        </div>
+                    )}
+                </HeaderWrapper>
+            </>
+        );
+    }
 
 };
 

@@ -1,31 +1,31 @@
 import {
-  Banner,
-  Bio,
-  Date,
-  EditProfile,
-  Follow,
-  FollowerStats,
-  FollowerWrapper,
-  HomeLink,
-  Menu,
-  Name,
-  NavButtons,
-  UserInfo,
-  UserName,
-  UserWrapper,
+    Banner,
+    Bio,
+    Date,
+    EditProfile,
+    Follow,
+    FollowerStats,
+    FollowerWrapper,
+    Menu,
+    Name,
+    NavButtons, TweetWrapper,
+    UserInfo,
+    UserName,
+    UserWrapper,
 } from "./Profile.styling";
 import userPlaceHolderImg from "../../../img/profileplaceholder.png";
 import Moment from "react-moment";
 import NewTweetButton from "../../shared/NewTweetButton";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import { apiLink } from "../../utils/apiLink";
-import { useRecoilValue } from "recoil";
-import { loggedInUser } from "../../utils/SharedStates";
+import {apiLink} from "../../utils/apiLink";
+import {useRecoilValue} from "recoil";
+import {loggedInUser} from "../../utils/SharedStates";
 import Tweet from "../../shared/Tweet/Tweet";
 import {useNavigate, useParams} from "react-router-dom";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
 import BackButton from "../../shared/BackButton";
+import bannerPlaceHolder from '../../../img/bannerplaceholder.png';
 
 const Profile = () => {
 
@@ -33,64 +33,63 @@ const Profile = () => {
     const userData = useRecoilValue(loggedInUser);
     const {id: profileId} = useParams();
     const [following, setFollowing] = useState(false);
-    const myProfile = profileId === userData._id;
+    const myProfile = profileId === userData?._id;
     const [tweets, setTweets] = useState([]);
     const [userInfo, setUserInfo] = useState({});
     const [currentNav, setCurrentNav] = useState('userTweets');
     const [isLoading, setIsLoading] = useState(true);
 
-
-  const fetchSettings = {
-    headers: {
-      token: "JWT " + userData.accessToken,
-    },
-  };
-
-  useEffect(() => {
-    if (!userData) return;
-    const link =
-      currentNav === "userTweets"
-        ? apiLink + `/tweets/user/${profileId}`
-        : currentNav === "likedTweets"
-        ? apiLink + `/tweets/liked/${profileId}`
-        : null;
-    if (!link) return;
-    const getTweets = async () => {
-      const response = await axios.get(link);
-      currentNav === "userTweets"
-        ? setTweets(response.data)
-        : setTweets(response.data.result);
+    const fetchSettings = {
+        headers: {
+            token: "JWT " + userData?.accessToken,
+        },
     };
 
-    const getUserInfo = async () => {
-      const response = await axios.get(
-        apiLink + `/users/profile/${profileId}`,
-        fetchSettings
-      );
-      setUserInfo(response.data);
-      setFollowing(response.data.followedBy.includes(userData._id));
-      setIsLoading(false);
+    useEffect(() => {
+        if (!userData) return;
+        const link =
+            currentNav === "userTweets"
+                ? apiLink + `/tweets/user/${profileId}`
+                : currentNav === "likedTweets"
+                    ? apiLink + `/tweets/liked/${profileId}`
+                    : null;
+        if (!link) return;
+        const getTweets = async () => {
+            const response = await axios.get(link);
+            currentNav === "userTweets"
+                ? setTweets(response.data)
+                : setTweets(response.data.result);
+        };
+
+        const getUserInfo = async () => {
+            const response = await axios.get(
+                apiLink + `/users/profile/${profileId}`,
+                fetchSettings
+            );
+            setUserInfo(response.data);
+            setFollowing(response.data.followedBy.includes(userData._id));
+            setIsLoading(false);
+        };
+        getTweets();
+        getUserInfo();
+    }, [userData, currentNav, profileId]);
+
+    const handleFollow = async () => {
+        const data = {
+            userId: userData._id,
+            followUserId: profileId,
+        };
+        const response = await axios.put(apiLink + "/users/follow", data);
+        setFollowing((prev) => !prev);
     };
-    getTweets();
-    getUserInfo();
-  }, [userData, currentNav]);
 
-  const handleFollow = async () => {
-    const data = {
-      userId: userData._id,
-      followUserId: profileId,
+    const showUserTweets = () => {
+        setCurrentNav("userTweets");
     };
-    const response = await axios.put(apiLink + "/users/follow", data);
-    setFollowing((prev) => !prev);
-  };
 
-  const showUserTweets = () => {
-    setCurrentNav("userTweets");
-  };
-
-  const showLikedTweets = () => {
-    setCurrentNav("likedTweets");
-  };
+    const showLikedTweets = () => {
+        setCurrentNav("likedTweets");
+    };
 
     if (isLoading) {
         return <LoadingPage/>
@@ -100,7 +99,7 @@ const Profile = () => {
             <>
                 <header>
                     <BackButton path={'/home'}/>
-                    <Banner src={userInfo.bannerPictureLink} alt="Banner"/>
+                    <Banner src={userInfo.bannerPictureLink || bannerPlaceHolder} alt="Banner"/>
                 </header>
                 <UserWrapper>
                     <UserInfo>
@@ -143,11 +142,13 @@ const Profile = () => {
                     <NavButtons active={currentNav === 'likedTweets'}
                                 onClick={() => showLikedTweets()}>Likes</NavButtons>
                 </Menu>
-                {tweets
-                    .map((tweet) => (
-                        <Tweet key={tweet._id} {...tweet} />
-                    ))}
-                <NewTweetButton/>
+                <TweetWrapper>
+                    {tweets
+                        .map((tweet) => (
+                            <Tweet key={tweet._id} {...tweet} />
+                        ))}
+                    <NewTweetButton/>
+                </TweetWrapper>
             </>
         );
     }

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {Person, List, Display, InfoSquare, DoorOpen} from 'styled-icons/bootstrap'
 
 export const Wrapper = styled.div`
+  max-width: var(--max-width);
   position: fixed;
   padding: 2rem var(--spacing-wrapper);
   background: var(--clr-text-white);
@@ -10,7 +11,8 @@ export const Wrapper = styled.div`
   z-index: 5;
   box-shadow: 0 2px 5px hsl(0, 0%, 70%);
   transform: ${p => p.showMenu ? 'translateX(-0%)' : 'translateX(-100%)'};
-  transition: transform 200ms linear;
+  opacity: ${p=> p.showMenu ? 1 : 0};
+  transition: all 200ms linear;
 `
 
 export const Header = styled.div`

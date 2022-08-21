@@ -112,3 +112,7 @@ export const Menu = styled.section`
 export const NavButtons = styled.span`
   border-bottom: ${props => props.active ? '2px solid var(--clr-blue)' : 'none'}
 `
+
+export const TweetWrapper = styled.section`
+  padding: 0 var(--spacing-wrapper);
+`
