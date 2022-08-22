@@ -42,7 +42,7 @@ const EditProfilePage = () => {
 	const [editedBio, setEditedBio] = useState("");
 	const [editedDob, setEditedDob] = useState("");
 
-	const fetchSettings = {
+	const axiosOptions = {
 		headers: {
 			token: "JWT " + userData.accessToken,
 		},
@@ -51,8 +51,8 @@ const EditProfilePage = () => {
 	useEffect(() => {
 		const getUserInfo = async () => {
 			const response = await axios.get(
-				apiLink + `/users/profile/${userData._id}`,
-				fetchSettings
+				apiLink + `/users/profile/${userData.userId}`,
+				axiosOptions
 			);
 			setUserInfo(response.data);
 			console.log(response.data);
@@ -100,7 +100,7 @@ const EditProfilePage = () => {
 		const response = await axios.post(
 			apiLink + `/users/edit`,
 			data,
-			fetchSettings
+			axiosOptions
 		);
 		console.log(response);
 		if (response.data.insertedId) {
@@ -116,7 +116,7 @@ const EditProfilePage = () => {
 		const response = await axios.put(
 			apiLink + `/users/avatarimage`,
 			formData,
-			fetchSettings
+			axiosOptions
 		);
 		console.log(response);
 		if (response.data.insertedId) {
@@ -132,7 +132,7 @@ const EditProfilePage = () => {
 		const response = await axios.put(
 			apiLink + `/users/bannerimage`,
 			formData,
-			fetchSettings
+			axiosOptions
 		);
 		console.log(response);
 		if (response.data.insertedId) {

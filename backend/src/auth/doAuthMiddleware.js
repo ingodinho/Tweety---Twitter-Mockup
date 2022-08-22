@@ -30,11 +30,14 @@ export const makeDoAuthMiddleware = (validTokenType = "access") => {
 
 const extractTokenFromRequest = (req, tokenType) => {
 	let tokenInfo;
-	if (tokenType === "refresh" && req.body.refreshToken) {
-		tokenInfo = req.body.refreshToken;
+	if (tokenType === "refresh" && req.session.refreshToken) {
+		tokenInfo = req.session?.refreshToken;
+		return tokenInfo;
 	} else {
 		tokenInfo = req.headers.token;
 	}
+
+	console.log(tokenInfo);
 
 	if (!tokenInfo) {
 		throw new Error("No Token info available");

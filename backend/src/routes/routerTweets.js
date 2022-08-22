@@ -21,7 +21,7 @@ export const tweetsRouter = express.Router();
 
 const doAuthMiddlewareAccess = makeDoAuthMiddleware();
 
-tweetsRouter.get("/all", async (_, res) => {
+tweetsRouter.get("/all", doAuthMiddlewareAccess, async (_, res) => {
 	try {
 		const allTweets = await findAll();
 		res.status(200).json(allTweets);
@@ -30,19 +30,23 @@ tweetsRouter.get("/all", async (_, res) => {
 	}
 });
 
-tweetsRouter.get("/details/:tweetid", async (req, res) => {
-	try {
-		const tweetDetails = await findTweet(req.params.tweetid);
-		const repliesById = await findRepliesByOriginId({
-			tweetId: req.params.tweetid,
-		});
-		res.status(200).json({ tweetDetails, repliesById });
-	} catch (err) {
-		res.status(404).json({ message: err.message || "404 not found" });
+tweetsRouter.get(
+	"/details/:tweetid",
+	doAuthMiddlewareAccess,
+	async (req, res) => {
+		try {
+			const tweetDetails = await findTweet(req.params.tweetid);
+			const repliesById = await findRepliesByOriginId({
+				tweetId: req.params.tweetid,
+			});
+			res.status(200).json({ tweetDetails, repliesById });
+		} catch (err) {
+			res.status(404).json({ message: err.message || "404 not found" });
+		}
 	}
-});
+);
 
-tweetsRouter.get("/user/:userid", async (req, res) => {
+tweetsRouter.get("/user/:userid", doAuthMiddlewareAccess, async (req, res) => {
 	try {
 		const tweetsById = await findAllByUserId({ userId: req.params.userid });
 		res.status(200).json(tweetsById);
@@ -51,16 +55,21 @@ tweetsRouter.get("/user/:userid", async (req, res) => {
 	}
 });
 
-tweetsRouter.get("/followed/:userid", async (req, res) => {
-	try {
-		const tweetsByFollowedIds = await findAllFollowed({
-			userId: req.params.userid,
-		});
-		res.status(200).json(tweetsByFollowedIds);
-	} catch (err) {
-		res.status(404).json({ message: err.message || "404 not found" });
+tweetsRouter.get(
+	"/followed",
+	doAuthMiddlewareAccess,
+	async (req, res) => {
+		try {
+			console.log(req.userClaims);
+			const tweetsByFollowedIds = await findAllFollowed({
+				userId: req.userClaims.sub,
+			});
+			res.status(200).json(tweetsByFollowedIds);
+		} catch (err) {
+			res.status(404).json({ message: err.message || "404 not found" });
+		}
 	}
-});
+);
 
 // HIER MULTER als Middleware
 const tweetPicStorage = multer.diskStorage({
@@ -136,7 +145,7 @@ tweetsRouter.post(
 	}
 );
 
-tweetsRouter.get("/liked/:userid", async (req, res) => {
+tweetsRouter.get("/liked/:userid", doAuthMiddlewareAccess, async (req, res) => {
 	try {
 		const tweetsLiked = await findAllLiked({ userId: req.params.userid });
 		res.status(200).json(tweetsLiked);
@@ -145,10 +154,9 @@ tweetsRouter.get("/liked/:userid", async (req, res) => {
 	}
 });
 
-tweetsRouter.delete("/delete", async (req, res) => {
+tweetsRouter.delete("/delete", doAuthMiddlewareAccess, async (req, res) => {
 	try {
 		const deleteTweet = await delTweet(req.body);
-		console.log(req.body);
 		res.status(201).json(deleteTweet);
 	} catch (err) {
 		res.status(500).json({
@@ -157,10 +165,9 @@ tweetsRouter.delete("/delete", async (req, res) => {
 	}
 });
 
-tweetsRouter.put("/edit", async (req, res) => {
+tweetsRouter.put("/edit", doAuthMiddlewareAccess, async (req, res) => {
 	try {
 		const editedTweet = await updateTweet(req.body);
-		console.log(req.body);
 		res.status(201).json(editedTweet);
 	} catch (err) {
 		res.status(500).json({
@@ -169,9 +176,10 @@ tweetsRouter.put("/edit", async (req, res) => {
 	}
 });
 
-tweetsRouter.put("/like", async (req, res) => {
+tweetsRouter.put("/like", doAuthMiddlewareAccess, async (req, res) => {
 	try {
-		const likedTweet = await likeTweet(req.body);
+		const userId = req.userClaims.sub;
+		const likedTweet = await likeTweet({tweetId: req.body.tweetId, userId});
 		res.status(201).json(likedTweet);
 	} catch (err) {
 		res.status(500).json({

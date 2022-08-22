@@ -51,7 +51,7 @@ const SearchPage = () => {
             const getAllTweets = async () => {
                 const [response, userProfilePic, allUsersData] = await Promise.all(
                     [
-                        axios.get(apiLink + "/tweets/all"),
+                        axios.get(apiLink + "/tweets/all", axiosOptions),
                         axios.get(apiLink + '/users/profileshort', axiosOptions),
                         axios.get(apiLink + '/users/allusers')
                     ]);

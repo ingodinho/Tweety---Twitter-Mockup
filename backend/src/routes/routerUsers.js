@@ -43,8 +43,12 @@ usersRouter.get(
 			const foundUser = await showUserProfile(userId);
 			const avatarKey = foundUser.profilePictureLink;
 			const bannerKey = foundUser.bannerPictureLink;
-			foundUser.profilePictureLink = await generateSignedAvatarUrl(avatarKey);
-			foundUser.bannerPictureLink = await generateSignedAvatarUrl(bannerKey);
+			foundUser.profilePictureLink = await generateSignedAvatarUrl(
+				avatarKey
+			);
+			foundUser.bannerPictureLink = await generateSignedAvatarUrl(
+				bannerKey
+			);
 			res.status(200).json(foundUser);
 		} catch (err) {
 			res.status(404).json({ message: err.message || "404 not found" });
@@ -66,6 +70,7 @@ usersRouter.post("/register", async (req, res) => {
 
 usersRouter.put("/verify", async (req, res) => {
 	try {
+		console.log(req.body);
 		const result = await verifyUser(req.body);
 		res.status(200).json({ emailVerified: result.value.emailVerified });
 	} catch (err) {
@@ -77,18 +82,26 @@ usersRouter.put("/verify", async (req, res) => {
 
 usersRouter.post("/login", async (req, res) => {
 	try {
-		const tokens = await loginUser(req.body);
-		res.status(200).json(tokens);
+		const { accessToken, refreshToken } = await loginUser(req.body);
+		if (refreshToken) {
+			req.session.refreshToken = refreshToken;
+		}
+		res.status(200).json({ accessToken });
 	} catch (err) {
 		res.status(401).json({ message: err.message || "401 unauthorized" });
 	}
 });
 
+usersRouter.get("/logout", async (req, res) => {
+	req.session.refreshToken = null;
+	res.status(204).end();
+});
+
 usersRouter.post("/refreshtoken", doAuthMiddlewareRefresh, async (req, res) => {
 	try {
 		const userId = req.userClaims.sub;
-		const accessToken = await refreshUserToken({ userId });
-		res.status(200).json({ accessToken: accessToken });
+		const result = await refreshUserToken({ userId });
+		res.status(200).json(result);
 	} catch (err) {
 		res.status(401).json({ message: err.message || "401 unauthorized" });
 	}

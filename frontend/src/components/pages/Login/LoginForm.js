@@ -31,13 +31,14 @@ const LoginForm = () => {
             password
         }
 
-        const response = await axios.post(apiLink + '/users/login', loginData);
+        const response = await axios.post(apiLink + '/users/login', loginData, {
+            withCredentials: true
+        });
 
         if (response.data.message) {
             return setErrorMessage(response.data.message);
         }
         setUserData(response.data);
-        localStorage.setItem('userdata', JSON.stringify(response.data));
         navigator('/home');
         setErrorMessage("");
         setEmail("");
@@ -67,6 +68,7 @@ const LoginForm = () => {
             </ButtonBig>
 
             {/* <FeedbackMessage type="error" message={errorMessage} /> */}
+            {errorMessage && <p>{errorMessage}</p>}
         </FormWrapper>
     );
 };

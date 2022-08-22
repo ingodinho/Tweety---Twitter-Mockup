@@ -11,19 +11,25 @@ const TweetStats = ({stats, big, replies, retweets, id}) => {
     const navigator = useNavigate();
     const userdata = useRecoilValue(loggedInUser);
 
+    const axiosOptions = {
+        headers: {
+            token: "JWT " + userdata?.accessToken,
+        },
+    };
+
     const likeHandler = async () => {
         const data = {
             tweetId: id,
-            userId: userdata._id
+            userId: userdata.userId
         }
-        const response = await axios.put(apiLink + '/tweets/like', data);
+        const response = await axios.put(apiLink + '/tweets/like', data, axiosOptions);
         const currentLikesArray = [...tweetData.likes];
         let updatedLikesArray;
         if(tweetData.liked) {
-            updatedLikesArray = currentLikesArray.filter(userId => userId !== userdata._id);
+            updatedLikesArray = currentLikesArray.filter(userId => userId !== userdata.userId);
             setTweetData(prev => ({...prev, likes: updatedLikesArray, liked: !prev.liked}));
         } else {
-            currentLikesArray.push(userdata._id);
+            currentLikesArray.push(userdata.userId);
             setTweetData(prev => ({...prev, likes: currentLikesArray, liked: !prev.liked}));
         }
     }

@@ -42,7 +42,7 @@ const SlideIn = () => {
 
     const toProfile = () => {
         setShowMenu(false);
-        navigator(`/profile/${userData._id}`)
+        navigator(`/profile/${userData.userId}`)
     }
 
     const logoutHandler = () => {

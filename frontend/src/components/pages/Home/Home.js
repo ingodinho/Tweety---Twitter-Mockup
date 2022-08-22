@@ -14,6 +14,7 @@ const Home = () => {
     const [tweets, setTweets] = useState([]);
     const [userProfilePicture, setUserProfilePicture] = useState(null)
     const [isLoading, setIsLoading] = useState(true);
+
     const axiosOptions = {
         headers: {
             token: 'JWT ' + userData?.accessToken
@@ -25,7 +26,7 @@ const Home = () => {
             if (!userData) return;
             const [tweetsFollowed, profileShort] = await Promise.all(
                 [
-                    axios.get(apiLink + `/tweets/followed/${userData._id}`),
+                    axios.get(apiLink + `/tweets/followed`, axiosOptions),
                     axios.get(apiLink + '/users/profileshort', axiosOptions)
                 ]);
             setUserProfilePicture(profileShort.data.profilePictureLink);

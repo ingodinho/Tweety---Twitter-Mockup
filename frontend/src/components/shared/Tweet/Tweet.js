@@ -21,7 +21,7 @@ const Tweet = (props) => {
     const [tweetData, setTweetData] = useRecoilState(tweetStateFamily(props._id));
 
     useEffect(() => {
-        setTweetData(prev => ({...prev, ...props, liked: props.likes.includes(userData._id)}));
+        setTweetData(prev => ({...prev, ...props, liked: props.likes.includes(userData.userId)}));
         setIsLoading(false);
     }, []);
 
