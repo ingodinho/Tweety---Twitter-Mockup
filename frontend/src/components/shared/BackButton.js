@@ -7,10 +7,14 @@ const BackButton = ({path}) => {
     const navigator = useNavigate();
 
     const toPath = (path) => {
-        navigator(path)
+        if (path) {
+            navigator(path);
+            return;
+        }
+        navigator(-1);
     }
 
-    return <ArrowBack size={22} onClick={()=> toPath(path)}></ArrowBack>
+    return <ArrowBack size={22} onClick={() => toPath(path)}></ArrowBack>
 }
 
 const ArrowBack = styled(ArrowIosBack)`

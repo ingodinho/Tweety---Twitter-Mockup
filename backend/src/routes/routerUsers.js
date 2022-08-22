@@ -16,9 +16,12 @@ import { followUser } from "../use-cases/users/follow-unfollow-user.js";
 import { changeUserAvatar } from "../use-cases/users/change-user-avatar.js";
 import { changeUserBanner } from "../use-cases/users/change-user-banner.js";
 import { deleteUserAvatar } from "../use-cases/users/delete-user-avatar.js";
+import { deleteUserBanner } from "../use-cases/users/delete-user-banner.js";
 import { sendAuthMail } from "../use-cases/users/send-auth-mail.js";
 import { verifyUser } from "../use-cases/users/verify-user.js";
 import { showUserProfileShort } from "../use-cases/users/show-user-profile-short.js";
+import { showFollowingUsers } from "../use-cases/users/show-following-users.js";
+import { showFollowedbyUsers } from "../use-cases/users/show-followedby-users.js";
 
 const doAuthMiddlewareAccess = makeDoAuthMiddleware();
 const doAuthMiddlewareRefresh = makeDoAuthMiddleware("refresh");
@@ -70,7 +73,6 @@ usersRouter.post("/register", async (req, res) => {
 
 usersRouter.put("/verify", async (req, res) => {
 	try {
-		console.log(req.body);
 		const result = await verifyUser(req.body);
 		res.status(200).json({ emailVerified: result.value.emailVerified });
 	} catch (err) {
@@ -193,23 +195,41 @@ usersRouter.get("/profileshort", doAuthMiddlewareAccess, async (req, res) => {
 	}
 });
 
-usersRouter.delete(
-	"/avatarimage/:key",
-	doAuthMiddlewareAccess,
-	async (req, res) => {
-		try {
-			const userId = req.userClaims.sub;
-			const key = req.params.key;
-			await deleteUserAvatar(userId);
-			const result = await deleteFile(key);
-			res.status(204).json(result);
-		} catch (err) {
-			res.status(500).json({
-				message: err.message || "500 internal server error.",
-			});
-		}
+usersRouter.get("/following/:id", doAuthMiddlewareAccess, async (req, res) => {
+	try {
+		const userId = req.params.id;
+		const result = await showFollowingUsers(userId);
+		res.status(200).json(result);
+	} catch (err) {
+		res.status(404).json({
+			message: err.message || "404 not found",
+		});
 	}
-);
+});
+
+usersRouter.get("/followedby/:id", doAuthMiddlewareAccess, async (req, res) => {
+	try {
+		const userId = req.params.id;
+		const result = await showFollowedbyUsers(userId);
+		res.status(200).json(result);
+	} catch (err) {
+		res.status(404).json({
+			message: err.message || "404 not found",
+		});
+	}
+});
+
+usersRouter.delete("/avatarimage", doAuthMiddlewareAccess, async (req, res) => {
+	try {
+		const userId = req.userClaims.sub;
+		await deleteUserAvatar(userId);
+		res.status(204).json(result);
+	} catch (err) {
+		res.status(500).json({
+			message: err.message || "500 internal server error.",
+		});
+	}
+});
 
 usersRouter.put(
 	"/bannerimage",
@@ -219,7 +239,6 @@ usersRouter.put(
 		try {
 			const userId = req.userClaims.sub;
 			const file = req.file;
-			console.log(file);
 			const originalLocalFilePath = file.path;
 			const newLocalFilePath = await resizeBanner(file);
 			const awsAnswer = await uploadFile(newLocalFilePath, file);
@@ -236,14 +255,16 @@ usersRouter.put(
 	}
 );
 
-// usersRouter.delete('/bannerimage/:key', doAuthMiddlewareAccess, async (req, res) => {
-//     try {
-//         const userId = req.userClaims.sub;
-//         const key = req.params.key;
-//         await deleteUserAvatar(userId)
-//         const result = await deleteFile(key);
-//         res.status(204).json(result);
-//     } catch (err) {
-//         res.status(500).json({ message: err.message || "500 internal server error." })
-//     }
-// })
+usersRouter.delete("/bannerimage", doAuthMiddlewareAccess, async (req, res) => {
+	try {
+		const userId = req.userClaims.sub;
+		const key = req.params.key;
+		await deleteUserBanner(userId);
+		const result = await deleteFile(key);
+		res.status(204).json(result);
+	} catch (err) {
+		res.status(500).json({
+			message: err.message || "500 internal server error.",
+		});
+	}
+});

@@ -18,7 +18,6 @@ export const makeDoAuthMiddleware = (validTokenType = "access") => {
 
 			if (userClaims.tokenType !== validTokenType)
 				return __unauthorized();
-
 			req.userClaims = userClaims;
 			next();
 		} catch (err) {
@@ -36,9 +35,6 @@ const extractTokenFromRequest = (req, tokenType) => {
 	} else {
 		tokenInfo = req.headers.token;
 	}
-
-	console.log(tokenInfo);
-
 	if (!tokenInfo) {
 		throw new Error("No Token info available");
 	}

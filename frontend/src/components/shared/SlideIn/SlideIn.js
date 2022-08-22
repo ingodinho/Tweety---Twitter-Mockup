@@ -18,6 +18,7 @@ import {loggedInUser, slideInMenu} from "../../utils/SharedStates";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
+import {clear} from "@testing-library/user-event/dist/clear";
 
 const SlideIn = () => {
     const [userData, setUserData] = useRecoilState(loggedInUser);
@@ -36,7 +37,6 @@ const SlideIn = () => {
         const getUserInfos = async () => {
             const response = await axios.get(apiLink + '/users/profileshort', axiosOptions);
             setUserInfo(response.data);
-            console.log(response)
         }
         getUserInfos();
     }, [userData])
@@ -44,6 +44,11 @@ const SlideIn = () => {
     const toProfile = () => {
         setShowMenu(false);
         navigator(`/profile/${userData.userId}`)
+    }
+
+    const toFollowerList = () => {
+        setShowMenu(false);
+        navigator(`/followerlist/${userData.userId}/following`);
     }
 
     const logoutHandler = () => {
@@ -70,7 +75,7 @@ const SlideIn = () => {
         <NavigationContainer>
             <Navigation>
                 <NavItems onClick={toProfile}><ProfileIcon size={24}/><span>Profile</span></NavItems>
-                <NavItems><ListIcon size={24}></ListIcon><span>Lists</span></NavItems>
+                <NavItems onClick={toFollowerList} ><ListIcon size={24}></ListIcon><span>Lists</span></NavItems>
             </Navigation>
             <Navigation>
                 <NavItems><InfoIcon size={24}/><span>About Tweety</span></NavItems>

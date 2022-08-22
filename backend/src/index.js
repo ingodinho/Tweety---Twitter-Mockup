@@ -1,9 +1,8 @@
-import express from 'express';
-import morgan from 'morgan';
-import cors from 'cors';
-import WebSocket, { WebSocketServer } from 'ws';
+import express from "express";
+import morgan from "morgan";
+import cors from "cors";
+import WebSocket, { WebSocketServer } from "ws";
 import cookieSession from "cookie-session";
-
 
 import { tweetsRouter } from "./routes/routerTweets.js";
 import { usersRouter } from "./routes/routerUsers.js";
@@ -44,17 +43,17 @@ app.use("/tweets", tweetsRouter);
 app.use("/users", usersRouter);
 app.use("/search", searchRouter);
 
-const wss = new WebSocketServer({port: wsPORT})
-wss.on('connection', function connection(ws) {
-    ws.on('message', function incoming(data) {
-      wss.clients.forEach(function each(client) {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          client.send(data);
-          // console.log('data', data);
-        }
-      });
-    });
-  });
+const wss = new WebSocketServer({ port: wsPORT });
+wss.on("connection", function connection(ws) {
+	ws.on("message", function incoming(data) {
+		wss.clients.forEach(function each(client) {
+			if (client !== ws && client.readyState === WebSocket.OPEN) {
+				client.send(data);
+				// console.log('data', data);
+			}
+		});
+	});
+});
 
 app.get("/", (req, res) => {
 	res.send("Works - alles wird wieder ok - Deployment");
