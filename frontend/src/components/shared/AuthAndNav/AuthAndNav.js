@@ -11,22 +11,21 @@ import LoadingPage from "../LoadingPage/LoadingPage";
 const AuthAndNav = () => {
 
     const navigator = useNavigate();
-    const [userData,setUserData] = useRecoilState(loggedInUser);
+    const [userData, setUserData] = useRecoilState(loggedInUser);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // if (userData) {
-        //     setIsLoading(false);
-        //     return;
-        // }
-
+        if (userData) {
+            if (userData.accessToken) {
+                setIsLoading(false);
+                return;
+            }
+        }
         const doSilentRefreshToken = async () => {
-            const response = await axios.post(apiLink + '/users/refreshtoken',{},{
+            const response = await axios.post(apiLink + '/users/refreshtoken', {}, {
                 withCredentials: true
             })
             setUserData(response.data);
-            // const currentLocalUserData = JSON.parse(localStorage.getItem('userdata'));
-            // localStorage.setItem('userdata', {...currentLocalUserData, accessToken: response.data.accessToken});
             const NINE_MINUTES = 9 * 60 * 1000;
             const timeoutId = setTimeout(() => {
                 doSilentRefreshToken();
@@ -36,12 +35,12 @@ const AuthAndNav = () => {
         }
 
         doSilentRefreshToken();
-    }, [])
+    }, [userData])
 
-    if(isLoading) {
+    if (isLoading) {
         return <LoadingPage/>
     }
-    if(!userData.accessToken) {
+    if (!userData.accessToken) {
         navigator('/login');
     }
 
