@@ -3,14 +3,14 @@ import { makeUser } from "../../domain/User.js";
 import { createToken } from "../../utils/token/createToken.js";
 
 export const refreshUserToken = async ({ userId }) => {
-    const foundUser = await UserDAO.findUserById(userId);
-    if (!foundUser) {
-        throw new Error("User not found")
-    };
+	const foundUser = await UserDAO.findUserById(userId);
+	if (!foundUser) {
+		throw new Error("User not found");
+	}
 
-    const user = makeUser(foundUser);
+	const user = makeUser(foundUser);
 
-    const accessToken = createToken(user);
+	const accessToken = createToken(user);
 
-    return accessToken;
+	return { accessToken, userId: foundUser._id };
 };

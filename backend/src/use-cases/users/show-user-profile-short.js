@@ -2,12 +2,10 @@ import UserDAO from "../../db-access/users-dao.js";
 import { generateSignedAvatarUrl } from "../../utils/s3/s3-avatar-signature.js";
 
 export const showUserProfileShort = async (userId) => {
-	console.log(userId);
 	const foundUser = await UserDAO.findUserById(userId);
 	if (!foundUser) {
 		throw new Error("User not found");
 	}
-	console.log(foundUser);
 	const avatarKey = foundUser.profilePictureLink;
 	const avatarLink = await generateSignedAvatarUrl(avatarKey);
 
