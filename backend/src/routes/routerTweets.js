@@ -60,7 +60,6 @@ tweetsRouter.get(
 	doAuthMiddlewareAccess,
 	async (req, res) => {
 		try {
-			console.log(req.userClaims);
 			const tweetsByFollowedIds = await findAllFollowed({
 				userId: req.userClaims.sub,
 			});
