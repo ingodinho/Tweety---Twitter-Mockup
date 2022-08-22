@@ -1,33 +1,30 @@
-import { sendMail } from '../../utils/nodemailer/sendEmail.js';
+import { sendMail } from "../../utils/nodemailer/sendEmail.js";
 import UserDAO from "../../db-access/users-dao.js";
 
 export const sendAuthMail = async (userId) => {
+	const user = await UserDAO.findUserById(userId);
 
-    const user = await UserDAO.findUserById(userId);
-
-    const sendMailResult = await sendMail({
-        to: user.email,
-        subject: "please sir verify your email address",
-        message: `
+	const sendMailResult = await sendMail({
+		to: user.email,
+		subject: "Tweety: Please verify your email address",
+		message: `
         Hello ${user.firstName || user.username},
 
-        thank you for joining Good Project community Sir.
-
-        Please Sir, use this 6-digit verification code to verify your email:
+        Welcome to Tweety! To verify your email address, please enter your six  digit code as below:
 
         ${user.sixDigitCode}
 
-        After that you will be on special member list.
+		On the following page: https://tweety-be.herokuapp.com/validation
 
-        Thank you Sir.
+        After that you will be able to login.
 
-        Ranjesh
-        `
-    })
+        Have fun tweeting!
+        `,
+	});
 
-    if (!sendMailResult) {
-        throw new Error('500 internal server error');
-    }
+	if (!sendMailResult) {
+		throw new Error("500 internal server error");
+	}
 
-    return sendMailResult;
+	return sendMailResult;
 };
