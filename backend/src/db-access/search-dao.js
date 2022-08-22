@@ -24,6 +24,27 @@ const searchTweetsByKeyword = async (keyword) => {
     return { foundUsers, foundTweets };
 }
 
+const searchTopTweets = async () => {
+    const db = await getDB();
+    const foundTweets = await db.collection(tweetsColl)
+    .find({replies: {$not: { $size: 0}}})
+    .sort({postedAt:-1})
+    .toArray();
+    console.log(foundTweets);
+    return { foundTweets };
+}
+
+const searchTopUsers = async () => {
+    const db = await getDB();
+    const foundUsers = await db.collection(usersColl)
+    .find ({likedTweets: {$not: {$size: 0}}})
+    .sort({postedAt: -1})
+    .toArray();
+    return { foundUsers };
+}
+
 export default {
-    searchTweetsByKeyword
+    searchTweetsByKeyword,
+    searchTopTweets,
+    searchTopUsers
 }
