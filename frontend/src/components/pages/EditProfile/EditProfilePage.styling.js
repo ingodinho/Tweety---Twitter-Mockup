@@ -211,6 +211,7 @@ export const EditField = styled.input`
 export const EditBio = styled.textarea`
   width: 100%;
   font-size: 1.6rem;
+  color: var(--clr-text-grey);
   margin-bottom: 0.5rem;
   border: 0;
   border-bottom: 1px solid var(--clr-line-grey);
