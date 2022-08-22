@@ -17,6 +17,7 @@ import ReplyTweet from "./components/pages/ReplyTweet/ReplyTweet";
 import AuthAndNav from "./components/shared/AuthAndNav/AuthAndNav";
 import Redirect from "./components/shared/Tweet/Redirect";
 import EmailValidation from "./components/pages/EmailValidation/EmailValidation";
+import FollowerList from "./components/pages/FollowerList/FollowerList";
 
 function App() {
     const navigator = useNavigate();
@@ -41,6 +42,7 @@ function App() {
                     <Route path={"/profile/:id/edit"} element={<EditProfile/>}/>
                     <Route path={"/newtweet"} element={<NewTweet/>}/>
                     <Route path={"/reply/:id"} element={<ReplyTweet/>}/>
+                    <Route path={'/followerlist/:id/:defaultnav'} element={<FollowerList/>}/>
                 </Route>
                 <Route element={<Redirect/>}>
                     <Route path={"/"} element={<StartPage/>}/>

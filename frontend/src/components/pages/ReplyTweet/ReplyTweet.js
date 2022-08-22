@@ -44,7 +44,7 @@ const ReplyTweet = () => {
         const getTweet = async () => {
             const [response, profileShort] = await Promise.all(
                 [
-                    axios.get(apiLink + `/tweets/details/${tweetId}`),
+                    axios.get(apiLink + `/tweets/details/${tweetId}`, axiosOptions),
                     axios.get(apiLink + '/users/profileshort', axiosOptions)
                 ]);
             setTweet(response.data.tweetDetails[0]);
@@ -81,7 +81,6 @@ const ReplyTweet = () => {
 
         try{
         const response = await axios.post(apiLink + '/tweets/newreply', formData, axiosOptions);
-        console.log(response);
         navigator(`/tweet/${tweetId}`);
         }
         catch(err) {

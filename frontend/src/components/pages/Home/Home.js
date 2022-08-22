@@ -34,7 +34,7 @@ const Home = () => {
             if (tweetsFollowed.data.result.length > 0) {
                 setTweets(tweetsFollowed.data.result);
             } else {
-                const allTweets = await axios.get(apiLink + '/tweets/all');
+                const allTweets = await axios.get(apiLink + '/tweets/all', axiosOptions);
                 setTweets(allTweets.data.result);
             }
 
