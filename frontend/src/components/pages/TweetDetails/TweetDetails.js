@@ -38,7 +38,7 @@ const TweetDetails = () => {
             const response = await axios.get(apiLink + `/tweets/details/${id}`);
             setTweetData({
                 ...response.data.tweetDetails[0],
-                liked: response.data.tweetDetails[0].likes.includes(userData._id)
+                liked: response.data.tweetDetails[0].likes.includes(userData?._id)
             });
             setReplies(response.data.repliesById.result);
             setIsLoading(false);
@@ -46,6 +46,7 @@ const TweetDetails = () => {
         getTweetDetails();
     }, [id])
 
+    console.log(tweetData);
     const toProfile = (id) => {
         navigator(`/profile/${id}`)
     }
@@ -71,7 +72,7 @@ const TweetDetails = () => {
                         {tweetData.imgLink && <img src={tweetData.imgLink} alt={'embedded in Tweet'}/>}
                     </Content>
                     <Info>
-                        <Time><Moment format={`HH:MM - MM/DD/YY`}>{tweetData.createdAt}</Moment></Time>
+                        <Time><Moment format={`HH:MM - MM/DD/YY`}>{new Date(tweetData.createdAt)}</Moment></Time>
                         <span>&#183;</span>
                         <p>Tweety Web App</p>
                     </Info>
