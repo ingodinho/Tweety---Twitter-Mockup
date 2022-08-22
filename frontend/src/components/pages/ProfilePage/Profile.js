@@ -91,6 +91,10 @@ const Profile = () => {
         setCurrentNav("likedTweets");
     };
 
+    const toFollowerList = defaultnav => {
+        navigator(`/followerlist/${profileId}/${defaultnav}`);
+    }
+
     if (isLoading) {
         return <LoadingPage/>
     } else {
@@ -130,11 +134,11 @@ const Profile = () => {
                         </Date>
                     </div>
                     <FollowerWrapper>
-                        <FollowerStats>
+                        <FollowerStats onClick={() => toFollowerList('following')}>
                             <p>{userInfo.following?.length}</p>
                             <span>Following</span>
                         </FollowerStats>
-                        <FollowerStats>
+                        <FollowerStats onClick={() => toFollowerList('followers')}>
                             <p>{userInfo.followedBy?.length}</p>
                             <span>{userInfo.followedBy?.length === 1 ? 'Follower' : 'Followers'}</span>
                         </FollowerStats>

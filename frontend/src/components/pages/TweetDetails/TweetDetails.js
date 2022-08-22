@@ -77,7 +77,7 @@ const TweetDetails = () => {
                         {tweetData.imgLink && <img src={tweetData.imgLink} alt={'embedded in Tweet'}/>}
                     </Content>
                     <Info>
-                        <Time><Moment format={`HH:MM - MM/DD/YY`}>{new Date(tweetData.createdAt)}</Moment></Time>
+                        <Time><Moment format={`HH:MM - DD/MM/YY`}>{new Date(tweetData.postedAt)}</Moment></Time>
                         <span>&#183;</span>
                         <p>Tweety Web App</p>
                     </Info>

@@ -5,16 +5,12 @@ import {Headline} from "../../../styles/Headline";
 import {FormWrapper} from "../Register/RegisterStyling";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
-import {useRecoilState, useSetRecoilState} from "recoil";
-import {loggedInUser} from "../../utils/SharedStates";
 import {useNavigate} from "react-router-dom";
 
 const LoginForm = () => {
     const navigator = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    const [userData, setUserData] = useRecoilState(loggedInUser);
 
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -34,11 +30,9 @@ const LoginForm = () => {
         const response = await axios.post(apiLink + '/users/login', loginData, {
             withCredentials: true
         });
-
         if (response.data.message) {
             return setErrorMessage(response.data.message);
         }
-        setUserData(response.data);
         navigator('/home');
         setErrorMessage("");
         setEmail("");

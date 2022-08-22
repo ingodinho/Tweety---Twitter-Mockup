@@ -120,7 +120,6 @@ const EditProfilePage = () => {
       formData,
       axiosOptions
     );
-    console.log(response);
     if (response.data.insertedId) {
       onePageBack();
     }

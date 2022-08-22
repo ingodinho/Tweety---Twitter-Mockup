@@ -7,6 +7,7 @@ import SlideIn from "../SlideIn/SlideIn";
 import {apiLink} from "../../utils/apiLink";
 import axios from "axios";
 import LoadingPage from "../LoadingPage/LoadingPage";
+import Overlay from "../Overlay/Overlay";
 
 const AuthAndNav = () => {
 
@@ -46,6 +47,7 @@ const AuthAndNav = () => {
 
     return (<>
         <SlideIn/>
+        <Overlay/>
         <Outlet/>
         <BottomNav/>
     </>)

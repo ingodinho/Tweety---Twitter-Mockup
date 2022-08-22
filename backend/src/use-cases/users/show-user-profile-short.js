@@ -13,6 +13,7 @@ export const showUserProfileShort = async (userId) => {
 		username: foundUser.username,
 		firstName: foundUser.firstName,
 		lastName: foundUser.lastName,
+		bio: foundUser.bio,
 		profilePictureLink: avatarLink,
 		following: foundUser.following.length,
 		followedBy: foundUser.followedBy.length,

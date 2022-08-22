@@ -13,11 +13,13 @@ import { useRecoilValue } from "recoil";
 import { loggedInUser } from "../../utils/SharedStates";
 import { apiLink } from "../../utils/apiLink";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const UserCard = (props) => {
   const userData = useRecoilValue(loggedInUser);
   const [following, setFollowing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const navigator = useNavigate();
 
   const axiosOptions = {
     headers: {
@@ -44,8 +46,13 @@ const UserCard = (props) => {
     setFollowing((prev) => !prev);
   };
 
+  const toProfile = e => {
+    e.preventDefault();
+    navigator(`/profile/${props._id}`)
+  }
+
   if (isLoading) {
-    return <div></div>;
+    return <div>test</div>;
   } else {
     return (
       <Wrapper>
@@ -54,7 +61,7 @@ const UserCard = (props) => {
         </ImgContainer>
         <ContentWrapper>
           <UserHeader>
-            <NamesContainer>
+            <NamesContainer onClick={toProfile}>
               <h4>
                 {props.firstName} {props.lastName}
               </h4>

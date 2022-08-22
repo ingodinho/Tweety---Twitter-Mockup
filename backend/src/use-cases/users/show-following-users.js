@@ -18,10 +18,10 @@ export const showFollowingUsers = async (userId) => {
 				profilePictureLink: followingUser.profilePictureLink,
 				firstName: followingUser.firstName,
 				lastName: followingUser.lastName,
-				userName: followingUser.username,
+				username: followingUser.username,
 				bio: followingUser.bio,
+				followedBy: followingUser.followedBy
 			};
-
 			return returnfollowingUserData;
 		})
 	);

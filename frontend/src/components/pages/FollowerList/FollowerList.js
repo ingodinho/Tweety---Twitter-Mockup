@@ -11,6 +11,7 @@ import {Navbar, NavItems, UserHeader, Wrapper} from "./FollowerList.styling";
 
 const FollowerList = () => {
     const userData = useRecoilValue(loggedInUser);
+    const [userInfo, setUserInfo] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const {id: profileId, defaultnav} = useParams();
     const [currentNav, setCurrentNav] = useState(defaultnav);
@@ -18,16 +19,22 @@ const FollowerList = () => {
 
     const axiosOptions = {
         headers: {
-            accessToken: 'JWT ' + userData?.accessToken
+            token: 'JWT ' + userData?.accessToken
         }
     }
 
     useEffect(() => {
         if (!userData) return;
         const getList = async () => {
-            const endPoint = currentNav === 'followers' ? `/users/allusers` : `/users/allusers`;
-            const response = await axios.get(apiLink + endPoint, axiosOptions);
-            setUsers(response.data);
+            const endPoint = currentNav === 'followers' ? `/users/followedby/${profileId}` : `/users/following/${profileId}`;
+            // const endPoint = '/users/allusers'
+            const [followerResponse, userInfoResponse] = await Promise.all(
+                [
+                    axios.get(apiLink + endPoint, axiosOptions),
+                    axios.get(apiLink + `/users/profileshort`, axiosOptions)
+            ]);
+            setUsers(followerResponse.data);
+            setUserInfo(userInfoResponse.data);
             setIsLoading(false);
         }
         getList();
@@ -42,15 +49,14 @@ const FollowerList = () => {
             <BackButton/>
             <Wrapper>
                 <UserHeader>
-                    <h4>Fullname</h4>
-                    <span>@username</span>
-                    <p>UserBio</p>
+                    <h4>{userInfo.firstName} {userInfo.lastName}</h4>
+                    <span>@{userInfo.username}</span>
                 </UserHeader>
                 <Navbar className="navbar">
-                    <NavItems active={currentNav === 'followers'}
-                              onClick={() => setCurrentNav('followers')}>Followers</NavItems>
                     <NavItems active={currentNav === 'following'}
                               onClick={() => setCurrentNav('following')}>Following</NavItems>
+                    <NavItems active={currentNav === 'followers'}
+                              onClick={() => setCurrentNav('followers')}>Followers</NavItems>
                 </Navbar>
                 <div className="Tweetwrapper">
                     {users.map(user =>

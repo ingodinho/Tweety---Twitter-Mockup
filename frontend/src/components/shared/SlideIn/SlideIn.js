@@ -15,15 +15,16 @@ import {
 import {useNavigate} from "react-router-dom";
 import {useRecoilState} from "recoil";
 import {loggedInUser, slideInMenu} from "../../utils/SharedStates";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
-import {clear} from "@testing-library/user-event/dist/clear";
+import useOutsideAlerter from "../../Hooks/useOutsideAlerter";
 
 const SlideIn = () => {
     const [userData, setUserData] = useRecoilState(loggedInUser);
     const [showMenu, setShowMenu] = useRecoilState(slideInMenu);
     const [userInfo, setUserInfo] = useState({});
+    const wrapperRef = useRef(null);
     const navigator = useNavigate();
 
     const axiosOptions = {
@@ -31,6 +32,7 @@ const SlideIn = () => {
             token: `JWT ` + userData?.accessToken
         }
     }
+    useOutsideAlerter(wrapperRef);
 
     useEffect(() => {
         if (!userData) return;
@@ -58,7 +60,7 @@ const SlideIn = () => {
         navigator('/')
     }
 
-    return <Wrapper showMenu={showMenu}>
+    return <Wrapper showMenu={showMenu} ref={wrapperRef}>
         <Header>
             <h3>Account Info</h3>
             <span onClick={() => setShowMenu(false)}>X</span>
@@ -75,7 +77,7 @@ const SlideIn = () => {
         <NavigationContainer>
             <Navigation>
                 <NavItems onClick={toProfile}><ProfileIcon size={24}/><span>Profile</span></NavItems>
-                <NavItems onClick={toFollowerList} ><ListIcon size={24}></ListIcon><span>Lists</span></NavItems>
+                <NavItems onClick={toFollowerList} ><ListIcon size={24}></ListIcon><span>Followerlist</span></NavItems>
             </Navigation>
             <Navigation>
                 <NavItems><InfoIcon size={24}/><span>About Tweety</span></NavItems>

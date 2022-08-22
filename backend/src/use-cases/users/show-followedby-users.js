@@ -18,8 +18,9 @@ export const showFollowedbyUsers = async (userId) => {
 				profilePictureLink: followedbyUser.profilePictureLink,
 				firstName: followedbyUser.firstName,
 				lastName: followedbyUser.lastName,
-				userName: followedbyUser.username,
+				username: followedbyUser.username,
 				bio: followedbyUser.bio,
+				followedBy: followedbyUser.followedBy
 			};
 
 			return followedbyUserData;
