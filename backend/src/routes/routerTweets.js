@@ -56,12 +56,13 @@ tweetsRouter.get("/user/:userid", doAuthMiddlewareAccess, async (req, res) => {
 });
 
 tweetsRouter.get(
-	"/followed/:userid",
+	"/followed",
 	doAuthMiddlewareAccess,
 	async (req, res) => {
 		try {
+			console.log(req.userClaims);
 			const tweetsByFollowedIds = await findAllFollowed({
-				userId: req.params.userid,
+				userId: req.userClaims.sub,
 			});
 			res.status(200).json(tweetsByFollowedIds);
 		} catch (err) {
@@ -177,7 +178,8 @@ tweetsRouter.put("/edit", doAuthMiddlewareAccess, async (req, res) => {
 
 tweetsRouter.put("/like", doAuthMiddlewareAccess, async (req, res) => {
 	try {
-		const likedTweet = await likeTweet(req.body);
+		const userId = req.userClaims.sub;
+		const likedTweet = await likeTweet({tweetId: req.body.tweetId, userId});
 		res.status(201).json(likedTweet);
 	} catch (err) {
 		res.status(500).json({

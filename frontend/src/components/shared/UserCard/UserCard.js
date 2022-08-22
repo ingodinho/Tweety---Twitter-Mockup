@@ -12,18 +12,24 @@ const UserCard = (props) => {
     const [following, setFollowing] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
+    const axiosOptions = {
+        headers: {
+            accessToken: `JWT ` + userData.accessToken
+        }
+    }
+
     useEffect(() => {
         if (!props.followedBy || !userData) return;
-        setFollowing(props.followedBy.includes(userData._id));
+        setFollowing(props.followedBy.includes(userData.userId));
         setIsLoading(false);
     }, [props, userData])
 
     const handleFollow = async () => {
         const data = {
-            userId: userData._id,
+            userId: userData.userId,
             followUserId: props._id
         }
-        const response = await axios.put(apiLink + '/users/follow', data);
+        const response = await axios.put(apiLink + '/users/follow', data, axiosOptions);
         setFollowing(prev=> !prev);
     }
 
@@ -41,7 +47,7 @@ const UserCard = (props) => {
                             <h4>{props.firstName} {props.lastName}</h4>
                             <span>@{props.username}</span>
                         </NamesContainer>
-                        {userData._id !== props._id && <ButtonFollow following={following} onClick={handleFollow}>
+                        {userData.userId !== props._id && <ButtonFollow following={following} onClick={handleFollow}>
                             {following ? 'Following' : 'Follow'}
                         </ButtonFollow>
                         }

@@ -32,21 +32,8 @@ const LoginForm = () => {
         }
 
         const response = await axios.post(apiLink + '/users/login', loginData, {
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            },
             withCredentials: true
         });
-        // const response = await fetch(apiLink + '/users/login', {
-        //     method: 'POST',
-        //     mode: 'cors',
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(loginData),
-        //     credentials: 'include'
-        // })
-        console.log(response);
 
         if (response.data.message) {
             return setErrorMessage(response.data.message);

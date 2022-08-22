@@ -15,27 +15,28 @@ const AuthAndNav = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (userData.accessToken) {
-            setIsLoading(false);
-            return;
-        }
+        // if (userData) {
+        //     setIsLoading(false);
+        //     return;
+        // }
 
         const doSilentRefreshToken = async () => {
             const response = await axios.post(apiLink + '/users/refreshtoken',{},{
                 withCredentials: true
             })
-            setUserData(prev => ({...prev, accessToken: response.data.accessToken}));
-            const currentLocalUserData = JSON.parse(localStorage.getItem('userdata'));
-            localStorage.setItem('userdata', {...currentLocalUserData, accessToken: response.data.accessToken});
+            setUserData(response.data);
+            // const currentLocalUserData = JSON.parse(localStorage.getItem('userdata'));
+            // localStorage.setItem('userdata', {...currentLocalUserData, accessToken: response.data.accessToken});
             const NINE_MINUTES = 9 * 60 * 1000;
             const timeoutId = setTimeout(() => {
                 doSilentRefreshToken();
                 clearTimeout(timeoutId)
             }, NINE_MINUTES);
+            setIsLoading(false);
         }
 
         doSilentRefreshToken();
-    }, [userData])
+    }, [])
 
     if(isLoading) {
         return <LoadingPage/>

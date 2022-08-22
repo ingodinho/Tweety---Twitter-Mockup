@@ -33,9 +33,15 @@ const TweetDetails = () => {
     const [replies, setReplies] = useState([]);
     const navigator = useNavigate()
 
+    const axiosOptions = {
+        headers: {
+            token: 'JWT ' + userData?.accessToken
+        }
+    }
+
     useEffect(() => {
         const getTweetDetails = async () => {
-            const response = await axios.get(apiLink + `/tweets/details/${id}`);
+            const response = await axios.get(apiLink + `/tweets/details/${id}`, axiosOptions);
             setTweetData({
                 ...response.data.tweetDetails[0],
                 liked: response.data.tweetDetails[0].likes.includes(userData?._id)
@@ -44,9 +50,8 @@ const TweetDetails = () => {
             setIsLoading(false);
         }
         getTweetDetails();
-    }, [id])
+    }, [id,userData])
 
-    console.log(tweetData);
     const toProfile = (id) => {
         navigator(`/profile/${id}`)
     }

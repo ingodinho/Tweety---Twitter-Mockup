@@ -34,13 +34,13 @@ const Profile = () => {
     const userData = useRecoilValue(loggedInUser);
     const {id: profileId} = useParams();
     const [following, setFollowing] = useState(false);
-    const myProfile = profileId === userData?._id;
+    const myProfile = profileId === userData?.userId;
     const [tweets, setTweets] = useState([]);
     const [userInfo, setUserInfo] = useState({});
     const [currentNav, setCurrentNav] = useState('userTweets');
     const [isLoading, setIsLoading] = useState(true);
 
-    const fetchSettings = {
+    const axiosOptions = {
         headers: {
             token: "JWT " + userData?.accessToken,
         },
@@ -56,7 +56,7 @@ const Profile = () => {
                     : null;
         if (!link) return;
         const getTweets = async () => {
-            const response = await axios.get(link);
+            const response = await axios.get(link, axiosOptions);
             currentNav === "userTweets"
                 ? setTweets(response.data)
                 : setTweets(response.data.result);
@@ -65,10 +65,10 @@ const Profile = () => {
         const getUserInfo = async () => {
             const response = await axios.get(
                 apiLink + `/users/profile/${profileId}`,
-                fetchSettings
+                axiosOptions
             );
             setUserInfo(response.data);
-            setFollowing(response.data.followedBy.includes(userData._id));
+            setFollowing(response.data.followedBy.includes(userData.userId));
             setIsLoading(false);
         };
         getTweets();
@@ -77,7 +77,7 @@ const Profile = () => {
 
     const handleFollow = async () => {
         const data = {
-            userId: userData._id,
+            userId: userData.userId,
             followUserId: profileId,
         };
         const response = await axios.put(apiLink + "/users/follow", data);
@@ -105,7 +105,7 @@ const Profile = () => {
                 <UserWrapper>
                     <UserInfo>
                         <img src={userInfo.profilePictureLink || userPlaceHolderImg} alt="User"/>
-                        {myProfile && <EditProfile to={`/profile/${userData._id}/edit`}>
+                        {myProfile && <EditProfile to={`/profile/${userData.userId}/edit`}>
                             Edit Profile
                         </EditProfile>}
                         {!myProfile &&

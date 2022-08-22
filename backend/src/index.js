@@ -30,7 +30,7 @@ app.use(
 	})
 );
 
-app.use(cors());
+// app.use(cors());
 
 // logging middleware
 app.use(morgan("dev"));
