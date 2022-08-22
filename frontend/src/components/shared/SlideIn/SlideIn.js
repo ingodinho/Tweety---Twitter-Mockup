@@ -36,6 +36,7 @@ const SlideIn = () => {
         const getUserInfos = async () => {
             const response = await axios.get(apiLink + '/users/profileshort', axiosOptions);
             setUserInfo(response.data);
+            console.log(response)
         }
         getUserInfos();
     }, [userData])

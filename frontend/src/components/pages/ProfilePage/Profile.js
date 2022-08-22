@@ -3,7 +3,6 @@ import {
     Bio,
     Date,
     EditProfile,
-    Follow,
     FollowerStats,
     FollowerWrapper,
     Menu,

@@ -80,7 +80,7 @@ const ReplyTweet = () => {
         formData.append('content', content);
 
         try{
-        const response = await axios.post(apiLink + '/tweets/newreply', formData, {headers: {token: 'JWT ' + userData.accessToken}});
+        const response = await axios.post(apiLink + '/tweets/newreply', formData, axiosOptions);
         console.log(response);
         navigator(`/tweet/${tweetId}`);
         }
