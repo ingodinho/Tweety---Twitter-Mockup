@@ -16,10 +16,16 @@ import { updateTweet } from "../use-cases/tweets/edit-tweet.js";
 import { likeTweet } from "../use-cases/tweets/like-tweet.js";
 import { resizeTweetImage } from "../utils/s3/sharp-resize.js";
 import { uploadFile } from "../utils/s3/s3-tweet.js";
+import { nextTick } from "process";
 
 export const tweetsRouter = express.Router();
 
 const doAuthMiddlewareAccess = makeDoAuthMiddleware();
+
+tweetsRouter.use((req, res, next) => {
+	console.log(req.headers);
+	next();
+});
 
 tweetsRouter.get("/all", doAuthMiddlewareAccess, async (_, res) => {
 	try {
@@ -55,20 +61,16 @@ tweetsRouter.get("/user/:userid", doAuthMiddlewareAccess, async (req, res) => {
 	}
 });
 
-tweetsRouter.get(
-	"/followed",
-	doAuthMiddlewareAccess,
-	async (req, res) => {
-		try {
-			const tweetsByFollowedIds = await findAllFollowed({
-				userId: req.userClaims.sub,
-			});
-			res.status(200).json(tweetsByFollowedIds);
-		} catch (err) {
-			res.status(404).json({ message: err.message || "404 not found" });
-		}
+tweetsRouter.get("/followed", doAuthMiddlewareAccess, async (req, res) => {
+	try {
+		const tweetsByFollowedIds = await findAllFollowed({
+			userId: req.userClaims.sub,
+		});
+		res.status(200).json(tweetsByFollowedIds);
+	} catch (err) {
+		res.status(404).json({ message: err.message || "404 not found" });
 	}
-);
+});
 
 // HIER MULTER als Middleware
 const tweetPicStorage = multer.diskStorage({
@@ -178,7 +180,10 @@ tweetsRouter.put("/edit", doAuthMiddlewareAccess, async (req, res) => {
 tweetsRouter.put("/like", doAuthMiddlewareAccess, async (req, res) => {
 	try {
 		const userId = req.userClaims.sub;
-		const likedTweet = await likeTweet({tweetId: req.body.tweetId, userId});
+		const likedTweet = await likeTweet({
+			tweetId: req.body.tweetId,
+			userId,
+		});
 		res.status(201).json(likedTweet);
 	} catch (err) {
 		res.status(500).json({
