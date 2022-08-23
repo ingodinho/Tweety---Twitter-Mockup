@@ -54,7 +54,6 @@ const EmailValidation = () => {
         />
         <ButtonBig>Submit</ButtonBig>
 
-        <FeedbackMessage type="success" message={successMessage} />
         {successMessage && <ResultMessage>{successMessage}</ResultMessage>}
       </FormWrapper>
     </Wrapper>
@@ -92,11 +91,8 @@ const FormWrapper = styled.form`
   margin-top: 5rem;
 `;
 
-const FeedbackMessage = styled.div`
-  margin: 3vh 0 0 0;
-`;
-
 const ResultMessage = styled.p`
+  margin: 3vh 0 0 0;
   text-align: center;
   font-size: 1.6rem;
   color: var(--clr-text-prm);

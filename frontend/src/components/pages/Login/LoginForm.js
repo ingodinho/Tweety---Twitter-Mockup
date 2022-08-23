@@ -65,20 +65,15 @@ const LoginForm = () => {
         Log In
       </ButtonBig>
 
-      <FeedbackMessage type="error" message={errorMessage} />
       {errorMessage && <ResultMessage>{errorMessage}</ResultMessage>}
 
-      <FeedbackMessage type="success" message={successMessage} />
       {successMessage && <ResultMessage>{successMessage}</ResultMessage>}
     </FormWrapper>
   );
 };
 
-const FeedbackMessage = styled.div`
-  margin: 3vh 0 0 0;
-`;
-
 const ResultMessage = styled.p`
+  margin: 3vh 0 0 0;
   text-align: center;
   font-size: 1.6rem;
   color: var(--clr-text-prm);

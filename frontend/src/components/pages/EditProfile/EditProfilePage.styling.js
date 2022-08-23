@@ -228,11 +228,8 @@ export const EditBio = styled.textarea`
   border-bottom: 1px solid var(--clr-line-grey);
 `;
 
-export const FeedbackMessage = styled.div`
-  margin: 2vh 0 0 0;
-`;
-
 export const ResultMessage = styled.p`
+  margin: 2vh 0 0 0;
   text-align: center;
   font-size: 2.2rem;
   font-weight: 800;

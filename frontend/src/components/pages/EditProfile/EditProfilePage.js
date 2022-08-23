@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import userPlaceHolderImg from "../../../img/profileplaceholder.png";
 import bannerPlaceHolder from "../../../img/bannerplaceholder.png";
-import { ArrowIosBack } from "styled-icons/evaicons-solid";
 import { loggedInUser } from "../../utils/SharedStates";
 import {
   Header,
@@ -29,7 +28,6 @@ import {
   EditBio,
   SaveProfilePictureButton,
   SaveBannerButton,
-  FeedbackMessage,
   ResultMessage,
 } from "./EditProfilePage.styling.js";
 
@@ -234,7 +232,6 @@ const EditProfilePage = () => {
             onChange={(e) => setEditedBio(e.target.value)}
           />
         </EditWrapper>
-        <FeedbackMessage type="success" message={successMessage} />
         {successMessage && <ResultMessage>{successMessage}</ResultMessage>}
       </UserWrapper>
     </>
