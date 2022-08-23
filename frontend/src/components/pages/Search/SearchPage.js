@@ -37,11 +37,17 @@ const SearchPage = () => {
   };
 
   const searchUsers = () => {
+    setAllTweets([]);
+    setTopTweets([]);
+    setTopUser([]);
     setCurrentNav("searchedUsers");
     setIsLoading(true);
   };
 
   const searchTweets = () => {
+    setAllUsers([]);
+    setTopTweets([]);
+    setTopUser([]);
     setCurrentNav("searchedTweets");
     setIsLoading(true);
   };

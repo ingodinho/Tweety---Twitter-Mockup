@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import CameraIcon from "../../../img/tweet-icons/Camera icon.svg";
+import { ArrowIosBack } from "styled-icons/evaicons-solid";
 
 export const Header = styled.header`
   padding: 2rem 1rem;
@@ -27,15 +28,25 @@ export const SaveButton = styled.button`
   font-weight: 800;
 `;
 
-export const Cancel = styled.button`
+export const Cancel = styled(ArrowIosBack)`
+  margin-top: 2%;
   color: var(--clr-blue);
-  font-size: 1.4rem;
-  text-decoration: none;
   left: var(--spacing-wrapper);
-  background: white;
-  border: none;
-  font-size: 2.2rem;
 `;
+
+// ###### OLD CANCEL BUTTON #####
+
+// export const Cancel = styled.button`
+//   color: var(--clr-blue);
+//   font-size: 1.4rem;
+//   text-decoration: none;
+//   left: var(--spacing-wrapper);
+//   background: white;
+//   border: none;
+//   font-size: 2.2rem;
+// `;
+
+// ##############################
 
 export const UserWrapper = styled.section`
   position: relative;
@@ -215,4 +226,12 @@ export const EditBio = styled.textarea`
   margin-bottom: 0.5rem;
   border: 0;
   border-bottom: 1px solid var(--clr-line-grey);
+`;
+
+export const ResultMessage = styled.p`
+  margin: 2vh 0 0 0;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--clr-text-prm);
 `;

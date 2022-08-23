@@ -1,33 +1,40 @@
 import {
-    Banner,
-    Bio,
-    Date,
-    EditProfile,
-    FollowerStats,
-    FollowerWrapper,
-    Menu,
-    Name,
-    NavButtons, TweetWrapper,
-    UserInfo,
-    UserName,
-    UserWrapper,
+  Banner,
+  Bio,
+  Date,
+  EditProfile,
+  FollowerStats,
+  FollowerWrapper,
+  Menu,
+  Name,
+  NavButtons,
+  TweetWrapper,
+  UserInfo,
+  UserName,
+  UserWrapper,
 } from "./Profile.styling";
 import userPlaceHolderImg from "../../../img/profileplaceholder.png";
 import Moment from "react-moment";
 import NewTweetButton from "../../shared/NewTweetButton";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
 import {useRecoilValue, useSetRecoilState} from "recoil";
 import {handleModal, loggedInUser, modalId} from "../../utils/SharedStates";
 import Tweet from "../../shared/Tweet/Tweet";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
 import BackButton from "../../shared/BackButton";
-import bannerPlaceHolder from '../../../img/bannerplaceholder.png';
-import {ButtonFollow} from "../../../styles/Buttons";
+import bannerPlaceHolder from "../../../img/bannerplaceholder.png";
+import { ButtonFollow } from "../../../styles/Buttons";
 
 const Profile = () => {
+
+  const axiosOptions = {
+    headers: {
+      token: "JWT " + userData?.accessToken,
+    },
+  };
 
     const navigator = useNavigate();
     const userData = useRecoilValue(loggedInUser);
@@ -41,62 +48,53 @@ const Profile = () => {
     const setShowModal = useSetRecoilState(handleModal);
     const setIdModal = useSetRecoilState(modalId);
 
-    const axiosOptions = {
-        headers: {
-            token: "JWT " + userData?.accessToken,
-        },
+
+  useEffect(() => {
+    if (!userData) return;
+    const link =
+      currentNav === "userTweets"
+        ? apiLink + `/tweets/user/${profileId}`
+        : currentNav === "likedTweets"
+        ? apiLink + `/tweets/liked/${profileId}`
+        : null;
+    if (!link) return;
+    const getTweets = async () => {
+      const response = await axios.get(link, axiosOptions);
+      currentNav === "userTweets"
+        ? setTweets(response.data)
+        : setTweets(response.data.result);
     };
 
-    useEffect(() => {
-        if (!userData) return;
-        const link =
-            currentNav === "userTweets"
-                ? apiLink + `/tweets/user/${profileId}`
-                : currentNav === "likedTweets"
-                    ? apiLink + `/tweets/liked/${profileId}`
-                    : null;
-        if (!link) return;
-        const getTweets = async () => {
-            const response = await axios.get(link, axiosOptions);
-            currentNav === "userTweets"
-                ? setTweets(response.data)
-                : setTweets(response.data.result);
-        };
-
-        const getUserInfo = async () => {
-            const response = await axios.get(
-                apiLink + `/users/profile/${profileId}`,
-                axiosOptions
-            );
-            setUserInfo(response.data);
-            setFollowing(response.data.followedBy.includes(userData.userId));
-            setIsLoading(false);
-        };
-        getTweets();
-        getUserInfo();
-    }, [userData, currentNav, profileId]);
-
-    const handleFollow = async () => {
-        const data = {
-            userId: userData.userId,
-            followUserId: profileId,
-        };
-        const response = await axios.put(apiLink + "/users/follow", data);
-        setFollowing((prev) => !prev);
+    const getUserInfo = async () => {
+      const response = await axios.get(
+        apiLink + `/users/profile/${profileId}`,
+        axiosOptions
+      );
+      setUserInfo(response.data);
+      setFollowing(response.data.followedBy.includes(userData.userId));
+      setIsLoading(false);
     };
+    getTweets();
+    getUserInfo();
+  }, [userData, currentNav, profileId]);
 
-    const showUserTweets = () => {
-        setCurrentNav("userTweets");
+  const handleFollow = async () => {
+    const data = {
+      userId: userData.userId,
+      followUserId: profileId,
     };
+    const response = await axios.put(apiLink + "/users/follow", data);
+    setFollowing((prev) => !prev);
+  };
 
-    const showLikedTweets = () => {
-        setCurrentNav("likedTweets");
-    };
+  const showUserTweets = () => {
+    setCurrentNav("userTweets");
+  };
 
-    const toFollowerList = defaultnav => {
-        navigator(`/followerlist/${profileId}/${defaultnav}`);
-    }
-
+  const showLikedTweets = () => {
+    setCurrentNav("likedTweets");
+  };
+  
     const showImageModal = () => {
         setShowModal(true);
         setIdModal({profileId})
