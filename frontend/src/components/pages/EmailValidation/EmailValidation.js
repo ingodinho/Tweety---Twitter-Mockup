@@ -19,7 +19,7 @@ const EmailValidation = () => {
 			sixDigitCode: inputDigitCode,
 		};
 		const response = axios.put(apiLink + "/users/verify", data);
-		//    IF IN ORDNUNG, Back to Home
+		//    IF IN ORDNUNG, Back to Login
 	};
 
 	return (

@@ -56,7 +56,7 @@ const RegisterForm = () => {
         setPassword("");
         setConfirmPassword("");
 
-        navigator('/login');
+        navigator('/validation');
     };
 
     return (

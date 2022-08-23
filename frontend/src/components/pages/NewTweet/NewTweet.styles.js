@@ -20,10 +20,24 @@ export const TweetWrapper = styled.div`
   gap: 1rem;
 `;
 
+export const MessagesContainer = styled.div`
+  margin: 0 var(--spacing-wrapper);
+  font-size: 1.4rem;
+`
+
+export const CharactersMessage = styled.p`
+  text-align: right;
+  color: ${p => !p.characters && 'var(--clr-red)'};
+`
+
+export const ErrorMessage = styled.p`
+  color: var(--clr-red);
+`
+
 export const TextField = styled.textarea`
   flex-basis: 100%;
   border: none;
-  min-height: 25rem;
+  min-height: 23rem;
   font-size: 1.6rem;
   resize: none;
 

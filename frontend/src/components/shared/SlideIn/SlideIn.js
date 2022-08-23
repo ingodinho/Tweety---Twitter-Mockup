@@ -13,12 +13,12 @@ import {
     Wrapper
 } from "./SlideIn.styling";
 import {useNavigate} from "react-router-dom";
-import {useRecoilState} from "recoil";
-import {loggedInUser, slideInMenu} from "../../utils/SharedStates";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {forceRerender, loggedInUser, slideInMenu} from "../../utils/SharedStates";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
-import useOutsideAlerter from "../../Hooks/useOutsideAlerter";
+import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 
 const SlideIn = () => {
     const [userData, setUserData] = useRecoilState(loggedInUser);
@@ -26,6 +26,7 @@ const SlideIn = () => {
     const [userInfo, setUserInfo] = useState({});
     const wrapperRef = useRef(null);
     const navigator = useNavigate();
+    const rerender = useRecoilValue(forceRerender);
 
     const axiosOptions = {
         headers: {
@@ -41,7 +42,7 @@ const SlideIn = () => {
             setUserInfo(response.data);
         }
         getUserInfos();
-    }, [userData])
+    }, [userData,rerender])
 
     const toProfile = () => {
         setShowMenu(false);
