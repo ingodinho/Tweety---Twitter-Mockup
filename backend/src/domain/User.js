@@ -45,18 +45,6 @@ export const makeUser = async ({
 		throw new Error("email not valid.");
 	}
 
-	const foundEmail = await UserDAO.findUserByEmail(email);
-
-	if (foundEmail) {
-		throw new Error("Email is already in use.");
-	}
-
-	const foundUsername = await UserDAO.findUserByUsername(username);
-
-	if (foundUsername) {
-		throw new Error("Username is already in use.");
-	}
-
 	dob = new Date(dob);
 	if (!(dob instanceof Date && !isNaN(dob))) {
 		throw new Error("Date of Birth must be a valid date format.");
