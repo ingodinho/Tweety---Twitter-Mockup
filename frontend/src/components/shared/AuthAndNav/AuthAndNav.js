@@ -35,16 +35,17 @@ const AuthAndNav = () => {
             }, NINE_MINUTES);
             setIsLoading(false);
         }
-
-        doSilentRefreshToken();
+        try {
+            doSilentRefreshToken();
+        } catch (err) {
+            navigator('/')
+        }
     }, [userData])
 
     if (isLoading) {
         return <LoadingPage/>
     }
-    if (!userData.accessToken) {
-        navigator('/login');
-    }
+
 
     return (<>
         <SlideIn/>

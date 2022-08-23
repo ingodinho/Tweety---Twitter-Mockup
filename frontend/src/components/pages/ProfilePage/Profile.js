@@ -79,10 +79,9 @@ const Profile = () => {
 
     const handleFollow = async () => {
         const data = {
-            userId: userData.userId,
             followUserId: profileId,
         };
-        const response = await axios.put(apiLink + "/users/follow", data);
+        const response = await axios.put(apiLink + "/users/follow", data, axiosOptions);
         setFollowing((prev) => !prev);
     };
 

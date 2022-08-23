@@ -32,7 +32,8 @@ const LoginForm = () => {
       withCredentials: true,
     });
     if (response.data.message) {
-      return setErrorMessage(response.data.message);
+      setErrorMessage(response.data.message);
+      return;
     }
     setSuccessMessage("Successfully logged in.");
     setTimeout(() => {
@@ -42,6 +43,8 @@ const LoginForm = () => {
       setPassword("");
     }, 1500);
   };
+
+  console.log(errorMessage);
 
   return (
     <FormWrapper>
