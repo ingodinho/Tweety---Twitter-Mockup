@@ -6,11 +6,10 @@ import {
   Wrapper,
 } from "./UserCard.styling";
 import ProfilePic from "../ProfilePic";
-import userPlaceHolderImg from "../../../img/profileplaceholder.png";
 import { ButtonFollow } from "../../../styles/Buttons";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { loggedInUser } from "../../utils/SharedStates";
+import {useRecoilValue, useSetRecoilState} from "recoil";
+import { loggedInUser, forceRerender } from "../../utils/SharedStates";
 import { apiLink } from "../../utils/apiLink";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
@@ -20,6 +19,7 @@ const UserCard = (props) => {
   const [following, setFollowing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigator = useNavigate();
+  const rerender = useSetRecoilState(forceRerender)
 
   const axiosOptions = {
     headers: {
@@ -44,6 +44,7 @@ const UserCard = (props) => {
       axiosOptions
     );
     setFollowing((prev) => !prev);
+    rerender(prev => prev + 1);
   };
 
   const toProfile = e => {

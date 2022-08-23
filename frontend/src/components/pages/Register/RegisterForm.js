@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import BackButton from "../../shared/BackButton";
 
 const RegisterForm = () => {
+
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [firstname, setFirstname] = useState("");
@@ -57,6 +58,21 @@ const RegisterForm = () => {
       email,
       dob: birthday,
       password,
+      
+        const response = await axios.post(apiLink + '/users/register', userData);
+        if (response.data.message) {
+            return setErrorMessage(response.data.message);
+        }
+
+        setErrorMessage("");
+        setSuccessMessage("Your account was created, please login.");
+        setEmail("");
+        setUsername("");
+        setPassword("");
+        setConfirmPassword("");
+
+        navigator('/validation');
+        
     };
 
     const response = await axios.post(apiLink + "/users/register", userData);

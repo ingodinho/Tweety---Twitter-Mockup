@@ -24,11 +24,6 @@ const BottomNav = () => {
                     </li>
                     <li>
                         <NavLink to={"/"} style={({isActive}) => isActive ? {color: '#1D9BF0'} : {color: '#687684'}}>
-                            <BellIcon/>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to={"/"} style={({isActive}) => isActive ? {color: '#1D9BF0'} : {color: '#687684'}}>
                             <MailIcon/>
                         </NavLink>
                     </li>

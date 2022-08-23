@@ -22,6 +22,7 @@ import {useRecoilValue} from "recoil";
 import {loggedInUser} from "../../utils/SharedStates";
 import ProfilePic from "../../shared/ProfilePic";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
+import {CharactersMessage, ErrorMessage, MessagesContainer} from "../NewTweet/NewTweet.styles";
 
 const ReplyTweet = () => {
     const userData = useRecoilValue(loggedInUser);
@@ -32,6 +33,9 @@ const ReplyTweet = () => {
     const [fileUpload, setFileUpload] = useState();
     const [content, setContent] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
+    const maxCharacters = 280;
+    const charactersLeft = maxCharacters - content.length;
 
     const axiosOptions = {
         headers: {
@@ -40,7 +44,7 @@ const ReplyTweet = () => {
     }
 
     useEffect(() => {
-        if(!userData) return;
+        if (!userData) return;
         const getTweet = async () => {
             const [response, profileShort] = await Promise.all(
                 [
@@ -74,24 +78,35 @@ const ReplyTweet = () => {
     }
 
     const replyHandler = async () => {
+        if(!content || maxCharacters < 0) {
+            setErrorMessage('Your Tweet has to have at least 1 character and max 280 characters');
+            return
+        }
         const formData = new FormData();
         formData.append('tweetimage', fileUpload);
         formData.append('replyToId', tweetId);
         formData.append('content', content);
 
-        try{
-        const response = await axios.post(apiLink + '/tweets/newreply', formData, axiosOptions);
-        navigator(`/tweet/${tweetId}`);
-        }
-        catch(err) {
+        try {
+            const response = await axios.post(apiLink + '/tweets/newreply', formData, axiosOptions);
+            if(!response.data.replyResult.insertedId) {
+                setErrorMessage('Something wrent wrong, try again later');
+                return;
+            }
+            navigator(`/tweet/${tweetId}`, {state: {location: 'replytweet'}});
+        } catch (err) {
             console.log(err);
         }
     }
 
-    if(isLoading) {
-        return <LoadingPage/>
+    const handleTweetChange = e => {
+        setContent(e.target.value);
+        setErrorMessage('')
     }
-    else {
+
+    if (isLoading) {
+        return <LoadingPage/>
+    } else {
         return (<>
                 <Header>
                     <Cancel onClick={() => onePageBack()}>Cancel</Cancel>
@@ -120,8 +135,12 @@ const ReplyTweet = () => {
                 <Wrapper>
                     <ProfilePic size={'big'} src={userPicture}/>
                     <TextField placeholder={'Tweet your reply'} value={content}
-                               onChange={e => setContent(e.target.value)}/>
+                               onChange={handleTweetChange}/>
                 </Wrapper>
+                <MessagesContainer>
+                    <CharactersMessage characters={charactersLeft >= 0}>{charactersLeft >= 0 ? `${charactersLeft} Characters left` : `Too many characters: ${charactersLeft}`}</CharactersMessage>
+                    {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+                </MessagesContainer>
                 <SpacingContainer>
                     <InputButton type="file" onChange={handleUpload}/>
                 </SpacingContainer>

@@ -22,11 +22,6 @@ export const tweetsRouter = express.Router();
 
 const doAuthMiddlewareAccess = makeDoAuthMiddleware();
 
-tweetsRouter.use((req, res, next) => {
-	console.log(req.headers);
-	next();
-});
-
 tweetsRouter.get("/all", doAuthMiddlewareAccess, async (_, res) => {
 	try {
 		const allTweets = await findAll();

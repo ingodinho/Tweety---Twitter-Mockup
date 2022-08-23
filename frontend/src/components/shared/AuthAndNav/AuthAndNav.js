@@ -8,6 +8,7 @@ import {apiLink} from "../../utils/apiLink";
 import axios from "axios";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import Overlay from "../Overlay/Overlay";
+import ImageModal from "../ImageModal/ImageModal";
 
 const AuthAndNav = () => {
 
@@ -30,7 +31,7 @@ const AuthAndNav = () => {
             const NINE_MINUTES = 9 * 60 * 1000;
             const timeoutId = setTimeout(() => {
                 doSilentRefreshToken();
-                clearTimeout(timeoutId)
+                clearTimeout(timeoutId);
             }, NINE_MINUTES);
             setIsLoading(false);
         }
@@ -48,6 +49,7 @@ const AuthAndNav = () => {
     return (<>
         <SlideIn/>
         <Overlay/>
+        <ImageModal/>
         <Outlet/>
         <BottomNav/>
     </>)
