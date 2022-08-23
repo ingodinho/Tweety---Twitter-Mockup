@@ -14,9 +14,26 @@ export const editUser = async (
 	if (bio) user.bio = bio;
 
 	if (password) {
+		const passwordre =
+			/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+
+		if (!password.match(passwordre)) {
+			throw new Error(
+				"Password must contain at least 8 characters. Must contain at least 1 character. Must contain at least 1 digit. Must contain at least 1 special character."
+			);
+		}
+
 		user.passwordSalt = createRandomHash();
-		user.passwordHash = createHash(password + "" + passwordSalt);
+		user.passwordHash = createHash(password + "" + user.passwordSalt);
 	}
+
+	// if (username) {
+	// 	const foundUsername = await UserDAO.findUserByUsername(username);
+
+	// 	if (foundUsername) {
+	// 		throw new Error("Username is already in use.");
+	// 	}
+	// }
 
 	const updateUserInfo = await makeUser(user);
 

@@ -11,6 +11,18 @@ export const registerUser = async ({
 	dob,
 	bio,
 }) => {
+	const foundEmail = await UserDAO.findUserByEmail(email);
+
+	if (foundEmail) {
+		throw new Error("Email is already in use.");
+	}
+
+	// const foundUsername = await UserDAO.findUserByUsername(username);
+
+	// if (foundUsername) {
+	// 	throw new Error("Username is already in use.");
+	// }
+
 	const passwordre = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
 
 	if (!password.match(passwordre)) {

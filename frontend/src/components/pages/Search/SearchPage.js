@@ -164,7 +164,7 @@ const SearchPage = () => {
           )}
           {currentNav === "searchedtopUser" && (
             <div>
-              {topUser.length > 0 &&
+              {topUser?.length > 0 &&
                 topUser.map((topUser) => (
                   <UserCard key={topUser._id} {...topUser} />
                 ))}

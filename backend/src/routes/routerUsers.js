@@ -119,10 +119,11 @@ usersRouter.post("/edit", doAuthMiddlewareAccess, async (req, res) => {
 	}
 });
 
-usersRouter.put("/follow", async (req, res) => {
+usersRouter.put("/follow", doAuthMiddlewareAccess, async (req, res) => {
 	try {
-		const newFollower = await followUser(req.body);
-		res.status(201).json(newFollower);
+		const userId = req.userClaims.sub;
+		const newFollower = await followUser(req.body, userId);
+		res.status(204).json(newFollower);
 	} catch (err) {
 		res.status(500).json({
 			message: err.message || "500 internal server error",
@@ -150,12 +151,27 @@ const bannerPicStorage = multer.diskStorage({
 	},
 });
 
-const uploadAvatarImage = multer({ storage: avatarPicStorage }).single(
-	"avatarimage"
-);
-const uploadBannerImage = multer({ storage: bannerPicStorage }).single(
-	"bannerimage"
-);
+const checkFileType = (req, file, cb) => {
+	if (
+		file.mimetype == "image/png" ||
+		file.mimetype == "image/jpg" ||
+		file.mimetype == "image/jpeg"
+	) {
+		cb(null, true);
+	} else {
+		cb(null, false);
+		return cb(new Error("Only .png, .jpg and .jpeg format allowed"));
+	}
+};
+
+const uploadAvatarImage = multer({
+	storage: avatarPicStorage,
+	fileFilter: checkFileType,
+}).single("avatarimage");
+const uploadBannerImage = multer({
+	storage: bannerPicStorage,
+	fileFilter: checkFileType,
+}).single("bannerimage");
 
 const unlinkFile = util.promisify(fs.unlink);
 
@@ -222,7 +238,7 @@ usersRouter.get("/followedby/:id", doAuthMiddlewareAccess, async (req, res) => {
 usersRouter.delete("/avatarimage", doAuthMiddlewareAccess, async (req, res) => {
 	try {
 		const userId = req.userClaims.sub;
-		await deleteUserAvatar(userId);
+		const result = await deleteUserAvatar(userId);
 		res.status(204).json(result);
 	} catch (err) {
 		res.status(500).json({

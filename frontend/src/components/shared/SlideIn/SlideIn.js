@@ -42,7 +42,7 @@ const SlideIn = () => {
             setUserInfo(response.data);
         }
         getUserInfos();
-    }, [userData,rerender])
+    }, [userData, rerender])
 
     const toProfile = () => {
         setShowMenu(false);
@@ -54,11 +54,11 @@ const SlideIn = () => {
         navigator(`/followerlist/${userData.userId}/following`);
     }
 
-    const logoutHandler = () => {
-        setUserData({});
+    const logoutHandler = async () => {
+        setUserData(null);
         setShowMenu(false);
-        localStorage.clear();
-        navigator('/')
+        await axios.get(apiLink + '/users/logout', {withCredentials: true});
+        navigator('/');
     }
 
     return <Wrapper showMenu={showMenu} ref={wrapperRef}>
@@ -72,13 +72,14 @@ const SlideIn = () => {
             <UserName>@{userInfo.username}</UserName>
             <FollowerStats>
                 <StatsFlex><span>{userInfo.following}</span><p>Following</p></StatsFlex>
-                <StatsFlex><span>{userInfo.followedBy}</span><p>{userInfo.followedBy === 1 ? 'Follower' : 'Followers'}</p></StatsFlex>
+                <StatsFlex><span>{userInfo.followedBy}</span>
+                    <p>{userInfo.followedBy === 1 ? 'Follower' : 'Followers'}</p></StatsFlex>
             </FollowerStats>
         </UserInfo>
         <NavigationContainer>
             <Navigation>
                 <NavItems onClick={toProfile}><ProfileIcon size={24}/><span>Profile</span></NavItems>
-                <NavItems onClick={toFollowerList} ><ListIcon size={24}></ListIcon><span>Followerlist</span></NavItems>
+                <NavItems onClick={toFollowerList}><ListIcon size={24}></ListIcon><span>Followerlist</span></NavItems>
             </Navigation>
             <Navigation>
                 <NavItems><InfoIcon size={24}/><span>About Tweety</span></NavItems>
