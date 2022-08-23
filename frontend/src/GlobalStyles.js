@@ -14,7 +14,7 @@ const GlobalStyles = createGlobalStyle`
 * {
   margin: 0;
   padding: 0;
-  /* max-width: 450px; */
+  
 }
 
 html {
@@ -28,6 +28,7 @@ html, body {
 }
 
 body {
+  min-width: var(--min-width);
   max-width: var(--max-width);
   margin: 0 auto;
   line-height: 1.5;
@@ -38,6 +39,7 @@ body {
 img, picture, video, canvas, svg {
   display: block;
   max-width: 100%;
+  object-fit: cover;
 }
 
 input, button, textarea, select {
@@ -67,6 +69,7 @@ p, h1, h2, h3, h4, h5, h6 {
   --clr-line-grey: #BDC5CD;
   --clr-red: #ff0e0e;
   --spacing-wrapper: 2.4rem;
+  --min-width: 350px;
   --max-width: 450px;
 }
 `;

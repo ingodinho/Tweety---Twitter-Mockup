@@ -46,21 +46,16 @@ const findTweetsByKeyword = async (keyword) => {
 };
 
 const findAllTweetsOfFollowedUsers = async (userId) => {
-	const db = await getDB();
-	const foundUser = await db
-		.collection("users")
-		.find({ _id: ObjectId(userId) })
-		.toArray();
-	const followedUserIds = foundUser[0].following;
-	const repliesPackage = await db
-		.collection(collectionName)
-		.find({
-			$and: [{ postedBy: { $in: followedUserIds } }, { replyTo: null }],
-		})
-		.sort({ postedAt: -1 })
-		.toArray();
-	return repliesPackage;
-};
+    const db = await getDB();
+    const foundUser = await db.collection("users").find({_id: ObjectId(userId)}).toArray();
+    const id = userId
+    const followedUserIds = foundUser[0].following
+    const repliesPackage = await db.collection(collectionName)
+    .find({$and: [{$or: [{postedBy: {$in: followedUserIds}}, {postedBy: id}]}, {replyTo: null}]})
+    .sort({postedAt: -1})
+    .toArray()
+    return repliesPackage;
+}
 
 const findAllLikedTweets = async (userId) => {
 	const db = await getDB();

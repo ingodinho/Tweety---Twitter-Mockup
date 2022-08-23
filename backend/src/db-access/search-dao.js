@@ -36,13 +36,23 @@ const searchTopTweets = async () => {
 };
 
 const searchTopUsers = async () => {
-	const db = await getDB();
-	const foundUsers = await db
-		.collection(usersColl)
-		.find({ likedTweets: { $not: { $size: 0 } } })
-		.sort({ postedAt: -1 })
-		.toArray();
-	return { foundUsers };
+    const db = await getDB();
+    const foundUsers = await db.collection(usersColl)
+    .find ({likedTweets: {$not: {$size: 0}}})
+    .sort({postedAt: -1})
+    .toArray();
+	const filteredUserData = foundUsers.map((user) => {
+		return {
+			_id: user._id,
+			username: user.username,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			profilePictureLink: user.profilePictureLink,
+			bio: user.bio,
+			followedBy: user.followedBy
+		};
+	});
+	return filteredUserData;
 };
 
 export default {

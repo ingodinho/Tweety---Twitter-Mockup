@@ -6,9 +6,19 @@ const usersCollectionName = "users";
 const findAllUsers = async () => {
 	const db = await getDB();
 	const users = await db.collection(usersCollectionName).find().toArray();
-	return users;
+	const filteredUserData = users.map((user) => {
+		return {
+			_id: user._id,
+			username: user.username,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			profilePictureLink: user.profilePictureLink,
+			bio: user.bio,
+			followedBy: user.followedBy
+		};
+	});
+	return filteredUserData;
 };
-
 const findUserById = async (userId) => {
 	const db = await getDB();
 	const foundUser = await db
