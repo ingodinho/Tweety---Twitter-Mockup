@@ -45,8 +45,6 @@ const LoginForm = () => {
     }, 1500);
   };
 
-  console.log(errorMessage);
-
   return (
     <>
       <BackButton path={"/"} />

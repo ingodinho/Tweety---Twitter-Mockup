@@ -10,7 +10,7 @@ const Redirect = () => {
     const navigator = useNavigate();
 
     useEffect(() => {
-        if(!userData) return;
+        // if(!userData) return;
         const doSilentRefreshToken = async () => {
             try {
                 const response = await axios.post(apiLink + '/users/refreshtoken', {}, {
