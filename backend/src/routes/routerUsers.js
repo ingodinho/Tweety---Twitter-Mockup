@@ -28,7 +28,7 @@ const doAuthMiddlewareRefresh = makeDoAuthMiddleware("refresh");
 
 export const usersRouter = express.Router();
 
-usersRouter.get("/allusers", async (_, res) => {
+usersRouter.get("/allusers", doAuthMiddlewareAccess, async (_, res) => {
 	try {
 		const allUsers = await showAllUsers();
 		res.status(200).json(allUsers);
