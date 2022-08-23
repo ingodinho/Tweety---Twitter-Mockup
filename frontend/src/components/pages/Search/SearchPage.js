@@ -93,7 +93,7 @@ const SearchPage = () => {
         setTopTweets("");
         setTopUser("");
         setAllTweets(searchResult.data.tweetsResult);
-        setAllUsers(searchResult.data);
+        setAllUsers(searchResult.data.usersResult);
       };
       getSearch();
       setIsLoading(false);
