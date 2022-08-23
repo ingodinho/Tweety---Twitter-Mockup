@@ -70,7 +70,7 @@ const SearchPage = () => {
           await Promise.all([
             axios.get(apiLink + "/tweets/all", axiosOptions),
             axios.get(apiLink + "/users/profileshort", axiosOptions),
-            axios.get(apiLink + "/users/allusers",axiosOptions),
+            axios.get(apiLink + "/users/allusers", axiosOptions),
             axios.get(apiLink + "/search/toptweets", axiosOptions),
             axios.get(apiLink + "/search/topusers", axiosOptions),
           ]);
@@ -79,8 +79,8 @@ const SearchPage = () => {
         setAllUsers(allUsersData.data);
         setTopTweets(topTweets.data.tweetsResult);
         setTopUser(topUsers.data);
-        setIsLoading(false);
         setIsLoadingContent(false);
+        setIsLoading(false);
       };
       getAllTweets();
     } else {
@@ -90,10 +90,13 @@ const SearchPage = () => {
             token: "JWT " + userData.accessToken,
           },
         });
+        setTopTweets("");
+        setTopUser("");
         setAllTweets(searchResult.data.tweetsResult);
         setAllUsers(searchResult.data.usersResult);
       };
       getSearch();
+      setIsLoading(false);
     }
   }, [searchToggle, userData, currentNav]);
 
