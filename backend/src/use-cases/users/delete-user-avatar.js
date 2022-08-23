@@ -3,7 +3,6 @@ import { deleteFile } from "../../utils/s3/s3-profile.js";
 
 export const deleteUserAvatar = async (userId) => {
 	const foundUser = await UserDAO.findUserById(userId);
-	console.log(foundUser);
 
 	if (foundUser.profilePictureLink) {
 		const s3deleteResult = await deleteFile(foundUser.profilePictureLink);
