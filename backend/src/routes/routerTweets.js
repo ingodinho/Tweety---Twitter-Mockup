@@ -137,12 +137,12 @@ tweetsRouter.post(
 			if (req.file) {
 				const file = req.file;
 				const originalLocalFilePath = file.path;
-				const newLocalFilePath = await resizeTweetImage(file);
-				const awsAnswer = await uploadFile(newLocalFilePath, file);
+				// const newLocalFilePath = await resizeTweetImage(file);
+				const awsAnswer = await uploadFile(originalLocalFilePath, file);
 				const s3Key = awsAnswer.key;
 				const newTweet = await postReply(req.body, userId, s3Key);
 				await unlinkFile(originalLocalFilePath);
-				await unlinkFile(newLocalFilePath);
+				// await unlinkFile(newLocalFilePath);
 				res.status(201).json(newTweet);
 			} else {
 				const newReply = await postReply(req.body, userId);
