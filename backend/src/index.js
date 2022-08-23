@@ -10,7 +10,7 @@ import { searchRouter } from "./routes/routerSearch.js";
 
 const app = express();
 const PORT = process.env.PORT || 9000;
-// const wsPORT = process.env.PORT || 9090;
+const wsPORT = process.env.PORT || 9090;
 
 app.use(cors({ origin: [process.env.FRONTEND_URL], credentials: true }));
 

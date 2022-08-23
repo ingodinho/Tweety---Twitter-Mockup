@@ -18,8 +18,8 @@ import NewTweetButton from "../../shared/NewTweetButton";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
-import {useRecoilValue} from "recoil";
-import {loggedInUser} from "../../utils/SharedStates";
+import {useRecoilValue, useSetRecoilState} from "recoil";
+import {handleModal, loggedInUser, modalId} from "../../utils/SharedStates";
 import Tweet from "../../shared/Tweet/Tweet";
 import {useNavigate, useParams} from "react-router-dom";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
@@ -38,6 +38,8 @@ const Profile = () => {
     const [userInfo, setUserInfo] = useState({});
     const [currentNav, setCurrentNav] = useState('userTweets');
     const [isLoading, setIsLoading] = useState(true);
+    const setShowModal = useSetRecoilState(handleModal);
+    const setIdModal = useSetRecoilState(modalId);
 
     const axiosOptions = {
         headers: {
@@ -95,6 +97,11 @@ const Profile = () => {
         navigator(`/followerlist/${profileId}/${defaultnav}`);
     }
 
+    const showImageModal = () => {
+        setShowModal(true);
+        setIdModal({profileId})
+    }
+
     if (isLoading) {
         return <LoadingPage/>
     } else {
@@ -107,7 +114,7 @@ const Profile = () => {
                 </header>
                 <UserWrapper>
                     <UserInfo>
-                        <img src={userInfo.profilePictureLink || userPlaceHolderImg} alt="User"/>
+                        <img src={userInfo.profilePictureLink || userPlaceHolderImg} onClick={()=> showImageModal()} alt="User"/>
                         {myProfile && <EditProfile to={`/profile/${userData.userId}/edit`}>
                             Edit Profile
                         </EditProfile>}

@@ -12,13 +12,15 @@ import Moment from 'react-moment';
 import {useNavigate} from 'react-router-dom';
 import TweetStats from "./TweetStats";
 import {useEffect, useState} from "react";
-import {useRecoilState, useRecoilValue} from "recoil";
-import {loggedInUser, tweetStateFamily} from "../../utils/SharedStates";
+import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
+import {handleModal, loggedInUser, modalId, tweetStateFamily} from "../../utils/SharedStates";
 
 const Tweet = (props) => {
     const userData = useRecoilValue(loggedInUser);
     const [isLoading, setIsLoading] = useState(true);
     const [tweetData, setTweetData] = useRecoilState(tweetStateFamily(props._id));
+    const setShowModal = useSetRecoilState(handleModal);
+    const setIdModal = useSetRecoilState(modalId);
 
     useEffect(() => {
         setTweetData(prev => ({...prev, ...props, liked: props.likes.includes(userData.userId)}));
@@ -56,6 +58,11 @@ const Tweet = (props) => {
         }
     }
 
+    const showImageModal = () => {
+        setShowModal(true);
+        setIdModal({tweetId: tweetData?._id})
+    }
+
     if (isLoading) {
         return (
             <></>
@@ -77,9 +84,10 @@ const Tweet = (props) => {
 						&#183; <Moment fromNow>{tweetData.postedAt}</Moment>
 					</span>
                         </UserInfo>
-                        <Content onClick={() => toDetail(tweetData._id)}>
-                            <Text>{tweetData.content}</Text>
-                            {props.imgLink && <Img src={tweetData.imgLink}/>}
+                        <Content>
+                            <Text onClick={() => toDetail(tweetData._id)}>{tweetData.content}</Text>
+                            {props.imgLink &&
+                                <Img src={tweetData.imgLink} alt={'Embedded Tweet'} onClick={() => showImageModal()}/>}
                         </Content>
                         <TweetStats
                             stats

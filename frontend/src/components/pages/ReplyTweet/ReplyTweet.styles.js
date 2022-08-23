@@ -58,6 +58,20 @@ export const Text = styled.p`
   line-height: 1.5;
 `;
 
+export const MessagesContainer = styled.div`
+  margin: 0 var(--spacing-wrapper);
+  font-size: 1.4rem;
+`
+
+export const CharactersMessage = styled.p`
+  text-align: right;
+  color: ${p => !p.characters && 'var(--clr-red)'};
+`
+
+export const ErrorMessage = styled.p`
+  color: var(--clr-red);
+`
+
 export const Img = styled.img`
   margin-top: 1rem;
   height: 17.4rem;

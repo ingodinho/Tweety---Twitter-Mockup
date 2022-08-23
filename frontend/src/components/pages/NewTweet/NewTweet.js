@@ -1,7 +1,7 @@
 import {
-    Cancel, DeleteButton,
+    Cancel, CharactersMessage, DeleteButton, ErrorMessage,
     Header, ImgPreview,
-    InputButton, PreviewHeader, PreviewHeadline,
+    InputButton, MessagesContainer, PreviewHeader, PreviewHeadline,
     SpacingContainer,
     TextField,
     TweetWrapper
@@ -24,12 +24,16 @@ const NewTweet = () => {
     const navigator = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [userPicture, setUserPicture] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
+    const maxCharacters = 280;
+    const charactersLeft = maxCharacters - tweetContent.length;
 
     const axiosOptions = {
         headers: {
             token: 'JWT ' + userData?.accessToken
         }
     };
+
 
     useEffect(() => {
         if (!userData) return;
@@ -39,7 +43,7 @@ const NewTweet = () => {
             setIsLoading(false);
         }
         getUserPicture();
-    })
+    },[fileUpload])
 
     const handleUpload = (e) => {
         e.preventDefault();
@@ -57,6 +61,10 @@ const NewTweet = () => {
     }
 
     const tweetHandler = async () => {
+        if(!tweetContent || maxCharacters < 0) {
+            setErrorMessage('Your Tweet has to have at least 1 character and max 280 characters');
+            return
+        }
         const formData = new FormData();
         formData.append('tweetimage', fileUpload);
         formData.append('content', tweetContent);
@@ -66,9 +74,18 @@ const NewTweet = () => {
                 token: `JWT ${userData.accessToken}`
             }
         });
+        if(!response.data.insertedId) {
+            setErrorMessage('Something wrent wrong, try again later');
+        }
         if (response.data.insertedId) {
+            setErrorMessage('');
             onePageBack();
         }
+    }
+
+    const handleTweetChange = e => {
+        setTweetContent(e.target.value);
+        setErrorMessage('')
     }
 
     if (isLoading) {
@@ -83,8 +100,12 @@ const NewTweet = () => {
                 <TweetWrapper>
                     <ProfilePic size={'medium'} src={userPicture}/>
                     <TextField placeholder={`What's happening?`} value={tweetContent}
-                               onChange={e => setTweetContent(e.target.value)}/>
+                               onChange={handleTweetChange}/>
                 </TweetWrapper>
+                <MessagesContainer>
+                    <CharactersMessage characters={charactersLeft >= 0}>{charactersLeft >= 0 ? `${charactersLeft} Characters left` : `Too many characters: ${charactersLeft}`}</CharactersMessage>
+                    {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+                </MessagesContainer>
                 <SpacingContainer>
                     <InputButton type="file" onChange={handleUpload}/>
                 </SpacingContainer>
@@ -100,8 +121,6 @@ const NewTweet = () => {
             </>
         )
     }
-
-
 }
 
 export default NewTweet;
