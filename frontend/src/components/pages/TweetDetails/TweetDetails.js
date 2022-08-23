@@ -8,7 +8,7 @@ import {
     Time,
     UserInfo,
     UserPic,
-    Wrapper, Header, HomeLink
+    Wrapper, Header
 } from './TweetDetails.styling';
 import Moment from "react-moment";
 import {useLocation, useNavigate, useParams, useResolvedPath} from "react-router-dom";
