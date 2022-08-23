@@ -79,8 +79,8 @@ const SearchPage = () => {
         setAllUsers(allUsersData.data);
         setTopTweets(topTweets.data.tweetsResult);
         setTopUser(topUsers.data);
-        setIsLoading(false);
         setIsLoadingContent(false);
+        setIsLoading(false);
       };
       getAllTweets();
     } else {
@@ -90,10 +90,13 @@ const SearchPage = () => {
             token: "JWT " + userData.accessToken,
           },
         });
+        setTopTweets("");
+        setTopUser("");
         setAllTweets(searchResult.data.tweetsResult);
-        setAllUsers(searchResult.data.usersResult);
+        setAllUsers(searchResult.data);
       };
       getSearch();
+      setIsLoading(false);
     }
   }, [searchToggle, userData, currentNav]);
 
