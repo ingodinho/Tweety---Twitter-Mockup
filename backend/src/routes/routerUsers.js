@@ -155,12 +155,13 @@ const checkFileType = (req, file, cb) => {
 	if (
 		file.mimetype == "image/png" ||
 		file.mimetype == "image/jpg" ||
-		file.mimetype == "image/jpeg"
+		file.mimetype == "image/jpeg" ||
+		file.mimetype == "image/gif"
 	) {
 		cb(null, true);
 	} else {
 		cb(null, false);
-		return cb(new Error("Only .png, .jpg and .jpeg format allowed"));
+		return cb(new Error("Only .gif, .png, .jpg and .jpeg format allowed"));
 	}
 };
 
@@ -184,12 +185,12 @@ usersRouter.put(
 			const userId = req.userClaims.sub;
 			const file = req.file;
 			const originalLocalFilePath = file.path;
-			const newLocalFilePath = await resizeAvatar(file);
-			const awsAnswer = await uploadFile(newLocalFilePath, file);
+			// const newLocalFilePath = await resizeAvatar(file);
+			const awsAnswer = await uploadFile(originalLocalFilePath, file);
 			const s3Key = awsAnswer.key;
 			const result = await changeUserAvatar(userId, s3Key);
 			await unlinkFile(originalLocalFilePath);
-			await unlinkFile(newLocalFilePath);
+			// await unlinkFile(newLocalFilePath);
 			res.status(201).json(result);
 		} catch (err) {
 			res.status(500).json({

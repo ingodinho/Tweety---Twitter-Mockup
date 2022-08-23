@@ -77,9 +77,24 @@ const tweetPicStorage = multer.diskStorage({
 	},
 });
 
-const uploadTweetImage = multer({ storage: tweetPicStorage }).single(
-	"tweetimage"
-);
+const checkFileType = (req, file, cb) => {
+	if (
+		file.mimetype == "image/png" ||
+		file.mimetype == "image/jpg" ||
+		file.mimetype == "image/jpeg" ||
+		file.mimetype == "image/gif"
+	) {
+		cb(null, true);
+	} else {
+		cb(null, false);
+		return cb(new Error("Only .gif, .png, .jpg and .jpeg format allowed"));
+	}
+};
+
+const uploadTweetImage = multer({
+	storage: tweetPicStorage,
+	fileFilter: checkFileType,
+}).single("tweetimage");
 
 const unlinkFile = util.promisify(fs.unlink);
 
@@ -93,12 +108,12 @@ tweetsRouter.post(
 			if (req.file) {
 				const file = req.file;
 				const originalLocalFilePath = file.path;
-				const newLocalFilePath = await resizeTweetImage(file);
-				const awsAnswer = await uploadFile(newLocalFilePath, file);
+				// const newLocalFilePath = await resizeTweetImage(file);
+				const awsAnswer = await uploadFile(originalLocalFilePath, file);
 				const s3Key = awsAnswer.key;
 				const newTweet = await postTweet(req.body, userId, s3Key);
 				await unlinkFile(originalLocalFilePath);
-				await unlinkFile(newLocalFilePath);
+				// await unlinkFile(newLocalFilePath);
 				res.status(201).json(newTweet);
 			} else {
 				const newTweet = await postTweet(req.body, userId);
