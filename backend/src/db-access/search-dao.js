@@ -1,38 +1,39 @@
-import { getDB } from './getDB.js';
+import { getDB } from "./getDB.js";
 
-const tweetsColl = "tweets"
-const usersColl = "users"
-
+const tweetsColl = "tweets";
+const usersColl = "users";
 
 const searchTweetsByKeyword = async (keyword) => {
-    const db = await getDB();
-    const foundTweets = await db.collection(tweetsColl)
-    .find ({$or: [
-        {content: {$regex: new RegExp(keyword, "i")}},
-    ]})
-    .sort({postedAt: -1})
-    .toArray();
-    const foundUsers = await db.collection(usersColl)
-    .find ({$or: [
-        {username: {$regex: new RegExp(keyword, "i")}},
-        {firstName: {$regex: new RegExp(keyword, "i")}},
-        {lastName: {$regex: new RegExp(keyword, "i")}}
-    ]})
-    .sort({postedAt: -1})
-    .toArray();
+	const db = await getDB();
+	const foundTweets = await db
+		.collection(tweetsColl)
+		.find({ $or: [{ content: { $regex: new RegExp(keyword, "i") } }] })
+		.sort({ postedAt: -1 })
+		.toArray();
+	const foundUsers = await db
+		.collection(usersColl)
+		.find({
+			$or: [
+				{ username: { $regex: new RegExp(keyword, "i") } },
+				{ firstName: { $regex: new RegExp(keyword, "i") } },
+				{ lastName: { $regex: new RegExp(keyword, "i") } },
+			],
+		})
+		.sort({ postedAt: -1 })
+		.toArray();
 
-    return { foundUsers, foundTweets };
-}
+	return { foundUsers, foundTweets };
+};
 
 const searchTopTweets = async () => {
-    const db = await getDB();
-    const foundTweets = await db.collection(tweetsColl)
-    .find({replies: {$not: { $size: 0}}})
-    .sort({postedAt:-1})
-    .toArray();
-    console.log(foundTweets);
-    return { foundTweets };
-}
+	const db = await getDB();
+	const foundTweets = await db
+		.collection(tweetsColl)
+		.find({ replies: { $not: { $size: 0 } } })
+		.sort({ postedAt: -1 })
+		.toArray();
+	return { foundTweets };
+};
 
 const searchTopUsers = async () => {
     const db = await getDB();
@@ -55,7 +56,7 @@ const searchTopUsers = async () => {
 };
 
 export default {
-    searchTweetsByKeyword,
-    searchTopTweets,
-    searchTopUsers
-}
+	searchTweetsByKeyword,
+	searchTopTweets,
+	searchTopUsers,
+};

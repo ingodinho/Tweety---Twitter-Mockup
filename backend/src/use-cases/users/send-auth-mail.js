@@ -14,7 +14,7 @@ export const sendAuthMail = async (userId) => {
 
         ${user.sixDigitCode}
 
-		On the following page: https://tweety-be.herokuapp.com/validation
+		On the following page: https://tweetyfesecondedition.herokuapp.com/validation
 
         After that you will be able to login.
 

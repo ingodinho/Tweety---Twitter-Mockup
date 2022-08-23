@@ -8,9 +8,9 @@ export const refreshUserToken = async ({ userId }) => {
 		throw new Error("User not found");
 	}
 
-	const user = makeUser(foundUser);
+	// const user = makeUser(foundUser);
 
-	const accessToken = createToken(user);
+	const accessToken = createToken(foundUser);
 
 	return { accessToken, userId: foundUser._id };
 };

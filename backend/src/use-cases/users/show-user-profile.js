@@ -2,12 +2,12 @@ import UserDAO from "../../db-access/users-dao.js";
 import { makeUser } from "../../domain/User.js";
 
 export const showUserProfile = async (userId) => {
-	const foundUser = await UserDAO.findUserById(userId);
-	if (!foundUser) {
+	const user = await UserDAO.findUserById(userId);
+	if (!user) {
 		throw new Error("User not found");
 	}
 
-	const user = makeUser(foundUser);
+	// const user = await makeUser(foundUser);
 
 	const posts = []; //PLATZHALTER FÜR findpostsbyuserid
 

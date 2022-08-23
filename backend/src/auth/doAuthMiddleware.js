@@ -11,7 +11,6 @@ export const makeDoAuthMiddleware = (validTokenType = "access") => {
 		try {
 			const token = extractTokenFromRequest(req, validTokenType);
 			if (!token) return __unauthorized();
-
 			const userClaims = jwt.verify(token, process.env.JWT_SECRET, {
 				algorithms: ["HS256"],
 			});
