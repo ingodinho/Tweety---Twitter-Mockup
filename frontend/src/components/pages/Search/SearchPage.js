@@ -70,7 +70,7 @@ const SearchPage = () => {
           await Promise.all([
             axios.get(apiLink + "/tweets/all", axiosOptions),
             axios.get(apiLink + "/users/profileshort", axiosOptions),
-            axios.get(apiLink + "/users/allusers"),
+            axios.get(apiLink + "/users/allusers", axiosOptions),
             axios.get(apiLink + "/search/toptweets", axiosOptions),
             axios.get(apiLink + "/search/topusers", axiosOptions),
           ]);
@@ -78,7 +78,7 @@ const SearchPage = () => {
         setUserProfilePic(userProfilePic.data.profilePictureLink);
         setAllUsers(allUsersData.data);
         setTopTweets(topTweets.data.tweetsResult);
-        setTopUser(topUsers.data.userResult);
+        setTopUser(topUsers.data);
         setIsLoading(false);
         setIsLoadingContent(false);
       };

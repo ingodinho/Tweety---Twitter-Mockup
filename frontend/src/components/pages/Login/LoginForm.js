@@ -6,6 +6,7 @@ import { FormWrapper } from "../Register/RegisterStyling";
 import axios from "axios";
 import { apiLink } from "../../utils/apiLink";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../../shared/BackButton";
 import styled from "styled-components";
 
 const LoginForm = () => {
@@ -44,31 +45,34 @@ const LoginForm = () => {
   };
 
   return (
-    <FormWrapper>
-      <Headline>Log in to your account</Headline>
-      <InputField
-        required
-        placeholder="Your Email here"
-        id="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <InputField
-        required
-        placeholder="Password"
-        type="password"
-        id="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <ButtonBig type="submit" onClick={handleSubmit}>
-        Log In
-      </ButtonBig>
+    <>
+      <BackButton path={"/"} />
+      <FormWrapper>
+        <Headline>Log in to your account</Headline>
+        <InputField
+          required
+          placeholder="Your Email here"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <InputField
+          required
+          placeholder="Password"
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <ButtonBig type="submit" onClick={handleSubmit}>
+          Log In
+        </ButtonBig>
 
-      {errorMessage && <ResultMessage>{errorMessage}</ResultMessage>}
+        {errorMessage && <ResultMessage>{errorMessage}</ResultMessage>}
 
-      {successMessage && <ResultMessage>{successMessage}</ResultMessage>}
-    </FormWrapper>
+        {successMessage && <ResultMessage>{successMessage}</ResultMessage>}
+      </FormWrapper>
+    </>
   );
 };
 
