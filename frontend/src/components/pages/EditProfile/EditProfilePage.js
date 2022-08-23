@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import userPlaceHolderImg from "../../../img/profileplaceholder.png";
 import bannerPlaceHolder from "../../../img/bannerplaceholder.png";
+import { ArrowIosBack } from "styled-icons/evaicons-solid";
 import { loggedInUser } from "../../utils/SharedStates";
 import {
   Header,
@@ -28,6 +29,8 @@ import {
   EditBio,
   SaveProfilePictureButton,
   SaveBannerButton,
+  FeedbackMessage,
+  ResultMessage,
 } from "./EditProfilePage.styling.js";
 
 const EditProfilePage = () => {
@@ -41,7 +44,7 @@ const EditProfilePage = () => {
   const [editedFirstName, setEditedFirstName] = useState("");
   const [editedLastName, setEditedLastName] = useState("");
   const [editedBio, setEditedBio] = useState("");
-  const [editedDob, setEditedDob] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const axiosOptions = {
     headers: {
@@ -56,7 +59,6 @@ const EditProfilePage = () => {
         axiosOptions
       );
       setUserInfo(response.data);
-      console.log(response.data);
     };
     getUserInfo();
   }, [userData]);
@@ -96,7 +98,6 @@ const EditProfilePage = () => {
       firstName: editedFirstName,
       lastName: editedLastName,
       bio: editedBio,
-      dob: editedDob,
     };
     const response = await axios.post(
       apiLink + `/users/edit`,
@@ -107,7 +108,10 @@ const EditProfilePage = () => {
     if (response.data.insertedId) {
       onePageBack();
     }
-    window.location.reload();
+    setSuccessMessage("Successfully updated Profile");
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   const saveProfilePicture = async () => {
@@ -123,7 +127,10 @@ const EditProfilePage = () => {
     if (response.data.insertedId) {
       onePageBack();
     }
-    window.location.reload();
+    setSuccessMessage("Successfully updated Profile Picture");
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   const saveProfileBanner = async () => {
@@ -140,7 +147,10 @@ const EditProfilePage = () => {
     if (response.data.insertedId) {
       onePageBack();
     }
-    window.location.reload();
+    setSuccessMessage("Successfully updated Banner Picture");
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   useEffect(() => {
@@ -149,14 +159,15 @@ const EditProfilePage = () => {
       setEditedFirstName(userInfo.firstName);
       setEditedLastName(userInfo.lastName);
       setEditedBio(userInfo.bio);
-      setEditedDob(userInfo.dob);
     }
   }, [userInfo]);
 
   return (
     <>
       <Header>
-        <Cancel onClick={() => onePageBack()}>⬅︎</Cancel>
+        <Cancel size={26} onClick={() => onePageBack()}>
+          ⬅︎
+        </Cancel>
         <Headline>Edit Profile</Headline>
         <SaveButton onClick={() => saveHandler()}>Save</SaveButton>
       </Header>
@@ -222,12 +233,9 @@ const EditProfilePage = () => {
             value={editedBio}
             onChange={(e) => setEditedBio(e.target.value)}
           />
-          <EditField
-            value={editedDob}
-            type="date"
-            onChange={(e) => setEditedDob(e.target.value)}
-          />
         </EditWrapper>
+        <FeedbackMessage type="success" message={successMessage} />
+        {successMessage && <ResultMessage>{successMessage}</ResultMessage>}
       </UserWrapper>
     </>
   );

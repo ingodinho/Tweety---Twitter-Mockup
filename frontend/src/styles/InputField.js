@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const InputField = styled.input`
   margin: 0 auto;
   display: block;
+  color: var(--clr-text-prm);
   width: 80vw;
   border: 0;
   border-bottom: 1px solid var(--clr-line-grey);
