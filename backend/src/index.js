@@ -21,26 +21,58 @@ const io = new Server(httpServer, {
 // WEBSOCKET-SERVER
 
 io.on("connection", (socket) => {
-    console.log("new user connected", socket.id);
-	const users = [];
+    console.log(`⚡: ${socket.id} user just connected!`);
+	let users = [];
 	for (let [id, socket] of io.of("/").sockets) {
 		users.push({
-			userId: id,
-			username: socket.username
+			socketId: id,
+			username: socket.name
 		})
 	}
-	socket.emit("users", users)
-	io.emit("Willkommen")
+	console.log("OnlineUsers: ", users);
+
+	//Listens and logs the message to the console
+	socket.on('message', (data) => {
+	  console.log(data);
+	  io.emit("messageResponse", data)
+	})
+
+	// User bei Login auf Online-setzen und bei Logout wieder auf Offline
+	// User Online-Anzeige bauen
+	// userId und userName verarbeiten
+	// socket und emit für PN erstellen Sender/server/Empfänger
+	// Chats in Mongo speichern
+	// Notifications if Users gets online or offline
+	  
+	socket.on('connection', (data) => {  //Hier müssen wir noch das emit auf Client-Seite machen / bei irgendeinem Ereignis muss getriggert werden
+		for (let [id, data] of io.of("/").sockets) {
+			users.push({
+				socketId: id,
+				username: data.name
+			})
+		}
+		console.log("OnlineUsers: ", users);
+		io.emit("userConnectionResponse", users) // das userConnectionResponse muss dann im UseEffect angewandt werden um die Online-User zu aktualisieren
+	})
+
+	socket.on('typing', (data) => socket.broadcast.emit('typingResponse', data));
+  
+	socket.on('disconnect', () => {
+		console.log('🔥: A user disconnected');
+		users = users.filter((user) => user.socketID !== socket.id);
+		io.emit('userConnectionResponse', users);
+   		socket.disconnect();
+	});
 })
 
-// NOTIFY OTHER ABOUT USER CONNECTING
-io.on("connection", (socket) => {
-	// notify existing users
-	socket.broadcast.emit("user connected", {
-	  userID: socket.id,
-	  username: socket.username,
-	});
-  });
+// // NOTIFY OTHER ABOUT USER CONNECTING
+// io.on("connection", (socket) => {
+// 	// notify existing users
+// 	socket.broadcast.emit("user connected", {
+// 	  userID: socket.id,
+// 	  username: socket.username,
+// 	});
+//   });
 // // MIDDLEWARE FÜR AUTH
 // io.use((socket, next) => {
 // const username = socket.handshake.auth.username;
@@ -56,10 +88,6 @@ io.on("private_message", ({content, to}) => {
 		content,
 		from: socket.id
 	})
-})
-
-io.on("disconnect", (socket) => {
-    console.log("user disconnected", socket.id);
 })
 
 io.on("connect_error", (err) => {
