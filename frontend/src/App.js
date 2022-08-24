@@ -1,6 +1,7 @@
 import GlobalStyles from "./GlobalStyles";
 import { useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import socketIO from 'socket.io-client'
 
 import Home from "./components/pages/Home/Home";
 import LoginPage from "./components/pages/Login/LoginPage";
@@ -18,6 +19,9 @@ import AuthAndNav from "./components/shared/AuthAndNav/AuthAndNav";
 import Redirect from "./components/shared/Tweet/Redirect";
 import EmailValidation from "./components/pages/EmailValidation/EmailValidation";
 import FollowerList from "./components/pages/FollowerList/FollowerList";
+import MessengerPage from "./components/pages/Messenger/MessengerPage";
+
+const socket = socketIO.connect("http://localhost:9000");
 
 function App() {
   const navigator = useNavigate();
@@ -42,6 +46,7 @@ function App() {
                     <Route path={"/profile/:id/edit"} element={<EditProfile/>}/>
                     <Route path={"/newtweet"} element={<NewTweet/>}/>
                     <Route path={"/reply/:id"} element={<ReplyTweet/>}/>
+                    <Route path={"/messenger"} element={<MessengerPage socket={socket}/>}/>
                     <Route path={'/followerlist/:id/:defaultnav'} element={<FollowerList/>}/>
                 </Route>
                 <Route element={<Redirect/>}>
