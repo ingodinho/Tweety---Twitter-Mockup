@@ -23,7 +23,7 @@ const UserCard = (props) => {
 
   const axiosOptions = {
     headers: {
-      accessToken: `JWT ` + userData.accessToken,
+      token: `JWT ` + userData.accessToken,
     },
   };
 
