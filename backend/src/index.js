@@ -22,14 +22,15 @@ const io = new Server(httpServer, {
 // WEBSOCKET-SERVER
 
 io.on("connection", async (socket) => {
-	const connectedUserId = socket.handshake.auth.userId;
     console.log(`⚡: ${socket.id} user just connected!`);
+	const connectedUserId = socket.handshake.auth.userId;
+	socket.join(connectedUserId);
 
 	let users = [];
 	for (let [id, socket] of io.of("/").sockets) {
 		users.push({
 			socketId: id,
-			userId: socket.handshake.auth.userId
+			userId: socket.handshake.auth.userId,
 		})
 	}
 	io.emit("userConnectionResponse", users);
@@ -40,12 +41,17 @@ io.on("connection", async (socket) => {
 	  io.emit("messageResponse", data)
 	})
 
-	// socket.on('private_message', (data) => {
-	// 	socket.to(data.to).emit('private_message', {
-	// 		content: data.content,
-	// 		from: data.userId
-	// 	})
-	// })
+	socket.on('private_message', ({content, to, userId, messageId}) => {
+		console.log('userid', userId);
+		console.log('to', to)
+		io.to([to, userId]).emit('private_message', {
+			content: content,
+			userId: userId,
+			messageId: messageId,
+			receiver: to,
+			from: userId,
+		})
+	})
 
 	// User bei Login auf Online-setzen und bei Logout wieder auf Offline
 	// User Online-Anzeige bauen

@@ -1,16 +1,20 @@
-import {useRecoilValue, useSetRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {loggedInUser, messageSelectedUser} from "../../utils/SharedStates";
 import {useEffect, useState} from "react";
-import app from "../../../App";
 import {apiLink} from "../../utils/apiLink";
 import axios from "axios";
 import ProfilePic from "../../shared/ProfilePic";
+import styled from "styled-components";
 
 
-const MessageUserCard = ({socketId, userId, socket}) => {
+const MessageUserCard = ({socketId, userId}) => {
 
     const userData = useRecoilValue(loggedInUser);
-    const [userName, setUsername] = useState('')
+    const [userName, setUsername] = useState('');
+    const [selectedUser, setSelectedUser] = useRecoilState(messageSelectedUser);
+
+    const active = userId === selectedUser?.userId;
+
     const axiosOptions = {
         headers: {
             token: 'JWT ' + userData?.accessToken
@@ -26,19 +30,27 @@ const MessageUserCard = ({socketId, userId, socket}) => {
         getUserName();
     },[userId])
 
-    const setSelectedUser = useSetRecoilState(messageSelectedUser);
+
     const selectUser = () => {
-        setSelectedUser({socketId, userName, userId});
+        setSelectedUser({socketId, username: userName.username, userId});
     }
 
     return (
-        <div onClick={selectUser}>
-            <ProfilePic src={userName.profilePictureLink} size={'big'}/>
-            <p>{userName.username}</p>
-            <p>{userId}</p>
-            <p>{socketId}</p>
-        </div>
+        <Wrapper onClick={selectUser}>
+            <ProfilePic src={userName.profilePictureLink} size={'big'} nolink={true} active={active}/>
+            <UserName>{userName.username ? userName.username : 'General'}</UserName>
+        </Wrapper>
     )
 }
 
 export default MessageUserCard;
+
+const Wrapper = styled.article`
+  font-size: 1.2rem;
+  flex-basis: 7rem;
+`
+
+const UserName = styled.p`
+  margin-top: 0.5rem;
+  text-align: center;
+`

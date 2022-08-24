@@ -1,12 +1,12 @@
 import {useState, useEffect} from 'react';
-import './messenger.css'
 import {apiLink} from "../../utils/apiLink";
 import {useRecoilValue} from "recoil";
 import {loggedInUser, messageSelectedUser} from "../../utils/SharedStates";
 import axios from "axios";
+import {InputField, InputForm, MessageFooter} from "./MessageInput.styles";
+import {ButtonSmall} from "../../../styles/Buttons";
 
 const MessageInput = ({userId, socket, lastMessageRef}) => {
-    console.log('socket oben', socket);
     const userData = useRecoilValue(loggedInUser);
     const selectedUser = useRecoilValue(messageSelectedUser);
 
@@ -32,45 +32,46 @@ const MessageInput = ({userId, socket, lastMessageRef}) => {
         socket.emit('typing', `${userName} is typing...`)
     }
 
-    console.log(message);
-
     const handleSendMessage = (e) => {
         e.preventDefault();
         if (message.trim()) {
-            console.log('innerhalb von if');
-            console.log(socket);
-            socket.emit('message', {
-                text: message,
-                name: userName,
-                id: `${socket.id}${Math.random()}`,
-                socketID: socket.id,
-                userID: userId
-            });
-            // socket.emit('private_message', {
-            //     text: message,
-            //     to: selectedUser.userId,
-            //     id: `${socket.id}${Math.random()}`,
-            //     socketID: socket.id,
-            //     userID: userId
-            // })
+            if (selectedUser === null) {
+                socket.emit('message', {
+                    content: message,
+                    name: userName,
+                    messageId: `${socket.id}${Math.random()}`,
+                    socketID: socket.id,
+                    userId: userId,
+                    from: userId,
+                    time: Date.now(),
+                });
+            } else {
+                socket.emit('private_message',{
+                    content: message,
+                    to: selectedUser.userId,
+                    messageId: `${socket.id}${Math.random()}`,
+                    socketID: socket.id,
+                    userId: userId,
+                    time: Date.now(),
+                })
+            }
         }
-        setMessage("")
+        setMessage('');
     }
 
     return (
-        <div className="chat__footer" ref={lastMessageRef}>
-            <form className="form" onSubmit={handleSendMessage}>
-                <input
+        <MessageFooter ref={lastMessageRef}>
+            <InputForm className="form" onSubmit={handleSendMessage}>
+                <InputField
                     type="text"
                     placeholder="Write message"
-                    className="message"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyDown={handleTyping}
                 />
-                <button className="sendBtn">SEND</button>
-            </form>
-        </div>
+                <ButtonSmall>Send</ButtonSmall>
+            </InputForm>
+        </MessageFooter>
     );
 }
 

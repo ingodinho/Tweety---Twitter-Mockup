@@ -13,9 +13,9 @@ const HomeHeader = ({ userProfilePicture }) => {
     <HeaderWrapper>
       <IconBar>
         <ProfilePic size={"small"} src={userProfilePicture} />
-        <Link to={"/home"}>
+        <BirdLink to={"/home"}>
           <BirdLogo src={BirdLogoUrl} alt="Bird Logo" />
-        </Link>
+        </BirdLink>
       </IconBar>
     </HeaderWrapper>
   );
@@ -23,6 +23,7 @@ const HomeHeader = ({ userProfilePicture }) => {
 
 const HeaderWrapper = styled.header`
   position: sticky;
+  max-width: var(--max-width);
   top: 0;
   background-color: #fff;
   padding: 2rem var(--spacing-wrapper) 0.5rem var(--spacing-wrapper);
@@ -34,8 +35,14 @@ const IconBar = styled.div`
   align-items: center;
 `;
 
+const BirdLink = styled(Link)`
+  flex: 1;
+  justify-self: center;
+  padding-right: 32px;
+`
+
 const BirdLogo = styled.img`
-  margin-left: 37vw;
+  margin: 0 auto;
   width: 27px;
   height: 27px;
 `;

@@ -1,51 +1,35 @@
-import {useNavigate} from 'react-router-dom';
-import './messenger.css'
-import {useRecoilValue} from "recoil";
-import {loggedInUser} from "../../utils/SharedStates";
+import MessageItem from "./MessageItem";
+import styled from "styled-components";
 
 const Messages = ({messages, typingStatus}) => {
-    const userData = useRecoilValue(loggedInUser);
-    const navigate = useNavigate();
-    console.log(messages)
 
-    const handleLeaveChat = () => {
-        localStorage.removeItem('userName');
-        navigate('/home');
-        window.location.reload();
-    };
     return (
         <>
-            <header className="chat__mainHeader">
-                <p>Hangout with Colleagues</p>
-                <button className="leaveChat__btn" onClick={handleLeaveChat}>
-                    LEAVE CHAT
-                </button>
-            </header>
-
-            <div className="message__container">
-                {messages.map((message, i) =>
-                    message.userID === userData?.userId ? (
-                        <div className="message__chats" key={message.id}>
-                            <p className="sender__name">You</p>
-                            <div className="message__sender">
-                                <p>{message.text}</p>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="message__chats" key={message.id}>
-                            <p>{message.name}</p>
-                            <div className="message__recipient">
-                                <p>{message.text}</p>
-                            </div>
-                        </div>
+            <MessageContainer>
+                {messages.map((message) =>
+                    (
+                     <MessageItem
+                        key={message.messageId}
+                        {...message}
+                     />
                     )
                 )}
-                <div className="message__status">
+                <IsTyping>
                     <p>{typingStatus}</p>
-                </div>
-            </div>
+                </IsTyping>
+            </MessageContainer>
         </>
     );
 };
 
 export default Messages;
+
+const MessageContainer = styled.div`
+  margin-bottom: 10rem;
+  padding: 0 1rem;
+`
+
+const IsTyping = styled.div`
+  font-size: 1.3rem;
+  font-style: italic;
+`

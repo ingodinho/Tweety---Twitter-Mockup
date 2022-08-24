@@ -4,7 +4,7 @@ export const InputField = styled.input`
   margin: 0 auto;
   display: block;
   color: var(--clr-text-prm);
-  width: 80vw;
+  width: 80%;
   border: 0;
   border-bottom: 1px solid var(--clr-line-grey);
   padding: 2px 0;
