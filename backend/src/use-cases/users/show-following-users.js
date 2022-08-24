@@ -12,6 +12,7 @@ export const showFollowingUsers = async (userId) => {
 			const avatarKey = followingUser.profilePictureLink;
 			const avatarLink = await generateSignedAvatarUrl(avatarKey);
 			followingUser.profilePictureLink = avatarLink;
+			console.log('kommst du hierher??')
 
 			const returnfollowingUserData = {
 				_id: followingUser._id,

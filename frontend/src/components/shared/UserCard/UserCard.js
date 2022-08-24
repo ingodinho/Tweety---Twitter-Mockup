@@ -5,7 +5,6 @@ import {
 	UserHeader,
 	Wrapper,
 } from "./UserCard.styling";
-import ProfilePic from "../ProfilePic";
 import SearchPageProfilePic from "../SearchPageProfilePic";
 import { ButtonFollow } from "../../../styles/Buttons";
 import { useEffect, useState } from "react";
@@ -24,10 +23,9 @@ const UserCard = (props) => {
 
 	const axiosOptions = {
 		headers: {
-			accessToken: `JWT ` + userData.accessToken,
+			token: `JWT ` + userData.accessToken,
 		},
 	};
-
 
 	useEffect(() => {
 		if (!props.followedBy || !userData) return;
