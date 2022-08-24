@@ -35,7 +35,6 @@ const UserCard = (props) => {
 
   const handleFollow = async () => {
     const data = {
-      userId: userData.userId,
       followUserId: props._id,
     };
     const response = await axios.put(

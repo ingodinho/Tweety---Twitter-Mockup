@@ -24,27 +24,28 @@ const AuthAndNav = () => {
             }
         }
         const doSilentRefreshToken = async () => {
-            const response = await axios.post(apiLink + '/users/refreshtoken', {}, {
-                withCredentials: true
-            })
-            setUserData(response.data);
-            const NINE_MINUTES = 9 * 60 * 1000;
-            const timeoutId = setTimeout(() => {
-                doSilentRefreshToken();
-                clearTimeout(timeoutId);
-            }, NINE_MINUTES);
-            setIsLoading(false);
+            try {
+                const response = await axios.post(apiLink + '/users/refreshtoken', {}, {
+                    withCredentials: true
+                })
+                setUserData(response.data);
+                const NINE_MINUTES = 9 * 60 * 1000;
+                const timeoutId = setTimeout(() => {
+                    doSilentRefreshToken();
+                    clearTimeout(timeoutId);
+                }, NINE_MINUTES);
+                setIsLoading(false);
+            } catch (err) {
+                navigator('/');
+            }
         }
-
         doSilentRefreshToken();
     }, [userData])
 
     if (isLoading) {
         return <LoadingPage/>
     }
-    if (!userData.accessToken) {
-        navigator('/login');
-    }
+
 
     return (<>
         <SlideIn/>

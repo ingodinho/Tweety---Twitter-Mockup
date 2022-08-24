@@ -70,7 +70,7 @@ const SearchPage = () => {
           await Promise.all([
             axios.get(apiLink + "/tweets/all", axiosOptions),
             axios.get(apiLink + "/users/profileshort", axiosOptions),
-            axios.get(apiLink + "/users/allusers"),
+            axios.get(apiLink + "/users/allusers", axiosOptions),
             axios.get(apiLink + "/search/toptweets", axiosOptions),
             axios.get(apiLink + "/search/topusers", axiosOptions),
           ]);
@@ -78,9 +78,9 @@ const SearchPage = () => {
         setUserProfilePic(userProfilePic.data.profilePictureLink);
         setAllUsers(allUsersData.data);
         setTopTweets(topTweets.data.tweetsResult);
-        setTopUser(topUsers.data.userResult);
-        setIsLoading(false);
+        setTopUser(topUsers.data);
         setIsLoadingContent(false);
+        setIsLoading(false);
       };
       getAllTweets();
     } else {
@@ -90,10 +90,15 @@ const SearchPage = () => {
             token: "JWT " + userData.accessToken,
           },
         });
+        setTopTweets("");
+        setTopUser("");
         setAllTweets(searchResult.data.tweetsResult);
         setAllUsers(searchResult.data.usersResult);
       };
       getSearch();
+      setIsLoading(false);
+      setAllTweets('');
+      setAllUsers('');
     }
   }, [searchToggle, userData, currentNav]);
 
@@ -161,7 +166,7 @@ const SearchPage = () => {
           )}
           {currentNav === "searchedtopUser" && (
             <div>
-              {topUser.length > 0 &&
+              {topUser?.length > 0 &&
                 topUser.map((topUser) => (
                   <UserCard key={topUser._id} {...topUser} />
                 ))}
