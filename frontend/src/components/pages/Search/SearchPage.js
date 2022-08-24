@@ -40,9 +40,6 @@ const SearchPage = () => {
 		setTopTweets([]);
 		setTopUser([]);
 		setCurrentNav("searchedTweets");
-		if (!(allTweets.length >= 1)) {
-			setIsLoading(true);
-		}
 	};
 
 	const searchUsers = () => {
@@ -50,32 +47,20 @@ const SearchPage = () => {
 		setTopTweets([]);
 		setTopUser([]);
 		setCurrentNav("searchedUsers");
-		if (!(allUsers.length >= 1)) {
-			setIsLoading(true);
-		}
-		console.log(isLoading);
 	};
 
 	const searchtopTweets = () => {
-		setSearch("");
 		setAllTweets([]);
 		setAllUsers([]);
 		setTopUser([]);
 		setCurrentNav("searchedtopTweets");
-		if (!(topTweets.length >= 1)) {
-			setIsLoading(true);
-		}
 	};
 
 	const searchtopUser = () => {
-		setSearch("");
 		setAllTweets([]);
 		setAllUsers([]);
 		setTopTweets([]);
 		setCurrentNav("searchedtopUser");
-		if (!(topUser.length >= 1)) {
-			setIsLoading(true);
-		}
 	};
 
 	useEffect(() => {
@@ -113,20 +98,13 @@ const SearchPage = () => {
 						},
 					}
 				);
-				setTopTweets("");
-				setTopUser("");
+				setTopTweets(searchResult.data.topTweetsResult);
+				setTopUser(searchResult.data.topUserResult);
 				setAllTweets(searchResult.data.tweetsResult);
 				setAllUsers(searchResult.data.usersResult);
 			};
 			getSearch();
-			if (allTweets.length >= 1) {
-				setIsLoading(false);
-			}
-			if (allUsers.length >= 1) {
-				setIsLoading(false);
-			}
-			setAllTweets("");
-			setAllUsers("");
+			setIsLoading(false);
 		}
 	}, [searchToggle, userData, currentNav]);
 

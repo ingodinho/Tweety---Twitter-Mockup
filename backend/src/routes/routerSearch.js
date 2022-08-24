@@ -29,6 +29,7 @@ searchRouter.get("/topusers", doAuthMiddlewareAccess, async (req, res) => {
 searchRouter.get("/:keyword", doAuthMiddlewareAccess, async (req, res) => {
 	try {
 		const searchResult = await searchAll(req.params.keyword);
+		console.log(searchResult);
 		res.status(200).json(searchResult);
 	} catch (err) {
 		res.status(404).json({ message: err.message || "404 not found" });
