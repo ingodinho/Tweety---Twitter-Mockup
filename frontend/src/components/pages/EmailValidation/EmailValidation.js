@@ -19,13 +19,15 @@ const EmailValidation = () => {
       email: inputMail,
       sixDigitCode: inputDigitCode,
     };
-    const response = axios.put(apiLink + "/users/verify", data);
-    console.log(response);
-    //    IF IN ORDNUNG, Back to Home
-    setSuccessMessage("Code verification completed");
-    setTimeout(() => {
-      navigator("/home");
-    }, 1500);
+    const response = await axios.put(apiLink + "/users/verify", data);
+    if (response.status == 200) {
+      setSuccessMessage("Code verification completed");
+      setTimeout(() => {
+        navigator("/home");
+      }, 1500);
+    } else {
+      setSuccessMessage("Code verification unsuccessful");
+    }
     return response;
   };
 
