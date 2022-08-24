@@ -3,6 +3,7 @@ import UserDAO from "../../db-access/users-dao.js";
 
 export const sendAuthMail = async (userId) => {
 	const user = await UserDAO.findUserById(userId);
+	console.log(user);
 
 	const sendMailResult = await sendMail({
 		to: user.email,

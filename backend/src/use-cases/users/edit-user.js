@@ -27,6 +27,11 @@ export const editUser = async (
 		user.passwordHash = createHash(password + "" + user.passwordSalt);
 	}
 
+	
+	if (bio.length > 160) {
+		throw new Error("Bio cannot be more than 160 characters.");
+	}
+
 	// if (username) {
 	// 	const foundUsername = await UserDAO.findUserByUsername(username);
 

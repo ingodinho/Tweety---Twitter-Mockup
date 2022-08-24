@@ -5,11 +5,13 @@ const usersColl = "users";
 
 const searchTweetsByKeyword = async (keyword) => {
 	const db = await getDB();
+
 	const foundTweets = await db
 		.collection(tweetsColl)
 		.find({ $or: [{ content: { $regex: new RegExp(keyword, "i") } }] })
 		.sort({ postedAt: -1 })
 		.toArray();
+
 	const foundUsers = await db
 		.collection(usersColl)
 		.find({
@@ -22,7 +24,35 @@ const searchTweetsByKeyword = async (keyword) => {
 		.sort({ postedAt: -1 })
 		.toArray();
 
-	return { foundUsers, foundTweets };
+	const foundTopUsers = await db
+		.collection(usersColl)
+		.find({
+			$and: [
+				{ likedTweets: { $not: { $size: 0 } } },
+				{
+					$or: [
+						{ username: { $regex: new RegExp(keyword, "i") } },
+						{ firstName: { $regex: new RegExp(keyword, "i") } },
+						{ lastName: { $regex: new RegExp(keyword, "i") } },
+					],
+				},
+			],
+		})
+		.sort({ postedAt: -1 })
+		.toArray();
+
+	const foundTopTweets = await db
+		.collection(tweetsColl)
+		.find({
+			$and: [
+				{ replies: { $not: { $size: 0 } } },
+				{ content: { $regex: new RegExp(keyword, "i") } },
+			],
+		})
+		.sort({ postedAt: -1 })
+		.toArray();
+
+	return { foundUsers, foundTweets, foundTopUsers, foundTopTweets };
 };
 
 const searchTopTweets = async () => {
@@ -36,11 +66,12 @@ const searchTopTweets = async () => {
 };
 
 const searchTopUsers = async () => {
-    const db = await getDB();
-    const foundUsers = await db.collection(usersColl)
-    .find ({likedTweets: {$not: {$size: 0}}})
-    .sort({postedAt: -1})
-    .toArray();
+	const db = await getDB();
+	const foundUsers = await db
+		.collection(usersColl)
+		.find({ likedTweets: { $not: { $size: 0 } } })
+		.sort({ postedAt: -1 })
+		.toArray();
 	const filteredUserData = foundUsers.map((user) => {
 		return {
 			_id: user._id,
@@ -49,7 +80,7 @@ const searchTopUsers = async () => {
 			lastName: user.lastName,
 			profilePictureLink: user.profilePictureLink,
 			bio: user.bio,
-			followedBy: user.followedBy
+			followedBy: user.followedBy,
 		};
 	});
 	return filteredUserData;

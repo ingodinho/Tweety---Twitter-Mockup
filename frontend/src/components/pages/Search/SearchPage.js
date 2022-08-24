@@ -26,7 +26,6 @@ const SearchPage = () => {
   const [topTweets, setTopTweets] = useState([]);
   const [topUser, setTopUser] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingContent, setIsLoadingContent] = useState(true);
   const [currentNav, setCurrentNav] = useState("searchedTweets");
   const [userProfilePic, setUserProfilePic] = useState(null);
 
@@ -36,30 +35,32 @@ const SearchPage = () => {
     },
   };
 
-  const searchUsers = () => {
-    setAllTweets([]);
-    setTopTweets([]);
-    setTopUser([]);
-    setCurrentNav("searchedUsers");
-    setIsLoading(true);
-  };
-
   const searchTweets = () => {
     setAllUsers([]);
     setTopTweets([]);
     setTopUser([]);
     setCurrentNav("searchedTweets");
-    setIsLoading(true);
+  };
+
+  const searchUsers = () => {
+    setAllTweets([]);
+    setTopTweets([]);
+    setTopUser([]);
+    setCurrentNav("searchedUsers");
   };
 
   const searchtopTweets = () => {
+    setAllTweets([]);
+    setAllUsers([]);
+    setTopUser([]);
     setCurrentNav("searchedtopTweets");
-    setIsLoading(true);
   };
 
   const searchtopUser = () => {
+    setAllTweets([]);
+    setAllUsers([]);
+    setTopTweets([]);
     setCurrentNav("searchedtopUser");
-    setIsLoading(true);
   };
 
   useEffect(() => {
@@ -79,7 +80,6 @@ const SearchPage = () => {
         setAllUsers(allUsersData.data);
         setTopTweets(topTweets.data.tweetsResult);
         setTopUser(topUsers.data);
-        setIsLoadingContent(false);
         setIsLoading(false);
       };
       getAllTweets();
@@ -90,15 +90,13 @@ const SearchPage = () => {
             token: "JWT " + userData.accessToken,
           },
         });
-        setTopTweets("");
-        setTopUser("");
+        setTopTweets(searchResult.data.topTweetsResult);
+        setTopUser(searchResult.data.topUserResult);
         setAllTweets(searchResult.data.tweetsResult);
         setAllUsers(searchResult.data.usersResult);
       };
       getSearch();
       setIsLoading(false);
-      setAllTweets('');
-      setAllUsers('');
     }
   }, [searchToggle, userData, currentNav]);
 
@@ -113,6 +111,11 @@ const SearchPage = () => {
             <SearchInput
               placeholder="🔍 Search Tweetie"
               onChange={(e) => setSearch(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  setSearchToggle((prev) => !prev);
+                }
+              }}
             />
             <p onClick={() => setSearchToggle((prev) => !prev)}>
               <SearchLogo src={SearchLogoUrl} alt="Settings Logo" />
