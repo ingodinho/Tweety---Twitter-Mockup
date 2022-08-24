@@ -19,7 +19,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {apiLink} from "../../utils/apiLink";
 import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
-import {handleModal, loggedInUser, modalId, modalImgSrc, tweetStateFamily} from "../../utils/SharedStates";
+import {handleModal, loggedInUser, modalId, tweetStateFamily} from "../../utils/SharedStates";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
 import BackButton from "../../shared/BackButton";
 import {TweetWrapper} from "../../../styles/TweetWrapper";
@@ -46,7 +46,7 @@ const TweetDetails = () => {
             const response = await axios.get(apiLink + `/tweets/details/${id}`, axiosOptions);
             setTweetData({
                 ...response.data.tweetDetails[0],
-                liked: response.data.tweetDetails[0].likes.includes(userData?._id)
+                liked: response.data.tweetDetails[0].likes.includes(userData?.userId)
             });
             setReplies(response.data.repliesById.result);
             setIsLoading(false);
@@ -69,7 +69,6 @@ const TweetDetails = () => {
         }
         return -1;
     }
-
 
     if (isLoading) {
         return <LoadingPage/>
