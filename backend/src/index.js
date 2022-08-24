@@ -6,6 +6,7 @@ import { tweetsRouter } from "./routes/routerTweets.js";
 import { usersRouter } from "./routes/routerUsers.js";
 import { searchRouter } from "./routes/routerSearch.js";
 import { Server } from "socket.io"
+import {showUserProfileShort} from "./use-cases/users/show-user-profile-short.js";
 
 const PORT = process.env.PORT || 9000;
 const app = express();
@@ -20,22 +21,31 @@ const io = new Server(httpServer, {
 // ____________________________
 // WEBSOCKET-SERVER
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
+	const connectedUserId = socket.handshake.auth.userId;
     console.log(`⚡: ${socket.id} user just connected!`);
+
 	let users = [];
 	for (let [id, socket] of io.of("/").sockets) {
 		users.push({
 			socketId: id,
-			username: socket.name
+			userId: socket.handshake.auth.userId
 		})
 	}
-	console.log("OnlineUsers: ", users);
+	io.emit("userConnectionResponse", users);
 
 	//Listens and logs the message to the console
 	socket.on('message', (data) => {
-	  console.log(data);
+		console.log(data);
 	  io.emit("messageResponse", data)
 	})
+
+	// socket.on('private_message', (data) => {
+	// 	socket.to(data.to).emit('private_message', {
+	// 		content: data.content,
+	// 		from: data.userId
+	// 	})
+	// })
 
 	// User bei Login auf Online-setzen und bei Logout wieder auf Offline
 	// User Online-Anzeige bauen
@@ -43,23 +53,12 @@ io.on("connection", (socket) => {
 	// socket und emit für PN erstellen Sender/server/Empfänger
 	// Chats in Mongo speichern
 	// Notifications if Users gets online or offline
-	  
-	socket.on('connection', (data) => {  //Hier müssen wir noch das emit auf Client-Seite machen / bei irgendeinem Ereignis muss getriggert werden
-		for (let [id, data] of io.of("/").sockets) {
-			users.push({
-				socketId: id,
-				username: data.name
-			})
-		}
-		console.log("OnlineUsers: ", users);
-		io.emit("userConnectionResponse", users) // das userConnectionResponse muss dann im UseEffect angewandt werden um die Online-User zu aktualisieren
-	})
 
 	socket.on('typing', (data) => socket.broadcast.emit('typingResponse', data));
   
 	socket.on('disconnect', () => {
 		console.log('🔥: A user disconnected');
-		users = users.filter((user) => user.socketID !== socket.id);
+		users = users.filter((user) => user.socketId !== socket.id);
 		io.emit('userConnectionResponse', users);
    		socket.disconnect();
 	});
