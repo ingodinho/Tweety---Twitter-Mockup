@@ -1,6 +1,12 @@
 import './messenger.css'
+import {useState} from "react";
+import MessageUserCard from "./MessageUserCard";
 
-const MessengerSide = () => {
+const MessengerSide = ({socket}) => {
+  const [activeUsers, setActiveUsers] = useState([]);
+
+  socket.on('userConnectionResponse', (data)=> setActiveUsers(data));
+
   return (
     <div className="chat__sidebar">
     <h2>Open Chat</h2>
@@ -8,10 +14,12 @@ const MessengerSide = () => {
     <div>
       <h4 className="chat__header">ACTIVE USERS</h4>
       <div className="chat__users">
-        <p>User 1</p>
-        <p>User 2</p>
-        <p>User 3</p>
-        <p>User 4</p>
+        {activeUsers.map(user =>
+            <MessageUserCard
+              key={user.socketId}
+              {...user}
+                socket={socket}
+            />)}
       </div>
     </div>
   </div>

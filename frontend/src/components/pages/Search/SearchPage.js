@@ -97,6 +97,8 @@ const SearchPage = () => {
       };
       getSearch();
       setIsLoading(false);
+      setAllTweets('');
+      setAllUsers('');
     }
   }, [searchToggle, userData, currentNav]);
 
