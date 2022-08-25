@@ -6,11 +6,10 @@ import axios from "axios";
 import ProfilePic from "../../shared/ProfilePic";
 import styled from "styled-components";
 
-
-const MessageUserCard = ({socketId, userId}) => {
+const MessageUserCard = ({socketId, userId, socket, setMessages}) => {
 
     const userData = useRecoilValue(loggedInUser);
-    const [userName, setUsername] = useState('');
+    const [userInfo, setUserInfo] = useState('');
     const [selectedUser, setSelectedUser] = useRecoilState(messageSelectedUser);
 
     const active = userId === selectedUser?.userId;
@@ -25,20 +24,28 @@ const MessageUserCard = ({socketId, userId}) => {
         if(!userData) return;
         const getUserName = async () => {
             const response = await axios.get(apiLink + `/users/profile/${userId}`,axiosOptions);
-            setUsername(response.data);
+            setUserInfo(response.data);
         }
         getUserName();
     },[userId])
 
 
-    const selectUser = () => {
-        setSelectedUser({socketId, username: userName.username, userId});
+    const selectUser = async () => {
+        socket.emit('select_user', {
+            userId: userData.userId,
+            to: userInfo._id,
+            prevRoom: selectedUser ? userData.userId+selectedUser.userId : 'general'
+        })
+        setSelectedUser({socketId, username: userInfo.username, userId});
+        const response = await axios.get(apiLink + '/messages/private/' + userData.userId + userInfo._id);
+        console.log(response);
+        setMessages(response.data);
     }
 
     return (
         <Wrapper onClick={selectUser}>
-            <ProfilePic src={userName.profilePictureLink} size={'big'} nolink={true} active={active}/>
-            <UserName>{userName.username ? userName.username : 'General'}</UserName>
+            <ProfilePic src={userInfo.profilePictureLink} size={'big'} nolink={true} active={active}/>
+            <UserName>{userInfo.username ? userInfo.username : 'General'}</UserName>
         </Wrapper>
     )
 }

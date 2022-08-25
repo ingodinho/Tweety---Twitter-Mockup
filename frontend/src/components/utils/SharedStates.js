@@ -32,6 +32,11 @@ export const messageSelectedUser = atom({
     default: null
 })
 
+export const messagesState = atom({
+    key: 'messagesState',
+    default: null
+})
+
 export const tweetStateFamily = atomFamily({
     key: 'tweetsFamily',
     default: {

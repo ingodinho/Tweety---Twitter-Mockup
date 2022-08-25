@@ -6,7 +6,7 @@ import axios from "axios";
 import {InputField, InputForm, MessageFooter} from "./MessageInput.styles";
 import {ButtonSmall} from "../../../styles/Buttons";
 
-const MessageInput = ({userId, socket, lastMessageRef}) => {
+const MessageInput = ({userId, socket}) => {
     const userData = useRecoilValue(loggedInUser);
     const selectedUser = useRecoilValue(messageSelectedUser);
 
@@ -33,34 +33,26 @@ const MessageInput = ({userId, socket, lastMessageRef}) => {
     }
 
     const handleSendMessage = (e) => {
+        let newMessage;
         e.preventDefault();
         if (message.trim()) {
-            if (selectedUser === null) {
-                socket.emit('message', {
-                    content: message,
-                    name: userName,
-                    messageId: `${socket.id}${Math.random()}`,
-                    socketID: socket.id,
-                    userId: userId,
-                    from: userId,
-                    time: Date.now(),
-                });
-            } else {
-                socket.emit('private_message',{
-                    content: message,
-                    to: selectedUser.userId,
-                    messageId: `${socket.id}${Math.random()}`,
-                    socketID: socket.id,
-                    userId: userId,
-                    time: Date.now(),
-                })
+
+            newMessage = {
+                content: message,
+                to: selectedUser?.userId ? selectedUser.userId : 'general',
+                messageId: `${socket.id}${Math.random()}`,
+                socketID: socket.id,
+                userId: userId,
+                time: Date.now(),
             }
+
+            socket.emit('private_message', newMessage);
         }
         setMessage('');
     }
 
     return (
-        <MessageFooter ref={lastMessageRef}>
+        <MessageFooter>
             <InputForm className="form" onSubmit={handleSendMessage}>
                 <InputField
                     type="text"

@@ -2,15 +2,34 @@ import Moment from "react-moment";
 import styled from "styled-components";
 import {useRecoilValue} from "recoil";
 import {loggedInUser} from "../../utils/SharedStates";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {apiLink} from "../../utils/apiLink";
 
-const MessageItem = ({content, from, messageId, username, time}) => {
+const MessageItem = ({content, from, time}) => {
     const userData = useRecoilValue(loggedInUser);
     const sender = userData?.userId === from;
+    const [userInfos,setUserInfos] = useState({});
+
+    const axiosOptions = {
+        headers: {
+            token: 'JWT ' + userData?.accessToken
+        }
+    }
+
+    useEffect(()=> {
+        if(!userData)return;
+        const getUserInfos = async () => {
+            const response = await axios.get(apiLink + '/users/profile/' + from, axiosOptions);
+            setUserInfos(response.data);
+        }
+        getUserInfos();
+    }, [userData])
 
     return (
         <Wrapper>
             <SenderTimeContainer sender={sender}>
-                <p>{sender ? 'You' : username}</p>
+                <p>{sender ? 'You' : userInfos.username}</p>
                 <p><Moment format={'HH:MM DD.MM'}>{time}</Moment></p>
             </SenderTimeContainer>
             <MessageBubble sender={sender}>
