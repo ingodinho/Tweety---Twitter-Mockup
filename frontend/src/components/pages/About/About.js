@@ -1,17 +1,20 @@
-import HomeHeader from "./HomeHeader";
-import Tweet from "../../shared/Tweet/Tweet";
-import NewTweetButton from "../../shared/NewTweetButton";
+import HomeHeader from "../Home/HomeHeader";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiLink } from "../../utils/apiLink";
 import { useRecoilValue } from "recoil";
 import { loggedInUser } from "../../utils/SharedStates";
 import LoadingPage from "../../shared/LoadingPage/LoadingPage";
-import styled from "styled-components";
+import {
+  Container,
+  BigHeadline,
+  Headline,
+  DevName,
+  DevDesc,
+} from "./About.styling.js";
 
-const Home = () => {
+const About = () => {
   const userData = useRecoilValue(loggedInUser);
-  const [tweets, setTweets] = useState([]);
   const [userProfilePicture, setUserProfilePicture] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -24,21 +27,10 @@ const Home = () => {
   useEffect(() => {
     const getTweets = async () => {
       if (!userData) return;
-      const [tweetsFollowed, profileShort] = await Promise.all([
-        axios.get(apiLink + `/tweets/followed`, axiosOptions),
+      const [profileShort] = await Promise.all([
         axios.get(apiLink + "/users/profileshort", axiosOptions),
       ]);
       setUserProfilePicture(profileShort.data.profilePictureLink);
-
-      if (tweetsFollowed.data.result.length > 0) {
-        setTweets(tweetsFollowed.data.result);
-      } else {
-        const allTweets = await axios.get(
-          apiLink + "/tweets/all",
-          axiosOptions
-        );
-        setTweets(allTweets.data.result);
-      }
 
       setIsLoading(false);
     };
@@ -51,19 +43,22 @@ const Home = () => {
     return (
       <>
         <HomeHeader userProfilePicture={userProfilePicture} />
-        <NewTweetButton />
-        <TweetWrapper>
-          {tweets.map((tweet) => (
-            <Tweet key={tweet._id} {...tweet} />
-          ))}
-        </TweetWrapper>
+        <Container>
+          <BigHeadline>About Tweety</BigHeadline>
+          <Headline>Frontend Team</Headline>
+          <DevName>Ingo Siemens</DevName>
+          <DevDesc>Recoil (aka Rehkeule) und Frontend Imperator</DevDesc>
+          <DevName>Pascal Wulff</DevName>
+          <DevDesc>Einarmiger Component Styler und Frontend Mongo(DB)</DevDesc>
+          <Headline>Backend Team</Headline>
+          <DevName>Karim Akichouh</DevName>
+          <DevDesc>AWS Backend Urukhai und Datenschutzbeauftragter</DevDesc>
+          <DevName>Patrick Siegmund</DevName>
+          <DevDesc>SockenJoe.io und Backend Admiral</DevDesc>
+        </Container>
       </>
     );
   }
 };
 
-export default Home;
-
-const TweetWrapper = styled.section`
-  padding: 0 var(--spacing-wrapper);
-`;
+export default About;
