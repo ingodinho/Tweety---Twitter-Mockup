@@ -38,7 +38,6 @@ const MessageUserCard = ({socketId, userId, socket, setMessages}) => {
         })
         setSelectedUser({socketId, username: userInfo.username, userId});
         const response = await axios.get(apiLink + '/messages/private/' + userData.userId + userInfo._id);
-        console.log(response);
         setMessages(response.data);
     }
 
