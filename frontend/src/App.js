@@ -16,6 +16,7 @@ import Redirect from "./components/shared/Tweet/Redirect";
 import EmailValidation from "./components/pages/EmailValidation/EmailValidation";
 import FollowerList from "./components/pages/FollowerList/FollowerList";
 import About from "./components/pages/About/About";
+import MessengerPage from "./components/pages/Messenger/MessengerPage";
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
           <Route path={"/profile/:id/edit"} element={<EditProfile />} />
           <Route path={"/newtweet"} element={<NewTweet />} />
           <Route path={"/reply/:id"} element={<ReplyTweet />} />
+          <Route path={'/messenger'} element={<MessengerPage/>}/>
           <Route
             path={"/followerlist/:id/:defaultnav"}
             element={<FollowerList />}
