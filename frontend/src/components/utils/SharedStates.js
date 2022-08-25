@@ -1,4 +1,6 @@
 import {atom, atomFamily} from 'recoil';
+import socketIO from "socket.io-client"
+import {apiLink} from "./apiLink";
 
 export const loggedInUser = atom({
     key: 'loggedInUser',
@@ -11,7 +13,7 @@ export const slideInMenu = atom({
 })
 
 export const handleModal = atom({
-    key:'handleModal',
+    key: 'handleModal',
     default: false,
 })
 
@@ -25,6 +27,16 @@ export const forceRerender = atom({
     default: 1
 })
 
+export const messageSelectedUser = atom({
+    key: 'messageSelectedUser',
+    default: null
+})
+
+export const messagesState = atom({
+    key: 'messagesState',
+    default: null
+})
+
 export const tweetStateFamily = atomFamily({
     key: 'tweetsFamily',
     default: {
@@ -33,9 +45,7 @@ export const tweetStateFamily = atomFamily({
         lastEditedAt: null,
         likes: [],
         postedAt: null,
-        postedBy: {
-
-        },
+        postedBy: {},
         replies: [],
         replyTo: null,
         retweets: [],
