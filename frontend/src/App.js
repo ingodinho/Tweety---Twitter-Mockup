@@ -1,5 +1,5 @@
 import GlobalStyles from "./GlobalStyles";
-import {Routes, Route, useNavigate} from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 
 import Home from "./components/pages/Home/Home";
 import LoginPage from "./components/pages/Login/LoginPage";

@@ -59,8 +59,6 @@ const RegisterForm = () => {
       password,
     };
 
-    console.log(userData);
-
     const response = await axios.post(apiLink + "/users/register", userData);
     if (response.data.message) {
       return setErrorMessage(response.data.message);
