@@ -34,20 +34,6 @@ export const Cancel = styled(ArrowIosBack)`
   left: var(--spacing-wrapper);
 `;
 
-// ###### OLD CANCEL BUTTON #####
-
-// export const Cancel = styled.button`
-//   color: var(--clr-blue);
-//   font-size: 1.4rem;
-//   text-decoration: none;
-//   left: var(--spacing-wrapper);
-//   background: white;
-//   border: none;
-//   font-size: 2.2rem;
-// `;
-
-// ##############################
-
 export const UserWrapper = styled.section`
   position: relative;
   margin: 0;

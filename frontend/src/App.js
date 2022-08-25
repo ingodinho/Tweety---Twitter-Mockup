@@ -18,6 +18,7 @@ import AuthAndNav from "./components/shared/AuthAndNav/AuthAndNav";
 import Redirect from "./components/shared/Tweet/Redirect";
 import EmailValidation from "./components/pages/EmailValidation/EmailValidation";
 import FollowerList from "./components/pages/FollowerList/FollowerList";
+import About from "./components/pages/About/About";
 
 function App() {
   const navigator = useNavigate();
@@ -31,30 +32,34 @@ function App() {
     }
   }, [userData]);
 
-    return (
-        <div className="App">
-            <Routes>
-                <Route element={<AuthAndNav/>}>
-                    <Route path={"/home"} element={<Home/>}/>
-                    <Route path={"/search"} element={<Search/>}/>
-                    <Route path={"/tweet/:id"} element={<TweetDetails/>}/>
-                    <Route path={"/profile/:id"} element={<Profile/>}/>
-                    <Route path={"/profile/:id/edit"} element={<EditProfile/>}/>
-                    <Route path={"/newtweet"} element={<NewTweet/>}/>
-                    <Route path={"/reply/:id"} element={<ReplyTweet/>}/>
-                    <Route path={'/followerlist/:id/:defaultnav'} element={<FollowerList/>}/>
-                </Route>
-                <Route element={<Redirect/>}>
-                    <Route path={"/"} element={<StartPage/>}/>
-                    <Route path={"/login"} element={<LoginPage/>}/>
-                    <Route path={"/register"} element={<RegisterPage/>}/>
-                </Route>
-                <Route path={'/validation'} element={<EmailValidation/>}/>
-                <Route path={'*'} element={<h1>Page not Found</h1>}></Route>
-            </Routes>
-            <GlobalStyles/>
-        </div>
-    );
+  return (
+    <div className="App">
+      <Routes>
+        <Route element={<AuthAndNav />}>
+          <Route path={"/home"} element={<Home />} />
+          <Route path={"/search"} element={<Search />} />
+          <Route path={"/tweet/:id"} element={<TweetDetails />} />
+          <Route path={"/profile/:id"} element={<Profile />} />
+          <Route path={"/profile/:id/edit"} element={<EditProfile />} />
+          <Route path={"/newtweet"} element={<NewTweet />} />
+          <Route path={"/reply/:id"} element={<ReplyTweet />} />
+          <Route
+            path={"/followerlist/:id/:defaultnav"}
+            element={<FollowerList />}
+          />
+          <Route path={"/about"} element={<About />} />
+        </Route>
+        <Route element={<Redirect />}>
+          <Route path={"/"} element={<StartPage />} />
+          <Route path={"/login"} element={<LoginPage />} />
+          <Route path={"/register"} element={<RegisterPage />} />
+        </Route>
+        <Route path={"/validation"} element={<EmailValidation />} />
+        <Route path={"*"} element={<h1>Page not Found</h1>}></Route>
+      </Routes>
+      <GlobalStyles />
+    </div>
+  );
 }
 
 export default App;
