@@ -8,7 +8,7 @@ import {
 } from "../utils/SharedStates";
 import { useNavigate } from "react-router-dom";
 
-const ProfilePic = ({ size, src }) => {
+const ProfilePic = ({ size, src, nolink, active }) => {
   const setShowSlideIn = useSetRecoilState(slideInMenu);
   const navigator = useNavigate();
   const userData = useRecoilValue(loggedInUser);
@@ -17,10 +17,11 @@ const ProfilePic = ({ size, src }) => {
 
   return (
     <Picture
-      onClick={() => setShowSlideIn((prev) => !prev)}
+      onClick={() => nolink ? '' : setShowSlideIn((prev) => !prev)}
       imgSize={imgSize}
       src={src || placeHolderUrl}
       alt={"Profile Picture"}
+      active={active}
     />
   );
 };
@@ -30,6 +31,7 @@ const Picture = styled.img`
   height: ${(props) => props.imgSize};
   border-radius: 50%;
   object-fit: cover;
+  border: ${p => p.active && 'solid 3px var(--clr-blue)'};
 `;
 
 export default ProfilePic;
