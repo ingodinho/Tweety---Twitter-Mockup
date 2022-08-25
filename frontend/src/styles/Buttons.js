@@ -4,7 +4,7 @@ export const ButtonBig = styled.button`
   display: block;
   margin: 2rem auto;
   background-color: var(--clr-blue);
-  width: 80vw;
+  width: 80%;
   padding: 0.5rem 6rem;
   font-size: 1.7rem;
   font-weight: 700;
@@ -26,7 +26,7 @@ export const ButtonLogin = styled.button`
   display: block;
   margin: 2rem auto;
   background-color: var(--clr-text-white);
-  width: 80vw;
+  width: 80%;
   padding: 0.5rem 6rem;
   font-size: 1.7rem;
   font-weight: 700;
